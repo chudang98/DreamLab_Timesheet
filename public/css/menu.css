@@ -1,0 +1,92 @@
+div{
+    display: block;
+    margin: 0px;
+    padding: 0px;
+}
+body{
+    margin: 0px;
+    display: block;
+}
+a{
+    text-decoration: none;
+    color: #1d2124;
+}
+a:hover{
+    text-decoration: none;
+}
+a:focus{
+    text-decoration: none;
+}
+ul{
+    margin: 0px;
+    padding: 0px;
+    display: block;
+}
+ul li{
+    display: inline-block;
+    width: 100%;
+}
+/*header*/
+header{
+    height: 80px;
+    border-bottom: 2px solid #6c757d;
+    position: relative;
+    /*background-color: #4aa0e6;*//
+    /*position: fixed;*/
+}
+header .logo{
+    height: 240px;
+    position: relative;
+    top: -60px;
+    left: 15px;
+    z-index: -1;
+}
+header .logout{
+    display: inline-block;
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    padding-right: 13px;
+}
+header .logout a{
+    font-size: 14px;
+    font-weight: bold;
+}
+header .logout i {
+    top: 2px;
+    right: 0px;
+    position: absolute;
+}
+
+/*body*/
+.body{
+    height: 500px;
+    padding: 0px;
+}
+.body .menu{
+    height: 500px;
+    width: 14%;
+    float: left;
+    border-right: 2px solid #6c757d;
+}
+.body .content{
+    padding-left: 3%;
+    height: 500px;
+    width: 86%;
+    float: right;
+    margin-top: 30px;
+}
+.menu ul li{
+    display: block;
+    border-bottom: 2px solid #6c757d;
+    padding: 20px 15px;
+
+}
+.menu ul li a{
+    font-size: 20px;
+    font-weight: bold;
+}
+.menu .username{
+    font-size: 35px;
+}
+
