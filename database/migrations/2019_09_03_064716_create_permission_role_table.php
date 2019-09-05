@@ -14,9 +14,9 @@ class CreatePermissionRoleTable extends Migration
     public function up()
     {
         Schema::create('permission_role', function (Blueprint $table) {
-            $table->unsignedInteger('roles_id');
-            $table->unsignedInteger('permissions_id');
-            $table->primary(['roles_id', 'permissions_id']);
+            $table->unsignedInteger('role_id');
+            $table->unsignedInteger('permission_id');
+            $table->primary(['role_id', 'permission_id']);
         });
     }
 

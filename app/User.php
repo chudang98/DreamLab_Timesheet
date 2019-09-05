@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'attendance_number', 'department', 'attendance_machine_id'
     ];
 
     /**
@@ -36,4 +36,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function roles(){
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+    }
+
+    public function attendanceMachine(){
+        return $this->belongsTo(AttendanceMachine::class, 'attendance_machine_id');
+    }
+
+    public function permission(){
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function attendances(){
+        return $this->hasMany(Attendance::class);
+    }
+
+    public function timesheets(){
+        return $this->hasMany(Timesheet::class);
+    }
 }
+
