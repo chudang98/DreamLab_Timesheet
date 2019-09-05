@@ -17,9 +17,9 @@ class CreateAttendancesTable extends Migration
             $table->bigIncrements('id');
             $table->dateTime('date_time');
 
-            $table->unsignedBigInteger('timesheets_id')->nullable()->default(null);
-            $table->unsignedBigInteger('users_id');
-            $table->unsignedInteger('attendance_machines_id');
+            $table->unsignedBigInteger('timesheet_id')->nullable()->default(null);
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedInteger('attendance_machine_id');
             $table->enum('is_check', ['Y', 'N'])->default('N');
         });
     }

@@ -8,6 +8,6 @@ class RoleUser extends Model
 {
     //
     protected $fillable = [
-        'roles_id', 'users_id'
+        'role_id', 'user_id'
     ];
 }

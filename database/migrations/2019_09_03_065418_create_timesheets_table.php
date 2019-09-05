@@ -23,9 +23,10 @@ class CreateTimesheetsTable extends Migration
                 S : về sớm
                 X : buổi đó đi làm đầy đủ
             */
-            $table->enum('morning_shift', ['M', 'V', 'X']);
-            $table->enum('afternoon_shift', ['S', 'V', 'X']);
-            $table->unsignedBigInteger('users_id');
+            $table->enum('morning_shift', ['M', 'V', 'X'])->default('V');
+            $table->enum('afternoon_shift', ['S', 'V', 'X', 'M'])->default('V');
+            $table->unsignedBigInteger('user_id');
+            $table->unique(['date', 'user_id']);
         });
     }
 

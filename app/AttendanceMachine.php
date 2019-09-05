@@ -10,10 +10,12 @@ class AttendanceMachine extends Model
 
     //
     public function attendances(){
-        return $this->hasMany(Attendance::class, 'attendance_machines_id');
+        return $this->hasMany(Attendance::class, 'attendance_machine_id');
     }
 
     public function users(){
-        return $this->hasMany(User::class, 'attendance_machines_id');
+        return $this->hasMany(User::class, 'attendance_machine_id');
     }
+
+
 }

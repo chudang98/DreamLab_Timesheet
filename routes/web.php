@@ -10,14 +10,30 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Carbon\Carbon;
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+
+Route::get('/', function () {
+   return view('welcome');
+});
 
 //Trang chu
-Route::get('/', 'IndexController@index');
+// Route::get('/', 'IndexController@index');
 
 Auth::routes();
 
+
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('/testdate', function(){
+    $datetime = '10:00:00';
+    $date = Carbon::now()->toTimeString();
+    echo $datetime ." " .$date;
+    if(strtotime($datetime) > strtotime($date)){
+        echo 'Y';
+    }
+    else{
+        echo 'N';
+    }
+});
