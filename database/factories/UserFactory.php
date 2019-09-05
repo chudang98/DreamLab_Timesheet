@@ -18,10 +18,12 @@ use Faker\Generator as Faker;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
+        'attendance_number' => $faker->unique()->randomNumber(20),
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
+        'department'=>$faker->randomElement(['Technology','Human Resources','Accounting','Board of direction']),
+        'password'=>bcrypt('password'),
         'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
     ];
 });
