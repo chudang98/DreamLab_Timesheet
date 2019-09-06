@@ -13,7 +13,6 @@ $factory->define(Attendance::class, function (Faker $faker) {
     return [
         'date_time'=>$faker->dateTimeBetween('-20 days','now'),
         'attendance_machine_id'=>$faker->randomElement($attendance_machines),
-        'timesheet_id'=>$faker->randomElement('null'),
         'user_id'=>$faker->randomElement($users),
         'is_check'=>$faker->randomElement(['N']),
     ];

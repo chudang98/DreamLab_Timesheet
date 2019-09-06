@@ -20,7 +20,7 @@ use App\AttendanceMachine;
 $factory->define(User::class, function (Faker $faker) {
     $attendance_machines = AttendanceMachine::pluck('id')->toArray();
     return [
-        'attendance_number' => $faker->unique()->randomNumber(20),
+        'attendance_number' => $faker->unique()->numberBetween($min= 1, $max =20),
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'department'=>$faker->randomElement(['Technology','Human Resources','Accounting','Board of direction']),
