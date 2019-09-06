@@ -3,32 +3,18 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Attendance;
-use App\Model;
 use Faker\Generator as Faker;
+use App\AttendanceMachine;
+use App\User;
 
 $factory->define(Attendance::class, function (Faker $faker) {
-    $startTime = '2019-08-01 00:00:00';
-    $endingTime  = '2019-08-20 00:00:00';
-
-    $fMin = strtotime($startTime);
-    $fMax = strtotime($endingTime);
-    $fVal = mt_rand($fMin, $fMax);
-
+    $attendance_machines = AttendanceMachine::pluck('id')->toArray();
+    $users = User::pluck('id')->toArray();
     return [
-        //
-        'date_time' => date('Y-m-d H:i:s', $fVal),
-        'user_id' => $faker->randomElement(['1', '2', '3']),
-        'attendance_machine_id' => $faker->randomElement(['1', '2']),
+        'date_time'=>$faker->dateTimeBetween('-20 days','now'),
+        'attendance_machine_id'=>$faker->randomElement($attendance_machines),
+        'timesheet_id'=>$faker->randomElement('null'),
+        'user_id'=>$faker->randomElement($users),
+        'is_check'=>$faker->randomElement(['N']),
     ];
 });
-
-// function randomDate($sStartDate, $sEndDate, $sFormat = 'Y-m-d H:i:s')
-// {
-//     // Convert the supplied date to timestamp
-//     $fMin = strtotime($sStartDate);
-//     $fMax = strtotime($sEndDate);
-//     // Generate a random number from the start and end dates
-//     $fVal = mt_rand($fMin, $fMax);
-//     // Convert back to the specified date format
-//     return date($sFormat, $fVal);
-// }

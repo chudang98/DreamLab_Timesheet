@@ -11,11 +11,11 @@ class PermissionUser extends Model
         'user_id', 'permission_id'
     ];
 
-    public function users_id(){
+    public function user_id(){
         return $this->belongsTo(User::class,'user_id');
     }
 
-    public function permissions_id(){
+    public function permission_id(){
         return $this->hasOne(Permission::class, 'permission_id');
     }
 }

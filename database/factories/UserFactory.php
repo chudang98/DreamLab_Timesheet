@@ -4,6 +4,7 @@
 use App\User;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
+use App\AttendanceMachine;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,7 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(User::class, function (Faker $faker) {
+    $attendance_machines = AttendanceMachine::pluck('id')->toArray();
     return [
         'attendance_number' => $faker->unique()->randomNumber(20),
         'name' => $faker->name,
@@ -24,6 +26,7 @@ $factory->define(User::class, function (Faker $faker) {
         'department'=>$faker->randomElement(['Technology','Human Resources','Accounting','Board of direction']),
         'password'=>bcrypt('password'),
         'email_verified_at' => now(),
+        'attendance_machine_id'=>$faker->randomElement($attendance_machines),
         'remember_token' => Str::random(10),
     ];
 });

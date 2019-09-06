@@ -12,11 +12,11 @@ class PermissionRole extends Model
     ];
 
 
-    public function roles_id(){
+    public function role_id(){
         return $this->hasOne(Role::class, 'role_id');
     }
 
-    public function permissions_id(){
+    public function permission_id(){
         return $this->hasOne(Permission::class, 'permission_id');
     }
 }
