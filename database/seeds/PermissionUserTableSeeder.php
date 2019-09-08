@@ -11,10 +11,8 @@ class PermissionUserTableSeeder extends Seeder
      */
     public function run()
     {
-        //
-        DB::table('permission_user')->insert([
-            ['user_id' => '1', 'permission_id' => '2'],
-            ['user_id' => '1', 'permission_id' => '1']
-        ]);
+        $user = App\User::find(1);
+
+        $user->permissions()->attach([1,2,3]);
     }
 }

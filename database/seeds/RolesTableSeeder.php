@@ -17,5 +17,6 @@ class RolesTableSeeder extends Seeder
             ['id' => '2', 'name' => 'employee'],
             ['id' => '3', 'name' => 'director']
         ]);
+
     }
 }

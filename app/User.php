@@ -9,7 +9,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -45,7 +44,7 @@ class User extends Authenticatable
         return $this->belongsTo(AttendanceMachine::class, 'attendance_machine_id');
     }
 
-    public function permission(){
+    public function permissions(){
         return $this->belongsToMany(Permission::class);
     }
 
