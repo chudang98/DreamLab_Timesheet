@@ -41,6 +41,17 @@ class Timesheet extends Model
     public function process($attendances){
         $check_in = $attendances[0]; $check_out = $attendances[0];
         $count = sizeof($attendances);
+        if($count > 1)
+        {
+            for($i =  0; $i < $count; $i++){
+                for($j = $i + 1; $j < $count; $j++){
+                    
+                }
+            }
+        }else
+        {
+
+        }
         
         
         
