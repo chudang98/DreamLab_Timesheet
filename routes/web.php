@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
+| routes are lo aded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
 */
@@ -26,14 +26,16 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::get('/testdate', function(){
-    $datetime = '10:00:00';
-    $date = Carbon::now()->toTimeString();
-    echo $datetime ." " .$date;
-    if(strtotime($datetime) > strtotime($date)){
-        echo 'Y';
+Route::get('/testdate', 'ExcelExport@xuatUser');
+
+Route::get('/day', function(){
+    $today = Carbon::now();
+    // echo $today;
+    
+    $number = $today->daysInMonth;
+    for($i = 1; $i <= $number; $i++){
+        $today->day = $i;
+        echo $i .' ' .$today->toDayDateTimeString() .'</br>';
     }
-    else{
-        echo 'N';
-    }
+
 });
