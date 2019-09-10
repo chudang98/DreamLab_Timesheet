@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 //Trang chu
-// Route::get('/', 'IndexController@index');
+ Route::get('/', 'IndexController@index');
 
 Auth::routes();
 
@@ -37,3 +37,7 @@ Route::get('/testdate', function(){
         echo 'N';
     }
 });
+
+//Profile
+Route::get('/editProfile','ProfileController@editProfile');
+Route::post('/updateProfile','ProfileController@updateProfile');

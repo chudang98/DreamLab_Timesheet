@@ -1,0 +1,22 @@
+.content label{
+    width: 150px;
+}
+.content form{
+    margin-top: 30px;
+}
+.content input{
+    color: #222;
+    font-size: 14px;
+    line-height: 18px;
+    border: 2px solid #b5b5b5;
+    color: #666;
+    height: 35px;
+    line-height: 33px;
+    padding: 0 5px 0 40px;
+    width: 260px;
+}
+.content button{
+    border-radius: 5px;
+    border: none;
+    padding: 5px 10px ;
+}
