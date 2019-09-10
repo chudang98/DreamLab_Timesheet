@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 //Trang chu
-// Route::get('/', 'IndexController@index');
+ Route::get('/', 'IndexController@index');
 
 Auth::routes();
 
@@ -37,5 +37,8 @@ Route::get('/day', function(){
         $today->day = $i;
         echo $i .' ' .$today->toDayDateTimeString() .'</br>';
     }
-
 });
+
+//Profile
+Route::get('/editProfile','ProfileController@editProfile');
+Route::post('/updateProfile','ProfileController@updateProfile');
