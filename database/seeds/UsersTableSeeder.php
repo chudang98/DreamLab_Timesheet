@@ -12,10 +12,11 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('users')->insert([
-            ['id' => '1', 'attendance_number' => '123', 'name' => 'Duck', 'email' => 'duck@gmail.com', 'department' => 'DEV', 'password' => bcrypt('123'), 'attendance_machine_id' => '1'],
-            ['id' => '2', 'attendance_number' => '124', 'name' => 'Thao', 'email' => 'thao@gmail.com', 'department' => 'DEV', 'password' => bcrypt('123'), 'attendance_machine_id' => '1'],
-            ['id' => '3', 'attendance_number' => '125', 'name' => 'Minh', 'email' => 'minh@gmail.com', 'department' => 'BA',  'password' => bcrypt('123'), 'attendance_machine_id' => '2'],
-        ]);
+        factory('App\User', 20)->create();
+//        $user = App\User::all();
+//        $user->roles()->attach(2);
+//        $userAdmin = App\User::find(1);
+//        $userAdmin->roles()->attach(1);
+
     }
 }

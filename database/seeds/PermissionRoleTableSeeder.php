@@ -12,9 +12,8 @@ class PermissionRoleTableSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('permission_role')->insert([
-            ['role_id' => '1', 'permission_id' => '2'],
-            ['role_id' => '1', 'permission_id' => '1']
-        ]);
+        $role = App\Role::find(1);
+
+        $role->permissions()->attach([1,2,3]);
     }
 }

@@ -27,6 +27,9 @@ class CreateRoleUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('role_users');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        Schema::dropIfExists('role_user');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+
     }
 }
