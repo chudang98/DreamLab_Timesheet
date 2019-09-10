@@ -18,9 +18,9 @@ Route::get('/', function () {
 });
 
 //Trang chu
- Route::get('/', 'IndexController@index');
+//Route::get('/', 'IndexController@index');
 
-Auth::routes();
+Auth::routes(['verify' => true]); // xác thực email
 
 
 Route::get('/home', 'HomeController@index')->name('home');

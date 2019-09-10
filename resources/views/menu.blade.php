@@ -21,15 +21,16 @@
 <header>
     <img src="{{URL::asset('images/gdc-group-logo.jpg')}}" alt="DreamLab" class="logo">
     <div class="logout">
-        <a href="#">Log out <i class='fas fa-angle-right'></i> </a>
+        <a href="#">Đăng xuất <i class='fas fa-angle-right'></i> </a>
     </div>
 </header>
 <div class="body">
     <div class="menu">
         <ul>
-            <li><a href="/editProfile"><i class='fas fa-user-circle username'></i> Username</a></li>
-            <li><a href="#">Attendance logs</a></li>
-            <li><a href="#">Timesheets</a></li>
+            <li><a href="/editProfile"><i class='fas fa-user-circle username'></i>{{auth()->user()->name}}</a></li>
+            <li><a href="#">Lịch làm việc</a></li>
+            <li><a href="#">Điểm danh</a></li>
+            <li><a href="#">Chấm công</a></li>
         </ul>
     </div>
     <div class="content">
