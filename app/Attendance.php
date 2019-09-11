@@ -38,37 +38,28 @@ class Attendance extends Model
     */
     public function updateTimesheet()
     {
-        $user = $this->user;
-        $date = Carbon::create($this->date_time)->toDateString();
         $timesheet = Timesheet::where([
-            ['user_id', $user->id],
-            ['date', $date]
+            ['date', '=', Carbon::parse($this->date_time)],
+            ['user_id', '=' ,$this->user_id]
         ])->first();
-
-        // TODO : Create new timesheet for this attendance
+        
         if($timesheet == null)
         {
-            $timesheet = new Timesheet();
-
-            // All attendances related this timesheet and there isn't check
-            $attendances = Attendance::where([
-                ['user_id', $user->id],
-                ['date', $date],
-            ])->get();
-
-            $timesheet->process($attendances);
+            // TODO :  Chưa có timesheet nào cho attendance này, cần update
 
         }else
         {
-
-            // TODO : Update timesheet
-            $timesheet->update($this);
-
-            // TODO : take all attendance that related to this timesheet
-            
+            // TODO : Update timesheet này
+            if($timesheet->morning_shift == 'X' && $timesheet->afternoon_shift == 'X')
+            {
+                $this->timesheet_id = $timesheet->id;
+                $this->is_check = 'Y';
+            }else
+            {
+                
+            }
         }
 
-        $timesheet->save();
         $this->save();
     }
 
@@ -82,5 +73,9 @@ class Attendance extends Model
         {
             return true;
         }
+    }
+
+    public function processAllAttendance(){
+        
     }
 }

@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use App\Attendance;
+use App\Timesheet;
 use Carbon\Carbon;
 
 
@@ -18,7 +21,7 @@ Route::get('/', function () {
 });
 
 //Trang chu
- Route::get('/', 'IndexController@index');
+// Route::get('/', 'IndexController@index');
 
 Auth::routes();
 
@@ -29,14 +32,38 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/testdate', 'ExcelExport@xuatUser');
 
 Route::get('/day', function(){
-    $today = Carbon::now();
-    // echo $today;
-    
+    $today = Carbon::create('2019-8-1');
+    // // echo $today;
     $number = $today->daysInMonth;
-    for($i = 1; $i <= $number; $i++){
-        $today->day = $i;
-        echo $i .' ' .$today->toDayDateTimeString() .'</br>';
-    }
+
+    $last = Carbon::create('2019-8-1')->add($number .' days');
+    // for($i = 1; $i <= $number; $i++){
+    //     $today->day = $i;
+    //     echo $i .' ' .$today->shortEnglishDayOfWeek .' ' . $today->day .'</br>';
+    // }
+
+
+    // $data = Attendance::where([
+    //         ['date_time', '>=', $today],
+    //         ['date_time', '<=', $last], 
+    // ])->get();
+    // foreach($data as $t){
+    //     echo $t .'</br>';
+    // }
+    
+    $date = Carbon::create('2019-10-22 00:00:00');
+    $date2 = Carbon::create('2019-10-22 23:59:59');
+
+    $data = Attendance::where('date_time', '>=' , $date)
+        ->where('date_time', '<=' , $date2)->first();
+        
+    if($data == null)
+        echo 1;
+    else
+        echo 2;
+
+    dd($data);
+    
 });
 
 //Profile

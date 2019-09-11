@@ -60,4 +60,10 @@ class Timesheet extends Model
     public function update($attendance){
 
     }
+
+    public function toObjExcel(){
+        return [
+
+        ];
+    }
 }
