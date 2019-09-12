@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Attendance extends Model
 {
     //
+
+
+
     protected $fillable = 
     [ 
         'id', 'date_time', 'timesheet_id', 'user_id', 'attendance_machine_id' 
@@ -38,49 +41,38 @@ class Attendance extends Model
     */
     public function updateTimesheet()
     {
-        $user = $this->user;
-        $date = Carbon::create($this->date_time)->toDateString();
         $timesheet = Timesheet::where([
-            ['user_id', $user->id],
-            ['date', $date]
+            ['date', '=', Carbon::parse($this->date_time)],
+            ['user_id', '=' ,$this->user_id]
         ])->first();
-
-        // TODO : Create new timesheet for this attendance
+        
         if($timesheet == null)
         {
-            $timesheet = new Timesheet();
-
-            // All attendances related this timesheet and there isn't check
-            $attendances = Attendance::where([
-                ['user_id', $user->id],
-                ['date', $date],
-            ])->get();
-
-            $timesheet->process($attendances);
+            // TODO :  Chưa có timesheet nào cho attendance này, cần update
 
         }else
         {
+            // TODO : Update timesheet này
+            if($timesheet->morning_shift == 'X' && $timesheet->afternoon_shift == 'X')
+            {
+                $this->timesheet_id = $timesheet->id;
+                $this->is_check = 'Y';
+            }else
+            {
 
-            // TODO : Update timesheet
-            $timesheet->update($this);
-
-            // TODO : take all attendance that related to this timesheet
-            
+            }
         }
 
-        $timesheet->save();
         $this->save();
     }
 
     public function earlyThan($attendance){
-        $time1 = Carbon::create($this->date)->toTimeString();
-        $time2 = Carbon::create($attendance->date)->toTimeString();
+        $time1 = Carbon::create($this->date_time)->toTimeString();
+        $time2 = Carbon::create($attendance->date_time)->toTimeString();
         if(strtotime($time1) < strtotime($time2))
-        {
-            return false;
-        }else
-        {
             return true;
-        }
+        else
+            return false;
     }
+
 }

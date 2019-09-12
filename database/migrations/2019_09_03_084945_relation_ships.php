@@ -38,7 +38,7 @@ class RelationShips extends Migration
         });
 
         Schema::table('attendances', function(Blueprint $table){
-            $table->foreign('timesheet_id')->references('id')->on('timesheets');
+            $table->foreign('timesheet_id')->references('id')->on('timesheets')->onDelete('set null');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('attendance_machine_id')->references('id')->on('attendance_machines');
         });

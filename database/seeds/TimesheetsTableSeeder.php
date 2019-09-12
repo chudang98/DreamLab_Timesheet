@@ -15,9 +15,9 @@ class TimesheetsTableSeeder extends Seeder
         DB::table('timesheets')->insert([
             ['id' => '1', 'date' => '2019-09-05', 'morning_shift'=>'V', 'afternoon_shift'=>'V', 'user_id' => '1'],
             ['id' => '2', 'date' => '2019-09-05', 'morning_shift'=>'V', 'afternoon_shift'=>'V', 'user_id' => '2'],
-            ['id' => '3', 'date' => '2019-09-05', 'morning_shift'=>'V', 'afternoon_shift'=>'V', 'user_id' => '3'],
+            ['id' => '3', 'date' => '2019-08-23', 'morning_shift'=>'V', 'afternoon_shift'=>'V', 'user_id' => '3'],
             ['id' => '4', 'date' => '2019-09-05', 'morning_shift'=>'V', 'afternoon_shift'=>'V', 'user_id' => '4'],
-            ['id' => '5', 'date' => '2019-09-05', 'morning_shift'=>'V', 'afternoon_shift'=>'V', 'user_id' => '5'],
+            ['id' => '5', 'date' => '2019-08-22', 'morning_shift'=>'V', 'afternoon_shift'=>'V', 'user_id' => '5'],
             ['id' => '6', 'date' => '2019-09-05', 'morning_shift'=>'V', 'afternoon_shift'=>'V', 'user_id' => '6'],
             ['id' => '7', 'date' => '2019-09-05', 'morning_shift'=>'V', 'afternoon_shift'=>'V', 'user_id' => '7'],
             ['id' => '8', 'date' => '2019-09-05', 'morning_shift'=>'V', 'afternoon_shift'=>'V', 'user_id' => '8'],
