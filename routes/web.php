@@ -40,5 +40,7 @@ Route::get('/day', function(){
 });
 
 //Profile
-Route::get('/editProfile','ProfileController@editProfile');
+Route::get('/editProfile/{alert}','ProfileController@editProfile');
 Route::post('/updateProfile','ProfileController@updateProfile');
+Route::get('/changePassword/{alert}','ProfileController@changePassword');
+Route::post('/updatePassword','ProfileController@updatePassword');

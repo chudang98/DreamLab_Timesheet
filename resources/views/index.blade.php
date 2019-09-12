@@ -9,7 +9,7 @@
                 <i class='fas fa-users'></i>
             </div>
             <div class="total">
-                <p>Employees</p>
+                <p>Nhân viên</p>
                 <p>120</p>
             </div>
         </a>
@@ -17,10 +17,10 @@
     <div class="departments">
         <a href="#">
             <div class="icon">
-                <i class='fas fa-home'></i>
+                <i class="fa fa-clock-o"></i>
             </div>
             <div class="total">
-                <p>Departments</p>
+                <p>Nhân viên đi làm muộn</p>
                 <p>5</p>
             </div>
         </a>
