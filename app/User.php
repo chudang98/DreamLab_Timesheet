@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use Notifiable;
     /**
@@ -61,28 +61,60 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 
-    // Lấy tất cả các timesheet của user dựa vào tháng-năm
+    /* 
+        Lấy tất cả các timesheet của user dựa vào tháng-năm
+        Timesheet đã được xử lý
+    */
     public function getTimeSheet($month, $yeah)
     {
+        $date = $yeah .'-' .$month .'-1';
         // Update các attendance cho user này trước
-        $first_day = Carbon::create($yeah .'-' .$month .'-1');
-
+        $first_day = Carbon::create($date);
+    
         $number = $first_day->daysInMonth;
 
-        $last_day = Carbon::create($yeah .'-' .$month .'-1')->add($number .' days');
-        
-        $attendances = Attendance::where([
-            ['user_id', '=', $this->id],
-            ['is_check', '=', 'N'],
-            ['date_time', '>=', $first_day],
-            ['date_time', '<=', $last_day],            
-        ])->get();
+        $result = [];
 
-        foreach($attendances as $attendance){
-            $attendance.updateTimeSheet();
+        for($i = 1; $i <= $number; $i++){
+            $first_day->day = $i;
+
+            $timesheet = Timesheet::where([
+                ['date', '=', $first_day],
+                ['user_id', '=' , $this->id]
+            ])->first();
+
+            if($timesheet == null)
+            {
+                $timesheet = new Timesheet();
+                $timesheet->user_id = $this->id;
+                $timesheet->date = $first_day->format('Y-m-d');
+                $timesheet->morning_shift = 'V';
+                $timesheet->afternoon_shift = 'V';
+                $timesheet->save();
+
+                $timesheet->processAttendanceBelongTo();              
+            }else
+            {
+                $timesheet->processAttendanceBelongTo();
+
+            }
+
+            $timesheet->save();
+
+            $obj = [
+                'S' => $timesheet->morning_shift,
+                'C' => $timesheet->afternoon_shift
+            ];
+
+            $result[] = $obj;
+
         }
-        
+
+        return $result;
+
     }
+
+
 
 
 }

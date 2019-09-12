@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Attendance extends Model
 {
     //
+
+
+
     protected $fillable = 
     [ 
         'id', 'date_time', 'timesheet_id', 'user_id', 'attendance_machine_id' 
@@ -56,7 +59,7 @@ class Attendance extends Model
                 $this->is_check = 'Y';
             }else
             {
-                
+
             }
         }
 
@@ -64,18 +67,12 @@ class Attendance extends Model
     }
 
     public function earlyThan($attendance){
-        $time1 = Carbon::create($this->date)->toTimeString();
-        $time2 = Carbon::create($attendance->date)->toTimeString();
+        $time1 = Carbon::create($this->date_time)->toTimeString();
+        $time2 = Carbon::create($attendance->date_time)->toTimeString();
         if(strtotime($time1) < strtotime($time2))
-        {
-            return false;
-        }else
-        {
             return true;
-        }
+        else
+            return false;
     }
 
-    public function processAllAttendance(){
-        
-    }
 }
