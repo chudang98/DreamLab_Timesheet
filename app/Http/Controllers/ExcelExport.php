@@ -6,7 +6,6 @@ use App\Attendance;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UserExport;
-use App\Exports\TimesheetExport;
 use App\Timesheet;
 use App\User;
 use Carbon\Carbon;
@@ -19,12 +18,6 @@ class ExcelExport extends Controller
         UserExport::configDay(8, 2019);
         return Excel::download(new UserExport, 'ban1.xlsx');
     }
-
-    public function xuatTimesheet(){
-        TimesheetExport:configDay(8, 2019);
-        return Excel::download(new TimesheetExport, 'ban1.xlsx');
-    }
-
 
         // method này chỉ để test
 

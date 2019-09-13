@@ -43,6 +43,9 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
     private static $number_day = 0;
     private static $number_record = 0;
 
+
+    private static $day_work = 0;
+
     public static function configDay($month, $yeah){
         static::$month = $month;
         static::$yeah = $yeah;
@@ -81,7 +84,6 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
 
                     /**  
                       * TODO : Gộp 2 cell các trường thông tin heading
-                      * TODO : Bỏ border bottom của ô timesheet sáng
                         ! WARNING : Thay đổi cột bắt đầu dữ liệu chú ý
                     */
                     
@@ -90,17 +92,31 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                     $heading_No = 'C'.static::$row_data_start .':C'.(static::$row_data_start + 1);
 
                 $sheet->mergeCells($heading_Name);
+                $sheet->getStyle($heading_Name)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                            ->getStartColor()->setARGB('00e673');
                 $sheet->mergeCells($heading_ID);
+                $sheet->getStyle($heading_ID)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                            ->getStartColor()->setARGB('00e673');
                 $sheet->mergeCells($heading_No);
+                $sheet->getStyle($heading_No)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                            ->getStartColor()->setARGB('00e673');
 
                 $duty = static::$number_day + 3;
+
+
 
                 $end_column = 'A';
                 $end_row = static::$row_data_start + static::$number_record*2 + 1;
 
-                for($i = 1; $i <= 6; $i++){
+                $array_sum_column = [];
+                for($i = 1; $i <= 9; $i++){
                     $t = $duty + $i;
                     $column =  Coordinate::stringFromColumnIndex($t);
+
+                    if($i == 2 || $i == 3 || $i == 4){
+                        $array_sum_column[] = $column;
+                    }
+
                     for($j = 0; $j <= static::$number_record; $j++){
                         $row_start = static::$row_data_start + $j*2;
                         $index = $column .$row_start .':' .$column .($row_start+1);
@@ -112,7 +128,7 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                         //     ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
                             
                     }
-                    if($i == 6){
+                    if($i == 9){
                         $end_column = $column;
                     }
                     // $sheet->getDelegate()->getStyle('A1:B3')->getFont()->setSize(14);
@@ -120,6 +136,19 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                     $sheet->getColumnDimension($column)->setAutoSize(false);
                     $sheet->getColumnDimension($column)->setWidth(10);
                 }
+
+                for($i = 1; $i <= static::$number_record; $i++){
+                    $row_index = static::$row_data_start + 2 + 2*$i;
+                    $index = $end_column .$row_index;
+
+                    $sum = '';
+
+                    for($i = 0; $i < 3; $i++){
+                        // $sum .= $array_sum_column[$i].;
+                    }
+
+                }
+
 
                 
 
@@ -174,23 +203,62 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                 //         ->getProtection()
                 //         ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
-                $title1 = 'Daily Attendance Statistic Report';
-                $sheet->setCellValue('A3', $title1);
-                $sheet->mergeCells('A3:C4');
-                $sheet->getStyle('A3:C4')->applyFromArray($style_all);
-                $sheet->getStyle('A3:C4')->applyFromArray($style_border);
+                $style_bold = [
+                    'font' => [
+                        'bold' => true,
+                    ],
+                ];
+                $sheet->setCellValue('A1', 'CÔNG TY CỔ PHẦN GLOBAL DREAM LAB');
+                $sheet->mergeCells('A1:D2');
+                $sheet->getStyle('A1:D2')->applyFromArray($style_all);
+                $sheet->getStyle('A1:D2')->applyFromArray($style_border);
+                $sheet->getStyle('A1:D2')->applyFromArray($style_bold);
+
 
 
                 $time = 'From 1-' .static::$month .'-' .static::$yeah .' to ' .static::$number_day .'-' .static::$month .'-' .static::$yeah; 
-                $sheet->setCellValue('AH3', $time);
-                $sheet->mergeCells('AH3:AL4');
-                $sheet->getStyle('AH3:AL4')->applyFromArray($style_all);
-                $sheet->getStyle('AH3:AL4')->applyFromArray($style_border);  
+                $sheet->setCellValue('T3', 'BẢNG CHẤM CÔNG');
+                $sheet->mergeCells('T3:Y5');
+                $sheet->setCellValue('T4', $time);
+                $sheet->getStyle('T3:Y5')->applyFromArray($style_all);
+                $sheet->getStyle('T3:Y5')->applyFromArray($style_border);  
+                $sheet->getStyle('T3:Y5')->applyFromArray($style_bold);
                 
-                $sheet->setCellValue('D3', '');
-                $sheet->mergeCells('D3:AG4');
-                $sheet->getStyle('D3:AG4')->applyFromArray($style_all);
-                $sheet->getStyle('D3:AG4')->applyFromArray($style_border);
+                $sheet->setCellValue('AI5', 'Ngày công chuẩn : ');
+                $sheet->mergeCells('AI5:AK6');
+                $sheet->getStyle('AI5:AK6')->applyFromArray($style_all);
+                $sheet->getStyle('AI5:AK6')->applyFromArray($style_border);
+
+                $sheet->setCellValue('AM1', 'Chú thích');
+                $sheet->mergeCells('AM1:AP1');
+                $sheet->getStyle('AM1:AP1')->applyFromArray($style_all);
+                $sheet->getStyle('AM1:AP1')->applyFromArray($style_border);
+                $sheet->setCellValue('AM2', 'Vắng');
+                $sheet->mergeCells('AM2:AP2');
+                $sheet->getStyle('AM2:AP2')->applyFromArray($style_all);
+                $sheet->getStyle('AM2:AP2')->applyFromArray($style_border);
+                $sheet->getStyle('AM2:AP2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()->setARGB('ffb3b3');
+                $sheet->setCellValue('AM3', 'Đến muộn');
+                $sheet->mergeCells('AM3:AP3');
+                $sheet->getStyle('AM3:AP3')->applyFromArray($style_all);
+                $sheet->getStyle('AM3:AP3')->applyFromArray($style_border);
+                $sheet->getStyle('AM3:AP3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()->setARGB('ffffb3');
+                $sheet->setCellValue('AM4', 'Về sớm');
+                $sheet->mergeCells('AM4:AP4');
+                $sheet->getStyle('AM4:AP4')->applyFromArray($style_all);
+                $sheet->getStyle('AM4:AP4')->applyFromArray($style_border);
+                $sheet->getStyle('AM4:AP4')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()->setARGB('99e6ff');
+                $sheet->setCellValue('AM5', 'Nghỉ phép');
+                $sheet->mergeCells('AM5:AP5');
+                $sheet->getStyle('AM5:AP5')->applyFromArray($style_all);
+                $sheet->getStyle('AM5:AP5')->applyFromArray($style_border);
+                $sheet->getStyle('AM5:AP5')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()->setARGB('b3ffb3');
+
+
 
                 // $sheet->getStyle('A3:C5')->setValue('Daily Attendance Statistic Report');
 
@@ -210,14 +278,41 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
         // \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder(new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         $row2 = ['','',''];
         $row1 = [
-            $data['name'],
             $data['id'],
+            $data['name'],
             $data['No.'],
         ];
         for($i = 0; $i < static::$number_day; $i++){
-            $row1[] = $data['timesheets'][$i]['S'];
-            $row2[] = $data['timesheets'][$i]['C'];
+            if($data['timesheets'][$i]['S'] == 'X'){
+                $row1[] = 0.5;
+            }else{
+                if($data['timesheets'][$i]['S'] == 'V')
+                    $row1[] = '0';
+                else
+                    $row1[] = $data['timesheets'][$i]['S'];
+
+            }
+            if($data['timesheets'][$i]['C'] == 'X'){
+                $row2[] = 0.5;
+            }else{
+                if($data['timesheets'][$i]['C'] == 'V')
+                    $row2[] = '0';
+                else
+                    $row2[] = $data['timesheets'][$i]['C'];
+            }
+
         }     
+
+        $row1[] = $data['duty_day'];
+        $row1[] = $data['lam_bu'];
+        $row1[] = $data['working_day'];
+        $row1[] = $data['day_off'];
+        $row1[] = $data['late'];
+        $row1[] = $data['day_late'];
+        $row1[] = $data['early'];
+        $row1[] = $data['day_early'];
+        $row1[] = $data['total_working_day'];
+        
 
         
         return [
@@ -240,23 +335,29 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
         static::$number_day = Carbon::create($date)->daysInMonth;
         
         foreach($users as $user){
-            $timesheets = $user->getTimeSheetExcel(static::$month, static::$yeah);
+            $timesheet_array = $user->getTimesheet(static::$month, static::$yeah);
+            $timesheets = $user->getTimeSheetExcel(static::$month, static::$yeah, $timesheet_array);
+            $infor = $user->inforWorkingTime($timesheet_array);
             $obj = [
-                'name' => $user->name,
                 'id' => $user->id,
+                'name' => $user->name,
                 'No.' => $user->attendance_number,
                 'timesheets' => $timesheets,
-                'duty_day' => '',
-                'working_day' => '',
-                'non_working' => '',
-                'late' => '',
-                'early' => '',
-                
+
+                'duty_day' => static::$number_day,
+                'working_day' => $infor['working_day'],
+                'day_off' => '0',
+                'lam_bu' => '0',
+                'non_working' => $infor['day_off'] .'',
+                'late' => $infor['count_late'] .'',
+                'early' => $infor['count_early'] .'',
+                'day_late' => $infor['late'] .'',
+                'day_early' => $infor['early'] .'',
+                'total_working_day' => $infor['total_working_day'] .'',
             ];
 
             $result[] = $obj;
             static::$number_record++;
-
 
         }
 
@@ -281,12 +382,15 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
             array_push($heading1, $first->shortEnglishDayOfWeek);
             array_push($heading2, $first->day);
         }
-        $heading1[] = 'Duty working day';
-        $heading1[] = 'Working day';
-        $heading1[] = 'Non working day';
-        $heading1[] = 'Late (Min)';     
-        $heading1[] = 'Early (Min)';      
-        $heading1[] = 'O.Time (Hour)';
+        $heading1[] = 'Ngày công chuẩn';
+        $heading1[] = 'Làm bù';
+        $heading1[] = 'Ngày làm việc';
+        $heading1[] = 'Phép';
+        $heading1[] = 'Đi muộn (buổi)';     
+        $heading1[] = 'Phạt muộn';
+        $heading1[] = 'Về sớm (buổi)';     
+        $heading1[] = 'Phạt về sớm';      
+        $heading1[] = 'Tổng ngày công';
 
         return [
             $heading1,
