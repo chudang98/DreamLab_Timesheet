@@ -38,8 +38,6 @@ class User extends Authenticatable
     ];
 
 
-    private $timesheets;
-
     public function roles(){
         return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
     }
@@ -64,9 +62,30 @@ class User extends Authenticatable
     /* 
         Lấy tất cả các timesheet của user dựa vào tháng-năm
         Timesheet đã được xử lý
+        Trả về mảng kiểu ['S', 'C']
     */
-    public function getTimeSheet($month, $yeah)
+    public function getTimeSheetExcel($month, $yeah)
     {
+        $timesheets = $this->getTimesheet($month, $yeah);
+
+        foreach($timesheets as $timesheet){
+            $obj = [
+                'S' => $timesheet->morning_shift,
+                'C' => $timesheet->afternoon_shift
+            ];
+    
+
+            $result[] = $obj;
+        }
+
+        $result[] = $this->inforWorkingTime($timesheets);
+
+        return $result;
+
+    }
+
+        //  Trả về mảng Model Timesheet
+    public function getTimesheet($month, $yeah){
         $date = $yeah .'-' .$month .'-1';
         // Update các attendance cho user này trước
         $first_day = Carbon::create($date);
@@ -101,18 +120,32 @@ class User extends Authenticatable
 
             $timesheet->save();
 
-            $obj = [
-                'S' => $timesheet->morning_shift,
-                'C' => $timesheet->afternoon_shift
-            ];
-
-            $result[] = $obj;
-
+            $result[] = $timesheet;
         }
 
         return $result;
-
     }
+
+    private function inforWorkingTime($timesheets){
+        $result = [
+            'working_day' => 0,
+            'day_off' => 0,
+            'late_min' => 0,
+            'early_min' => 0,
+        ];
+        $late = 0;
+        $early = 0;
+        foreach($timesheets as $timesheet){
+            $result['late_min'] += $timesheet->late_min;
+            $result['early_min'] += $timesheet->early_min;
+            $late += $timesheet->count_late;
+            $early += $timesheet->count_early;
+        }
+        $result['working_day'] = (int) ($late / 3);
+        $result['early'] = (int) ($early / 3);
+        return $result;
+    }
+
 
 
 

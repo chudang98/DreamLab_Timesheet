@@ -25,7 +25,7 @@ use \PhpOffice\PhpSpreadsheet;
 
 
 
-class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomStartCell, WithMapping, WithHeadings
+class TimesheetExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomStartCell, WithMapping, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -181,7 +181,7 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                 $sheet->getStyle('A3:C4')->applyFromArray($style_border);
 
 
-                $time = 'From 1-' .static::$month .'-' .static::$yeah .' to ' .static::$number_day .'-' .static::$month .'-' .static::$yeah; 
+                $time = 'From 1-' .static::$month .'-' .static::$yeah .' to' .static::$number_day .'-' .static::$month .'-' .static::$yeah; 
                 $sheet->setCellValue('AH3', $time);
                 $sheet->mergeCells('AH3:AL4');
                 $sheet->getStyle('AH3:AL4')->applyFromArray($style_all);
@@ -240,7 +240,7 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
         static::$number_day = Carbon::create($date)->daysInMonth;
         
         foreach($users as $user){
-            $timesheets = $user->getTimeSheetExcel(static::$month, static::$yeah);
+            $timesheets = $user->getTimeSheet(static::$month, static::$yeah);
             $obj = [
                 'name' => $user->name,
                 'id' => $user->id,

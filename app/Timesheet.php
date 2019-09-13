@@ -23,8 +23,11 @@ class Timesheet extends Model
     private static $LEAVE_EARLY_AFTERNOOM = '16:30:00';
     private static $END_AFTERNOON = '17:00:00';
 
-    private $late_min = 0;
-    private $early_min = 0;
+    public $late_min = 0;
+    public $early_min = 0;
+
+    public $count_late = 0;
+    public $count_early = 0;
 
     protected $fillable = [
         'id', 'date', 'morning_shift', 'afternoon_shift', 'user_id'
@@ -105,6 +108,11 @@ class Timesheet extends Model
 
     private function processCiCoAttendance($check_in, $check_out)
     {
+        $this->late_min = 0;
+        $this->early_min = 0;
+        $this->count_early = 0;
+        $this->count_late = 0;
+
         $CI_time = Carbon::create($check_in->date_time)->toTimeString();
         $CO_time = Carbon::create($check_out->date_time)->toTimeString();
         switch($this->morning_shift){
@@ -218,6 +226,22 @@ class Timesheet extends Model
 
                 break;
             }
+        }
+
+        if($this->morning_shift == 'M')
+        {
+            $this->count_late++;
+            $this->late_min += (int) ((strtotime($CI_time) - strtotime(static::$LATE_TIME_MORNING))/60);
+        }
+        if($this->afternoon_shift == 'M')
+        {
+            $this->count_late++;
+            $this->late_min += (int) ((strtotime($CI_time) - strtotime(static::$LATE_TIME_AFTERNOON))/60);
+        }
+        if($this->afternoon_shift == 'S')
+        {
+            $this->count_early++;
+            $this->early_min += (int) ((strtotime($CO_time) - strtotime(static::$LEAVE_EARLY_AFTERNOOM))/60);
         }
     }
 
