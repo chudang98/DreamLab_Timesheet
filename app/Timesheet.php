@@ -23,11 +23,12 @@ class Timesheet extends Model
     private static $LEAVE_EARLY_AFTERNOOM = '16:30:00';
     private static $END_AFTERNOON = '17:00:00';
 
-    public $late_min = 0;
-    public $early_min = 0;
+    // Tính theo số buổi
+    public $count_late;
+    public $count_early;
 
-    public $count_late = 0;
-    public $count_early = 0;
+    public $count_worked;
+    public $count_off;
 
     protected $fillable = [
         'id', 'date', 'morning_shift', 'afternoon_shift', 'user_id'
@@ -101,18 +102,8 @@ class Timesheet extends Model
     }
 
 
-    public function preprocessData($month, $yeah){
-        
-    }
-
-
     private function processCiCoAttendance($check_in, $check_out)
     {
-        $this->late_min = 0;
-        $this->early_min = 0;
-        $this->count_early = 0;
-        $this->count_late = 0;
-
         $CI_time = Carbon::create($check_in->date_time)->toTimeString();
         $CO_time = Carbon::create($check_out->date_time)->toTimeString();
         switch($this->morning_shift){
@@ -226,24 +217,39 @@ class Timesheet extends Model
 
                 break;
             }
-        }
+        }        
+    }
 
+    public function processInfor()
+    {
+        $this->count_early = 0;
+        $this->count_late = 0;
+        $this->count_off = 0;
+        $this->count_worked = 0;
+        
         if($this->morning_shift == 'M')
         {
-            $this->count_late++;
-            $this->late_min += (int) ((strtotime($CI_time) - strtotime(static::$LATE_TIME_MORNING))/60);
+            $this->count_late += 1;
         }
         if($this->afternoon_shift == 'M')
         {
-            $this->count_late++;
-            $this->late_min += (int) ((strtotime($CI_time) - strtotime(static::$LATE_TIME_AFTERNOON))/60);
+            $this->count_late += 1;
         }
         if($this->afternoon_shift == 'S')
         {
-            $this->count_early++;
-            $this->early_min += (int) ((strtotime($CO_time) - strtotime(static::$LEAVE_EARLY_AFTERNOOM))/60);
+            $this->count_early += 1;
         }
+        if($this->morning_shift == 'X')
+            $this->count_worked += 1;
+        if($this->afternoon_shift == 'X')
+            $this->count_worked += 1;
+
+        if($this->morning_shift == 'V')
+            $this->count_off += 1;
+        if($this->afternoon_shift == 'V')
+            $this->count_off += 1;
     }
+
 
     private function processOneAttendance($attendance)
     {
@@ -299,7 +305,7 @@ class Timesheet extends Model
                 }
                 break;
             }
-        }
+        }        
     }
 
 }

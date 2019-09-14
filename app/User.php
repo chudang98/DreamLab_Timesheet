@@ -64,9 +64,10 @@ class User extends Authenticatable
         Timesheet đã được xử lý
         Trả về mảng kiểu ['S', 'C']
     */
-    public function getTimeSheetExcel($month, $yeah)
+    public function getTimeSheetExcel($month, $yeah, $timesheets = null)
     {
-        $timesheets = $this->getTimesheet($month, $yeah);
+        if($timesheets == null)
+            $timesheets = $this->getTimesheet($month, $yeah);
 
         foreach($timesheets as $timesheet){
             $obj = [
@@ -77,8 +78,6 @@ class User extends Authenticatable
 
             $result[] = $obj;
         }
-
-        $result[] = $this->inforWorkingTime($timesheets);
 
         return $result;
 
@@ -120,29 +119,42 @@ class User extends Authenticatable
 
             $timesheet->save();
 
+            $timesheet->processInfor();
+
             $result[] = $timesheet;
         }
 
         return $result;
     }
 
-    private function inforWorkingTime($timesheets){
+    public function inforWorkingTime($timesheets){
         $result = [
             'working_day' => 0,
             'day_off' => 0,
-            'late_min' => 0,
-            'early_min' => 0,
+            'count_late' => 0,
+            'count_early' => 0,
+            'late' => 0,
+            'early' => 0,
+            'total_working_day' => 0,
         ];
         $late = 0;
         $early = 0;
+        $worked = 0;
+        $off = 0;
         foreach($timesheets as $timesheet){
-            $result['late_min'] += $timesheet->late_min;
-            $result['early_min'] += $timesheet->early_min;
-            $late += $timesheet->count_late;
-            $early += $timesheet->count_early;
+            $result['count_late'] += $timesheet->count_late;
+            $result['count_early'] += $timesheet->count_early;
+            $worked += $timesheet->count_worked;
+            $off += $timesheet->count_off;
         }
-        $result['working_day'] = (int) ($late / 3);
-        $result['early'] = (int) ($early / 3);
+
+        $result['late'] = (int)($result['count_late'] / 3);
+        $result['early'] = (int)($result['count_early'] / 3);
+        $result['day_off'] = ($result['late'] + $result['early'] + $off) / 2;
+
+        $result['working_day'] = $worked /2;
+
+        $result['total_working_day'] = $result['working_day'] - ($result['late'] + $result['early'] )/2;
         return $result;
     }
 
