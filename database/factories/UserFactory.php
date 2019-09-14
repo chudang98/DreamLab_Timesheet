@@ -20,6 +20,7 @@ use App\AttendanceMachine;
 $factory->define(User::class, function (Faker $faker) {
     $attendance_machines = AttendanceMachine::pluck('id')->toArray();
     return [
+        'employee_id'=>$faker->unique()->numberBetween($min= 1000, $max=2000),
         'attendance_number' => $faker->unique()->numberBetween($min= 1, $max =20),
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,

@@ -29,7 +29,7 @@
         <ul>
             <li><a href="/editProfile/{{auth()->user()->name}}"><i class='fas fa-user-circle username'></i>{{auth()->user()->name}}</a></li>
             <li><a href="#">Lịch làm việc</a></li>
-            <li><a href="#">Điểm danh</a></li>
+            <li><a href="/listAttendances">Điểm danh</a></li>
             <li><a href="#">Chấm công</a></li>
         </ul>
     </div>
