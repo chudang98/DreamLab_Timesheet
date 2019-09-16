@@ -137,21 +137,23 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                     $sheet->getColumnDimension($column)->setWidth(10);
                 }
 
-                for($i = 1; $i <= static::$number_record; $i++){
-                    $row_index = static::$row_data_start + 2 + 2*$i;
-                    $index = $end_column .$row_index;
+                // for($i = 1; $i <= static::$number_record; $i++){
+                //     $row_index = static::$row_data_start + 2 + 2*$i;
+                //     $index = $end_column .$row_index;
 
-                    $sum = '';
+                //     $sum = '';
 
-                    for($i = 0; $i < 3; $i++){
-                        // $sum .= $array_sum_column[$i].;
-                    }
+                //     for($i = 0; $i < 3; $i++){
+                //         // $sum .= $array_sum_column[$i].;
+                //     }
 
-                }
+                // }
 
 
                 
-
+                    /*
+                        TODO : Heding table Name, ID, No.
+                    */
                 for($i = 0; $i <= static::$number_record; $i++){
                     $cell1 = 'A' . (static::$row_data_start + $i*2);
                     $cell2 = 'A' . (static::$row_data_start + $i*2 + 1);
@@ -208,6 +210,11 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                         'bold' => true,
                     ],
                 ];
+
+
+                /*
+                    TODO : HEADING
+                */
                 $sheet->setCellValue('A1', 'CÔNG TY CỔ PHẦN GLOBAL DREAM LAB');
                 $sheet->mergeCells('A1:D2');
                 $sheet->getStyle('A1:D2')->applyFromArray($style_all);
@@ -260,7 +267,11 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
 
 
 
-                // $sheet->getStyle('A3:C5')->setValue('Daily Attendance Statistic Report');
+                /*
+                    TODO : Viết các hàm tính toán cho trương tính toán cuối bảng
+                */
+                        
+
 
             },
             BeforeSheet::class => function(BeforeSheet $event)
