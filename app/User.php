@@ -130,31 +130,32 @@ class User extends Authenticatable
     public function inforWorkingTime($timesheets){
         $result = [
             'working_day' => 0,
-            'day_off' => 0,
-            'count_late' => 0,
-            'count_early' => 0,
-            'late' => 0,
-            'early' => 0,
-            'total_working_day' => 0,
+            // 'day_off' => 0,
+            // 'count_late' => 0,
+            // 'count_early' => 0,
+            // 'late' => 0,
+            // 'early' => 0,
+            // 'total_working_day' => 0,
         ];
-        $late = 0;
-        $early = 0;
+        // $late = 0;
+        // $early = 0;
         $worked = 0;
-        $off = 0;
+        // $off = 0;
         foreach($timesheets as $timesheet){
-            $result['count_late'] += $timesheet->count_late;
-            $result['count_early'] += $timesheet->count_early;
+           /*  $result['count_late'] += $timesheet->count_late;
+            $result['count_early'] += $timesheet->count_early; */
             $worked += $timesheet->count_worked;
-            $off += $timesheet->count_off;
+            // $off += $timesheet->count_off;
         }
 
-        $result['late'] = (int)($result['count_late'] / 3);
+       /*  $result['late'] = (int)($result['count_late'] / 3);
         $result['early'] = (int)($result['count_early'] / 3);
         $result['day_off'] = ($result['late'] + $result['early'] + $off) / 2;
+        */
 
         $result['working_day'] = $worked /2;
 
-        $result['total_working_day'] = $result['working_day'] - ($result['late'] + $result['early'] )/2;
+        // $result['total_working_day'] = $result['working_day'] - ($result['late'] + $result['early'] )/2;
         return $result;
     }
 
