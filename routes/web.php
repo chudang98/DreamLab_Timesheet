@@ -36,13 +36,14 @@ Route::get('/export', 'ExcelExport@xuatUser');
 
 Route::get('/day', function(){
 
-    $sum = '';
-    for($i = 0; $i < 10; $i++){
-        $sum .= 'h';
-    }
+    $arr = [];
+    $t = 'ad';
 
-    echo $sum;
+    $arr[] = $t .'a';
+    $arr[] = $t .'h';
+    $arr[] = $t .'b';
     
+    echo $arr[0] ." " .$arr[1] ." " .$arr[2];
 });
 
 //Profile

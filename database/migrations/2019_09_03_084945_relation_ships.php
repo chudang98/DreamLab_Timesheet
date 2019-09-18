@@ -43,6 +43,10 @@ class RelationShips extends Migration
             $table->foreign('attendance_machine_id')->references('id')->on('attendance_machines');
         });
 
+        // Schema::table('days', function(Blueprint $table){
+        //     $table-
+        // });
+
     }
 
     /**

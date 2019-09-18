@@ -220,7 +220,15 @@ class Timesheet extends Model
         }        
     }
 
-    public function processInfor()
+    public function processInfor(){
+      /*   $this->count_worked = 0;
+        if($this->morning_shift != 'X')
+            $this->count_worked++;
+        if($this->afternoon_shift != 'X')
+            $this->count_worked++; */
+    }
+
+ /*    public function processInfor()
     {
         $this->count_early = 0;
         $this->count_late = 0;
@@ -248,7 +256,7 @@ class Timesheet extends Model
             $this->count_off += 1;
         if($this->afternoon_shift == 'V')
             $this->count_off += 1;
-    }
+    } */
 
 
     private function processOneAttendance($attendance)

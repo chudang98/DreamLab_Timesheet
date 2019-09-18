@@ -105,6 +105,9 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
 
 
 
+                /*
+                    TODO : Gộp 2 dòng trong trường
+                */
                 $end_column = 'A';
                 $end_row = static::$row_data_start + static::$number_record*2 + 1;
 
@@ -113,20 +116,11 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                     $t = $duty + $i;
                     $column =  Coordinate::stringFromColumnIndex($t);
 
-                    if($i == 2 || $i == 3 || $i == 4){
-                        $array_sum_column[] = $column;
-                    }
-
                     for($j = 0; $j <= static::$number_record; $j++){
                         $row_start = static::$row_data_start + $j*2;
                         $index = $column .$row_start .':' .$column .($row_start+1);
                         $sheet->mergeCells($index);
                         $sheet->getStyle($index)->getAlignment()->setWrapText(true);
-                        // $sheet->getStyle($index)
-                        //     ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER_CONTINUOUS);
-                        // $sheet->getStyle($index)
-                        //     ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
-                            
                     }
                     if($i == 9){
                         $end_column = $column;
@@ -137,36 +131,24 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                     $sheet->getColumnDimension($column)->setWidth(10);
                 }
 
-                for($i = 1; $i <= static::$number_record; $i++){
-                    $row_index = static::$row_data_start + 2 + 2*$i;
-                    $index = $end_column .$row_index;
+                // for($i = 1; $i <= static::$number_record; $i++){
+                //     $row_index = static::$row_data_start + 2 + 2*$i;
+                //     $index = $end_column .$row_index;
 
-                    $sum = '';
+                //     $sum = '';
 
-                    for($i = 0; $i < 3; $i++){
-                        // $sum .= $array_sum_column[$i].;
-                    }
+                //     for($i = 0; $i < 3; $i++){
+                //         // $sum .= $array_sum_column[$i].;
+                //     }
 
-                }
+                // }
 
 
                 
-
-                for($i = 0; $i <= static::$number_record; $i++){
-                    $cell1 = 'A' . (static::$row_data_start + $i*2);
-                    $cell2 = 'A' . (static::$row_data_start + $i*2 + 1);
-                    $sheet->mergeCells($cell1 .':' .$cell2);
-
-                    $cell3 = 'B' . (static::$row_data_start + $i*2);
-                    $cell4 = 'B' . (static::$row_data_start + $i*2 + 1);
-                    $sheet->mergeCells($cell3 .':' .$cell4);
-                    
-                    $cell5 = 'C' . (static::$row_data_start + $i*2);
-                    $cell6 = 'C' . (static::$row_data_start + $i*2 + 1);
-                    $sheet->mergeCells($cell5 .':' .$cell6);
-                
-                }
-
+                    /*
+                        TODO : Heding table Name, ID, No.
+                    */g
+                UserExport::headingExcel($sheet);
 
                     /**  
                         * TODO : Tô màu các cột thứ 7, chủ nhật
@@ -208,14 +190,18 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                         'bold' => true,
                     ],
                 ];
+
+
+                /*
+                    TODO : HEADING
+                */
+
                 $sheet->setCellValue('A1', 'CÔNG TY CỔ PHẦN GLOBAL DREAM LAB');
                 $sheet->mergeCells('A1:D2');
                 $sheet->getStyle('A1:D2')->applyFromArray($style_all);
                 $sheet->getStyle('A1:D2')->applyFromArray($style_border);
                 $sheet->getStyle('A1:D2')->applyFromArray($style_bold);
-
-
-
+        
                 $time = 'From 1-' .static::$month .'-' .static::$yeah .' to ' .static::$number_day .'-' .static::$month .'-' .static::$yeah; 
                 $sheet->setCellValue('T3', 'BẢNG CHẤM CÔNG');
                 $sheet->mergeCells('T3:Y5');
@@ -228,39 +214,42 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                 $sheet->mergeCells('AI5:AK6');
                 $sheet->getStyle('AI5:AK6')->applyFromArray($style_all);
                 $sheet->getStyle('AI5:AK6')->applyFromArray($style_border);
-
+        
                 $sheet->setCellValue('AM1', 'Chú thích');
                 $sheet->mergeCells('AM1:AP1');
                 $sheet->getStyle('AM1:AP1')->applyFromArray($style_all);
                 $sheet->getStyle('AM1:AP1')->applyFromArray($style_border);
-                $sheet->setCellValue('AM2', 'Vắng');
+                $sheet->setCellValue('AM2', 'Vắng (0)');
                 $sheet->mergeCells('AM2:AP2');
                 $sheet->getStyle('AM2:AP2')->applyFromArray($style_all);
                 $sheet->getStyle('AM2:AP2')->applyFromArray($style_border);
                 $sheet->getStyle('AM2:AP2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()->setARGB('ffb3b3');
-                $sheet->setCellValue('AM3', 'Đến muộn');
+                $sheet->setCellValue('AM3', 'Đến muộn (M)');
                 $sheet->mergeCells('AM3:AP3');
                 $sheet->getStyle('AM3:AP3')->applyFromArray($style_all);
                 $sheet->getStyle('AM3:AP3')->applyFromArray($style_border);
                 $sheet->getStyle('AM3:AP3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()->setARGB('ffffb3');
-                $sheet->setCellValue('AM4', 'Về sớm');
+                $sheet->setCellValue('AM4', 'Về sớm (S)');
                 $sheet->mergeCells('AM4:AP4');
                 $sheet->getStyle('AM4:AP4')->applyFromArray($style_all);
                 $sheet->getStyle('AM4:AP4')->applyFromArray($style_border);
                 $sheet->getStyle('AM4:AP4')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()->setARGB('99e6ff');
-                $sheet->setCellValue('AM5', 'Nghỉ phép');
+                $sheet->setCellValue('AM5', 'Nghỉ phép (P)');
                 $sheet->mergeCells('AM5:AP5');
                 $sheet->getStyle('AM5:AP5')->applyFromArray($style_all);
                 $sheet->getStyle('AM5:AP5')->applyFromArray($style_border);
                 $sheet->getStyle('AM5:AP5')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()->setARGB('b3ffb3');
 
+                /*
+                    TODO : Viết các hàm tính toán cho trương tính toán cuối bảng
+                */
+                    UserExport::setValueInforCell($sheet);
 
-
-                // $sheet->getStyle('A3:C5')->setValue('Daily Attendance Statistic Report');
+                    UserExport::fillColorCellByData($sheet);
 
             },
             BeforeSheet::class => function(BeforeSheet $event)
@@ -303,15 +292,17 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
 
         }     
 
-        $row1[] = $data['duty_day'];
-        $row1[] = $data['lam_bu'];
-        $row1[] = $data['working_day'];
-        $row1[] = $data['day_off'];
-        $row1[] = $data['late'];
-        $row1[] = $data['day_late'];
-        $row1[] = $data['early'];
-        $row1[] = $data['day_early'];
-        $row1[] = $data['total_working_day'];
+        $row1[] = $data['duty_day'] .'';
+        $row1[] = $data['lam_bu'] .'';
+
+        // $row1[] = '';
+        // $row1[] = $data['working_day'] .'';
+   /*      $row1[] = $data['day_off'] .'';
+        $row1[] = $data['late'] .'';
+        $row1[] = $data['day_late'] .'';
+        $row1[] = $data['early'] .'';
+        $row1[] = $data['day_early'] .'';
+        $row1[] = $data['total_working_day'] .''; */
         
 
         
@@ -345,15 +336,15 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                 'timesheets' => $timesheets,
 
                 'duty_day' => static::$number_day,
-                'working_day' => $infor['working_day'],
-                'day_off' => '0',
                 'lam_bu' => '0',
+                // 'working_day' => $infor['working_day'],
+      /*           'day_off' => '0',
                 'non_working' => $infor['day_off'] .'',
                 'late' => $infor['count_late'] .'',
                 'early' => $infor['count_early'] .'',
                 'day_late' => $infor['late'] .'',
                 'day_early' => $infor['early'] .'',
-                'total_working_day' => $infor['total_working_day'] .'',
+                'total_working_day' => $infor['total_working_day'] .'', */
             ];
 
             $result[] = $obj;
@@ -383,7 +374,7 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
             array_push($heading2, $first->day);
         }
         $heading1[] = 'Ngày công chuẩn';
-        $heading1[] = 'Làm bù';
+        $heading1[] = 'Ngày làm bù';
         $heading1[] = 'Ngày làm việc';
         $heading1[] = 'Phép';
         $heading1[] = 'Đi muộn (buổi)';     
@@ -401,6 +392,160 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
     public function startCell(): string
     {
         return static::$column_data_start .static::$row_data_start;
+    }
+
+    public static function headingExcel($sheet)
+    {
+        for($i = 0; $i <= static::$number_record; $i++){
+            $cell1 = 'A' . (static::$row_data_start + $i*2);
+            $cell2 = 'A' . (static::$row_data_start + $i*2 + 1);
+            $sheet->mergeCells($cell1 .':' .$cell2);
+
+            $cell3 = 'B' . (static::$row_data_start + $i*2);
+            $cell4 = 'B' . (static::$row_data_start + $i*2 + 1);
+            $sheet->mergeCells($cell3 .':' .$cell4);
+            
+            $cell5 = 'C' . (static::$row_data_start + $i*2);
+            $cell6 = 'C' . (static::$row_data_start + $i*2 + 1);
+            $sheet->mergeCells($cell5 .':' .$cell6);
+        
+        }
+    }
+
+    public static function setValueInforCell($sheet)
+    {
+    
+        // TODO : Chưa xử lý ngày nghỉ
+        $start_infor = static::$number_day + 3;
+
+        $col_phep = $start_infor + 4;
+        $col_muon = $start_infor + 5;
+        $col_phat_muon = $start_infor + 6;
+        $col_som = $start_infor + 7;
+        $col_phat_som = $start_infor + 8;
+        $col_total = $start_infor + 9;
+
+        $col_lam_bu = $start_infor + 2;
+        $col_lam_vc = $start_infor + 3;
+
+
+        $row_data = static::$row_data_start;
+
+        $column_data = Coordinate::stringFromColumnIndex(static::$number_day + 3);
+
+        for($i = 1; $i <= static::$number_record; $i++){
+            
+            $row_data += 2;
+
+            $cells_data =  'D' .$row_data .':' .$column_data .($row_data + 1);
+
+            $total_value = '=';
+        
+            // * Làm bù
+            $cell_result =  Coordinate::stringFromColumnIndex($col_lam_bu) .'' .$row_data;
+            $total_value .= ('(' .$cell_result);
+        
+            // * Làm việc
+            $cell_result =  Coordinate::stringFromColumnIndex($col_lam_vc) .'' .$row_data;
+            $cell_value = '=( COUNTIF(' .$cells_data .', "0.5")'
+                    .'+ COUNTIF(' .$cells_data .', "M")'
+                    .'+ COUNTIF(' .$cells_data .', "S")'
+                    .'+COUNTIF(' .$cells_data .', "P") )/2';
+            $sheet->setCellValue($cell_result, $cell_value);
+            $total_value .= (' + ' .$cell_result);
+            
+                // * Phép
+            $cell_result =  Coordinate::stringFromColumnIndex($col_phep) .'' .$row_data;
+            $cell_value = '=COUNTIF(' .$cells_data .', "P")';
+            $sheet->setCellValue($cell_result, $cell_value);
+            $total_value .= (' + ' .$cell_result);
+
+                // * Số buổi đi làm muộn
+            $result_M =  Coordinate::stringFromColumnIndex($col_muon) .'' .$row_data;
+            $cell_value = '=COUNTIF(' .$cells_data .', "M")';
+            $sheet->setCellValue($result_M, $cell_value);
+
+
+                // * Số buổi đi về sớm
+            $result_S =  Coordinate::stringFromColumnIndex($col_som) .'' .$row_data;
+            $cell_value = '=COUNTIF(' .$cells_data .', "S")';
+            $sheet->setCellValue($result_S, $cell_value);
+
+                // * Phạt đến muộn
+            $cell_result =  Coordinate::stringFromColumnIndex($col_phat_muon) .'' .$row_data;;
+            $cell_value = '=INT(' .$result_M .'/3)';
+            $sheet->setCellValue($cell_result, $cell_value);
+            $total_value .= (' - ' .$cell_result);
+
+
+                // * Phạt về sớm
+            $cell_result =  Coordinate::stringFromColumnIndex($col_phat_som) .'' .$row_data;;
+            $cell_value = '=INT(' .$result_S .'/3)';
+            $sheet->setCellValue($cell_result, $cell_value);
+            $total_value .= (' - ' .$cell_result .')');
+
+
+            $cell_result =  Coordinate::stringFromColumnIndex($col_total) .'' .$row_data;;
+            $sheet->setCellValue($cell_result, $total_value);
+                // *
+
+        }
+    }
+    
+    public static function fillColorCellByData($sheet)
+    {
+        for($i = 1; $i <= static::$number_day; $i++){
+            for($j = 1; $j <= static::$number_record; $j++){
+                $column = Coordinate::stringFromColumnIndex($i + 3);
+                $row = static::$row_data_start + $j*2;
+                $index = $column .$row;
+
+                $cell = $sheet->getCell($index);
+                $data = $cell->getValue();
+                if($data == '0')
+                {
+                    $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->getStartColor()->setARGB('ffb3b3');
+                }else
+                {
+                    if($data == 'P')
+                        $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                            ->getStartColor()->setARGB('b3ffb3');
+                    else
+                        if($data == 'M')
+                            $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                ->getStartColor()->setARGB('ffffb3');
+                        else
+                            if($data == 'S')
+                                $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                ->getStartColor()->setARGB('99e6ff');
+                }
+
+                $row++;
+                $index = $column .$row;
+                $cell = $sheet->getCell($index);
+                $data = $cell->getValue();
+                if($data == '0')
+                {
+                    $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->getStartColor()->setARGB('ffb3b3');
+                }else
+                {
+                    if($data == 'P')
+                        $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                            ->getStartColor()->setARGB('b3ffb3');
+                    else
+                        if($data == 'M')
+                            $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                ->getStartColor()->setARGB('ffffb3');
+                        else
+                            if($data == 'S')
+                                $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                ->getStartColor()->setARGB('99e6ff');
+                }
+
+            }
+        }
     }
 
 }
