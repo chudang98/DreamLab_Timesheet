@@ -20,6 +20,7 @@ class Timesheet extends Model
     private static $ABSENT_MORNING = '9:00:00';
 
     private static $LATE_TIME_AFTERNOON = '13:00:00';
+    private static $ABSENT_AFTERNOON = '14:00:00';
     private static $LEAVE_EARLY_AFTERNOOM = '16:30:00';
     private static $END_AFTERNOON = '17:00:00';
 
@@ -184,6 +185,7 @@ class Timesheet extends Model
                     // check chiều - check lại sáng
                 switch($this->afternoon_shift){
                     case 'V' : {
+                        // check lại được buổi sáng đi làm
                         if(strtotime($CI_time) <= static::$LATE_TIME_AFTERNOON
                                 || $this->morning_shift != 'V')
                         {
@@ -192,8 +194,30 @@ class Timesheet extends Model
                             else
                             {
                                 if(strtotime($CO_time) >= static::$LEAVE_EARLY_AFTERNOOM)
-                                    $this->afternoon_shift = 'M';
+                                    $this->afternoon_shift = 'S';
                             }
+                        }else
+                            // Chắc chắn là không đi làm sáng
+                        {
+                            // check nếu đi làm đúng giờ
+                            if(strtotime($CI_time) <= static::$LATE_TIME_AFTERNOON)
+                            {
+                                if(strtotime($CO_time) >= static::$END_AFTERNOON)
+                                {
+                                    $this->afternoon_shift = 'X';
+                                }else
+                                {
+                                    if(strtotime($CO_time) >= static::$LEAVE_EARLY_AFTERNOOM)
+                                        $this->afternoon_shift = 'S';
+                                }   
+                            }else
+                                if(strtotime($CI_time) <= static::$ABSENT_AFTERNOON)
+                                    if(strtotime($CO_time) >= static::$END_AFTERNOON )
+                                        $this->afternoon_shift = 'M';
+                                    else
+                                    {
+                                        $this->afternoon_shift = 'S';
+                                    }
                         }
                         break;
                     }

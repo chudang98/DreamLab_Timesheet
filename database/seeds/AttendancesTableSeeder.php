@@ -12,6 +12,6 @@ class AttendancesTableSeeder extends Seeder
     public function run()
     {
         //
-        factory('App\Attendance', 300)->create();
+        factory('App\Attendance', 900)->create();
     }
 }

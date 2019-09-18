@@ -147,7 +147,7 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                 
                     /*
                         TODO : Heding table Name, ID, No.
-                    */g
+                    */
                 UserExport::headingExcel($sheet);
 
                     /**  
