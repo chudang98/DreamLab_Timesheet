@@ -66,7 +66,7 @@ class AttendanceController extends Controller
             $time[1]= $day2;
             $day3 = date('d/m/Y');
             $time[2]= $day3;
-            $atts = Attendance::orderBy('date_time')->get();
+            $atts = Attendance::orderBy('date_time','desc')->get();
             foreach ($atts as $att){
                 $day= $att->date_time;
                 $day2= strtotime($day);
@@ -79,45 +79,6 @@ class AttendanceController extends Controller
         }
         return View('Attendance.list_attendances', $data);
     }
-//    public function detailAttendance($day){
-//        $ats = Attendance::all();
-//        $attendances = [];
-//        $i =0;
-//        foreach ($ats as $attendance){
-//            $d= $attendance->date_time;
-//            $d2= strtotime($d);
-//            $d3= date('Y-m-d',$d2);
-//            if($day == $d3){
-//                $attendances[$i++]= $attendance;
-//            }
-//        }
-//        for($x=0; $x<$i; $x++){
-//            for($y= $x+1; $y<$i; $y++){
-//                if($attendances[$x]->date_time>$attendances[$y]->date_time){
-//                    $t= $attendances[$x];
-//                    $attendances[$x]= $attendances[$y];
-//                    $attendances[$y]= $t;
-//                }
-//            }
-//        }
-//        $data['attendances']= $attendances;
-//        $data['users'] = User::all();
-//        return View('Attendance.detail_attendance', $data);
-//    }
-//    public function deleteAttendances($day){
-//        $attendances = Attendance::all();
-//        foreach ($attendances as $attendance){
-//            $d= $attendance->date_time;
-//            $d2= strtotime($d);
-//            $d3= date('Y-m-d',$d2);
-//            if($day == $d3){
-//                DB::table('attendances')
-//                    ->where('id', $attendance->id)
-//                    ->delete();
-//            }
-//        }
-//        return redirect('/listAttendances');
-//    }
     public function deleteAttendance($id){
         DB::table('attendances')
             ->where('id', $id)

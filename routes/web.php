@@ -54,15 +54,10 @@ Route::post('/updatePassword','ProfileController@updatePassword');
 
 //Attendance
 Route::get('/listAttendances', 'AttendanceController@listAttendances');
-Route::get('/detailAttendance/{day}','AttendanceController@detailAttendance');
-Route::get('/deleteAttendances/{day}','AttendanceController@deleteAttendances');
 Route::get('/deleteAttendance/{id}','AttendanceController@deleteAttendance');
 
 //Timesheet
 Route::get('/listTimesheets', 'TimesheetController@listTimesheets');
-Route::get('/detailTimesheet','TimesheetController@detailTimesheet');
-
 
 //Calendar
 Route::get('/calendar', 'CalendarController@index');
-Route::get('/resultSearch', 'AttendanceController@resultSearch');

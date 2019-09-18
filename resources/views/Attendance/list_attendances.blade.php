@@ -5,7 +5,7 @@
 @section('content')
     <form action="#">
         <div class="container">
-            <form action="/resultSearch" method="GET">
+            <form action="/listAttendances" method="GET">
                 <div class="search_time">
                     <div style="position: relative; top: 5px;">
                         <label for="">Thời gian:</label>
