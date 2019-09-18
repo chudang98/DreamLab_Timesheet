@@ -5,24 +5,38 @@
 @section('content')
     <form action="#">
         <div class="container">
-            <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt-left">
+            <form action="#">
+                <div class="search_time">
+                    <div style="position: relative; top: 5px;">
+                        <label for="">Thời gian:</label>
+                        <input id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px;
+                        border: 1px solid #ccc; width: 60%; display: inline; padding-left: 20px">
+                            <i class="icon-calendar fa fa-calendar"></i>&nbsp;
+                            <i class="fa fa-caret-down icon-down"></i>
+{{--                        </input>--}}
+                    </div>
+                </div>
+                <div class="search_employee_id">
+                    <label for="">Mã nhân viên: </label>
+                    <input type="text" name="employee_id">
+                </div>
+                <div class="search_employee_name">
+                    <label for="">Tên nhân viên: </label>
+                    <input type="text" name="employee_name">
+                </div>
+                <button type="submit" class="bt-search btn btn-primary">Tìm kiếm</button>
+            </form>
+            <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt_right" style="margin-right: 84px">
                 <a href="#">
-                    <button class="btn btn-primary" data-title="Edit" data-toggle="modal" data-target="#edit" >
-                        Thêm lần điểm danh
+                    <button class="btn btn-primary" data-title="Edit" data-toggle="" >
+                        Xử lí dữ liệu
                     </button>
                 </a>
             </p>
-            <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt-right">
+            <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt_right">
                 <a href="#">
-                    <button class="btn btn-primary" data-title="Edit" data-toggle="modal" data-target="#edit" >
-                        Cập nhật
-                    </button>
-                </a>
-            </p>
-            <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt-right">
-                <a href="#">
-                    <button class="btn btn-primary" data-title="Edit" data-toggle="modal" data-target="#edit" >
-                        Tải xuống
+                    <button class="btn btn-primary" data-title="Edit" data-toggle="modal">
+                        Xuất chấm công
                     </button>
                 </a>
             </p>
@@ -35,28 +49,49 @@
 
                             <thead>
 
-                            <th><input type="checkbox" id="checkall" /></th>
-                            <th>Ngày</th>
+{{--                            <th><input type="checkbox" id="checkall" /></th>--}}
+                            <th>STT</th>
+                            <th>Thời gian</th>
+                            <th>Mã nhân viên</th>
+                            <th>Tên nhân viên</th>
                             <th>Thao tác</th>
                             </thead>
                             <tbody>
-
-                            @foreach($days as $day)
+                            <?php $dem=1; ?>
+                            @foreach($attendances as $attendance)
                                 <tr>
-                                    <td><input type="checkbox" class="checkthis" /></td>
-                                    <td>{{$day}}</td>
+{{--                                    <td><input type="checkbox" class="checkthis" /></td>--}}
+                                    <td>{{$dem++}}</td>
+                                    <td>{{$attendance->date_time}}</td>
+                                    <td>
+                                        @foreach($users as $user)
+                                            @if($user->id == $attendance->user_id)
+                                                {{$user->employee_id}}
+                                                @break
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach($users as $user)
+                                            @if($user->id == $attendance->user_id)
+                                                {{$user->name}}
+                                                @break
+                                            @endif
+                                        @endforeach
+                                    </td>
                                     <td>
                                         <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt-left">
-                                            <a href="/detailAttendance/{{$day}}" class="btn btn-primary btn-xs" >
-                                                    Xem chi tiết
+                                            <a href="#" class="btn btn-primary btn-xs" >
+                                                    Sửa
                                             </a>
                                         </p>
                                         <p data-placement="top" data-toggle="tooltip" title="Delete" class="bt-right">
-                                            <a href="#" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete{{$day}}" >
+                                            <a href="#" class="btn btn-danger btn-xs" data-title="Delete"
+                                               data-toggle="modal" data-target="#delete{{$attendance->id}}" >
                                                 Xóa
                                             </a>
                                         </p>
-                                        <div class="modal fade" id="delete{{$day}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                                        <div class="modal fade" id="delete{{$attendance->id}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -65,11 +100,11 @@
                                                     </div>
                                                     <div class="modal-body">
 
-                                                        <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete information of date "{{$day}}"?</div>
+                                                        <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete attendance of datetime "{{$attendance->date_time}}"?</div>
 
                                                     </div>
                                                     <div class="modal-footer ">
-                                                        <a href="/deleteAttendances/{{$day}}" class="btn btn-danger" >
+                                                        <a href="/deleteAttendance/{{$attendance->id}}" class="btn btn-danger" >
                                                             <span class="glyphicon glyphicon-ok-sign"></span> Yes
                                                         </a>
                                                         <button type="button" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
@@ -93,6 +128,40 @@
             </div>
         </div>
     </form>
+    <script type="text/javascript">
+        $(function() {
+            var start = moment().startOf('month');
+            var end = moment();
+
+            function cb(start, end) {
+                $('#reportrange').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+            }
+
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    'Hôm nay': [moment(), moment()],
+                    'Hôm qua': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    '7 ngày trước': [moment().subtract(6, 'days'), moment()],
+                    '30 ngày trước': [moment().subtract(29, 'days'), moment()],
+                    'Tháng này': [moment().startOf('month'), moment().endOf('month')],
+                    'Tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                locale: {
+                    format: 'DD/MM/YYYY'
+                }
+            }, cb);
+            // console.log(document.querySelector('li[data-range-key="Custom Range"]'));
+            document.querySelector('li[data-range-key="Custom Range"]').innerText
+                = "Tự đặt ngày";
+            document.querySelector('.cancelBtn').innerText
+                = "Hủy";
+            document.querySelector('.applyBtn ').innerText
+                = "Áp dụng"
+            cb(start, end);
 
 
+        });
+    </script>
 @endsection

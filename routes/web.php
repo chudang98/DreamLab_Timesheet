@@ -61,3 +61,7 @@ Route::get('/deleteAttendance/{id}','AttendanceController@deleteAttendance');
 //Timesheet
 Route::get('/listTimesheets', 'TimesheetController@listTimesheets');
 Route::get('/detailTimesheet','TimesheetController@detailTimesheet');
+
+
+//Calendar
+Route::get('/calendar', 'CalendarController@index');
