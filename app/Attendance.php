@@ -75,4 +75,13 @@ class Attendance extends Model
             return false;
     }
 
+    public function laterThan($attendance){
+        $time1 = Carbon::create($this->date_time)->toTimeString();
+        $time2 = Carbon::create($attendance->date_time)->toTimeString();
+        if(strtotime($time1) > strtotime($time2))
+            return true;
+        else
+            return false; 
+    }
+
 }
