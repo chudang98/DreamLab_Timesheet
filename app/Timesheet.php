@@ -48,6 +48,34 @@ class Timesheet extends Model
     }
 
 
+    public function getCOAttendance(){
+        $time = $this->date;
+
+        $start_date = Carbon::create($time .' 00:00:00');
+        $end_date = Carbon::create($time .' 23:59:59');
+
+        $attendances = Attendance::where([
+            ['user_id', '=', $this->user_id],
+            ['date_time', '>=', $start_date],
+            ['date_time', '<=', $end_date],
+        ])->get();
+
+        if($attendances->isEmpty() != true)
+        {
+            $check_out = $attendances[0];
+            $count = sizeof($attendances);
+            for($i = 0; $i < $count; $i++)
+            {
+                $attendances[$i]->timesheet_id = $this->id;
+                if($attendances[$i]->laterThan($check_out) == true){
+                    $check_out = $attendances[$i];
+                }
+            }
+
+            return $check_out;            
+        }
+        return null;
+    }
     // $date as string
     public function processAttendanceBelongTo(){
         $time = $this->date;
@@ -60,10 +88,9 @@ class Timesheet extends Model
                 ['user_id', '=', $this->user_id],
                 ['date_time', '>=', $start_date],
                 ['date_time', '<=', $end_date],
-                ['is_check', '=', 'N'],
+                // ['is_check', '=', 'N'],
 
         ])->get();
-
         
             // Timesheets này không có attendance nào mới        
         if($attendances->isEmpty() != true)
@@ -77,26 +104,28 @@ class Timesheet extends Model
                 for($i = 0; $i < $count; $i++)
                 {
                     $attendances[$i]->timesheet_id = $this->id;
-                    if($check_in->earlyThan($attendances[$i]) == false){
+                    if($attendances[$i]->earlyThan($check_in) == true){
                         $check_in = $attendances[$i];
-                    }
-                    else
+                    }else
                     {
-                        if($check_out->earlyThan($attendances[$i]) == false){
-                            $check_in = $attendances[$i];
+                        if($attendances[$i]->laterThan($check_out) == true){
+                            $check_out = $attendances[$i];
                         }
                     }
 
                     $attendances[$i]->timesheet_id = $this->id;
                     $attendances[$i]->is_check = 'Y';
+
                     $attendances[$i]->save();
                 }
 
                 $this->processCiCoAttendance($check_in, $check_out);
 
-            }else
+            }else{
                 // Chỉ có 1 attendance
                 $this->processOneAttendance($check_in);
+                $check_in->save();
+            }
         }
 
         $this->save();                
@@ -185,39 +214,28 @@ class Timesheet extends Model
                     // check chiều - check lại sáng
                 switch($this->afternoon_shift){
                     case 'V' : {
-                        // check lại được buổi sáng đi làm
-                        if(strtotime($CI_time) <= static::$LATE_TIME_AFTERNOON
+                        // check lại được buổi sáng đi làm hoặc đi làm trước giờ ca chiều
+                        if(strtotime($CI_time) <= strtotime(static::$LATE_TIME_AFTERNOON)
                                 || $this->morning_shift != 'V')
                         {
-                            if(strtotime($CO_time) >= static::$END_AFTERNOON)
+                            if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
                                 $this->afternoon_shift = 'X';
                             else
                             {
-                                if(strtotime($CO_time) >= static::$LEAVE_EARLY_AFTERNOOM)
+                                if(strtotime($CO_time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
                                     $this->afternoon_shift = 'S';
                             }
                         }else
-                            // Chắc chắn là không đi làm sáng
+                            // Chắc chắn là đi làm chiều bị muộn
                         {
-                            // check nếu đi làm đúng giờ
-                            if(strtotime($CI_time) <= static::$LATE_TIME_AFTERNOON)
-                            {
-                                if(strtotime($CO_time) >= static::$END_AFTERNOON)
+                            if(strtotime($CI_time) <= strtotime(static::$ABSENT_AFTERNOON))
+                                if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON ))
+                                    $this->afternoon_shift = 'M';
+                                else
                                 {
-                                    $this->afternoon_shift = 'X';
-                                }else
-                                {
-                                    if(strtotime($CO_time) >= static::$LEAVE_EARLY_AFTERNOOM)
+                                    if(strtotime($CO_time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
                                         $this->afternoon_shift = 'S';
-                                }   
-                            }else
-                                if(strtotime($CI_time) <= static::$ABSENT_AFTERNOON)
-                                    if(strtotime($CO_time) >= static::$END_AFTERNOON )
-                                        $this->afternoon_shift = 'M';
-                                    else
-                                    {
-                                        $this->afternoon_shift = 'S';
-                                    }
+                                }
                         }
                         break;
                     }
@@ -230,7 +248,7 @@ class Timesheet extends Model
                     }
 
                     case 'M' : {
-                        if(strtotime($CI_time) <= static::$LATE_TIME_AFTERNOON
+                        if(strtotime($CI_time) <= strtotime(static::$LATE_TIME_AFTERNOON)
                             || $this->morning_shift != 'V')
                         {
                             $this->afternoon_shift = 'X';
@@ -288,13 +306,20 @@ class Timesheet extends Model
         $time = Carbon::create($attendance->date_time)->toTimeString();
         switch($this->morning_shift){
             case 'X' : {
-                if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
-                {
-                    if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
-                        $this->afternoon_shift = 'X';
-                    else
-                        if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM) && $this->afternoon != 'X')
-                            $this->afternoon_shift = 'S';
+                switch($this->afternoon_shift){
+                    case 'S' : {
+                        if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
+                            $this->afternoon_shift = 'X';
+                        break;
+                    }
+                    case 'V' : {
+                        if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
+                            $this->afternoon_shift = 'X';
+                        else
+                            if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
+                                $this->afternoon_shift = 'S';
+                        break;
+                    }
                 }
 
                 break;
@@ -304,7 +329,6 @@ class Timesheet extends Model
                 if(strtotime($time) <= strtotime(static::$LATE_TIME_MORNING)){
                     $this->morning_shift = 'X';
                 }else{
-
                     switch($this->afternoon_shift)
                     {
                         case 'V' : {
@@ -327,16 +351,28 @@ class Timesheet extends Model
             }
 
             case 'V' : {
-                if(strtotime($time) <= strtotime(static::$LATE_TIME_MORNING)){
-                    $this->morning_shift = 'X';
+                $check_out = $this->getCOAttendance();
+
+                if($attendance->earlyThan($check_out) == true){
+                    $this->processCiCoAttendance($attendance, $check_out);
                 }else
-                {
-                    if(strtotime($time) <= strtotime(static::$ABSENT_MORNING)){
-                        $this->morning_shift = 'M';
+                    if($check_out->laterThan($attendance) == true)
+                        $this->processCiCoAttendance($check_out, $attendance);
+                    else{
+                        // Cả timesheet đó chỉ có duy nhất 1 attendance
+                        if(strtotime($time) <= strtotime(static::$LATE_TIME_MORNING))
+                        {
+                            $this->morning_shift = 'X';
+                        }else
+                        {
+                            if(strtotime($time) <= strtotime(static::$ABSENT_AFTERNOON)){
+                                $this->morning_shift = 'M';
+                            }
+                        }
                     }
-                }
+
                 break;
-            }
+            }   
         }        
     }
 
