@@ -9,7 +9,7 @@ input {
     border: 1px solid #ddd;
     padding: 6px 8px;
     font-size: 13px;
-    width: 183px;
+    width: 340px;
 }
 .daterangepicker {
     display: none;
@@ -45,7 +45,10 @@ input {
     margin-right: 33px;
 }
 .bt-search{
-    clear: both;
+    float: right;
+    position: relative;
+    top: -32px;
+    right: 101px;
 }
 .daterangepicker li{
     margin-bottom: 8px;

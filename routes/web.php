@@ -65,3 +65,4 @@ Route::get('/detailTimesheet','TimesheetController@detailTimesheet');
 
 //Calendar
 Route::get('/calendar', 'CalendarController@index');
+Route::get('/resultSearch', 'AttendanceController@resultSearch');

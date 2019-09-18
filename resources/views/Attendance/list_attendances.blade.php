@@ -5,38 +5,30 @@
 @section('content')
     <form action="#">
         <div class="container">
-            <form action="#">
+            <form action="/resultSearch" method="GET">
                 <div class="search_time">
                     <div style="position: relative; top: 5px;">
                         <label for="">Thời gian:</label>
                         <input id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px;
-                        border: 1px solid #ccc; width: 60%; display: inline; padding-left: 20px">
+                        border: 1px solid #ccc; width: 60%; display: inline; padding-left: 20px" name="time">
                             <i class="icon-calendar fa fa-calendar"></i>&nbsp;
                             <i class="fa fa-caret-down icon-down"></i>
-{{--                        </input>--}}
                     </div>
                 </div>
-                <div class="search_employee_id">
-                    <label for="">Mã nhân viên: </label>
-                    <input type="text" name="employee_id">
-                </div>
-                <div class="search_employee_name">
-                    <label for="">Tên nhân viên: </label>
-                    <input type="text" name="employee_name">
+                <div class="search_employee">
+                    <label for="">Tên/Mã nhân viên: </label>
+                    <input type="text" name="employee" placeholder="Tìm kiếm mã hoặc tên nhân viên"
+                        @if(isset($employee))
+                            value="{{$employee}}"
+                            @endif
+                    >
                 </div>
                 <button type="submit" class="bt-search btn btn-primary">Tìm kiếm</button>
             </form>
-            <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt_right" style="margin-right: 84px">
+            <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt_right" style="margin-right: 17px">
                 <a href="#">
                     <button class="btn btn-primary" data-title="Edit" data-toggle="" >
                         Xử lí dữ liệu
-                    </button>
-                </a>
-            </p>
-            <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt_right">
-                <a href="#">
-                    <button class="btn btn-primary" data-title="Edit" data-toggle="modal">
-                        Xuất chấm công
                     </button>
                 </a>
             </p>
@@ -130,11 +122,11 @@
     </form>
     <script type="text/javascript">
         $(function() {
-            var start = moment().startOf('month');
-            var end = moment();
+            var start = '<?php echo $time[0]; ?>';
+            var end = '<?php echo $time[2]; ?>';
 
             function cb(start, end) {
-                $('#reportrange').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+                $('#reportrange').html(start.format('DD/MM/YYYY') + '-' + end.format('DD/MM/YYYY'));
             }
 
             $('#reportrange').daterangepicker({
