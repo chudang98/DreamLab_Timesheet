@@ -15,7 +15,7 @@ class ExcelExport extends Controller
     //
     public function xuatUser(){
             // TODO : muốn sửa tháng năm xuất excel : sửa 2 tham số của  UserExport::configDay(tháng, năm); 
-        UserExport::configDay(9, 2019);
+        UserExport::configDay(8, 2019);
         return Excel::download(new UserExport, 'ban1.xlsx');
     }
 

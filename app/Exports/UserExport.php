@@ -71,9 +71,10 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
             
         ];
         
+        $excel = $this;
         return [
 
-            AfterSheet::class => function(AfterSheet $event) use ($style_all, $style_border)
+            AfterSheet::class => function(AfterSheet $event) use ($style_all, $style_border, $excel)
             {
                 $sheet = $event->sheet;
                 
@@ -197,18 +198,21 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                 */
 
                 $sheet->setCellValue('A1', 'CÔNG TY CỔ PHẦN GLOBAL DREAM LAB');
-                $sheet->mergeCells('A1:D2');
+                $sheet->mergeCells('A1:C2');
                 $sheet->getStyle('A1:D2')->applyFromArray($style_all);
                 $sheet->getStyle('A1:D2')->applyFromArray($style_border);
                 $sheet->getStyle('A1:D2')->applyFromArray($style_bold);
         
                 $time = 'From 1-' .static::$month .'-' .static::$yeah .' to ' .static::$number_day .'-' .static::$month .'-' .static::$yeah; 
                 $sheet->setCellValue('T3', 'BẢNG CHẤM CÔNG');
-                $sheet->mergeCells('T3:Y5');
-                $sheet->setCellValue('T4', $time);
-                $sheet->getStyle('T3:Y5')->applyFromArray($style_all);
-                $sheet->getStyle('T3:Y5')->applyFromArray($style_border);  
-                $sheet->getStyle('T3:Y5')->applyFromArray($style_bold);
+                $sheet->mergeCells('T3:Y4');
+                $sheet->getStyle('T3:Y4')->applyFromArray($style_all);
+                $sheet->getStyle('T3:Y4')->applyFromArray($style_border);  
+                $sheet->getStyle('T3:Y4')->applyFromArray($style_bold);
+
+                $sheet->setCellValue('T5', $time);
+                $sheet->mergeCells('T5:Y5');
+
                 
                 $sheet->setCellValue('AI5', 'Ngày công chuẩn : ');
                 $sheet->mergeCells('AI5:AK6');
@@ -247,10 +251,22 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                 /*
                     TODO : Viết các hàm tính toán cho trương tính toán cuối bảng
                 */
-                    UserExport::setValueInforCell($sheet);
+                UserExport::setValueInforCell($sheet);
 
-                    UserExport::fillColorCellByData($sheet);
+                UserExport::fillColorCellByData($sheet);
 
+
+                    // TODO : Freeze cells
+               /*  $sheet->getActiveSheet()->loadView('template');
+                $sheet->getProtection()->setPassword('password');
+                $sheet->getProtection()->setSheet(true);
+                $sheet->getStyle('A1:AQ8')->getProtection()->setLocked(PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                */
+               /*  $excel->getSecurity()->setLockWindows(true);
+                $excel->getSecurity()->setLockStructure(true);
+                $excel->getSecurity()->setWorkbookPassword("PhpSpreadsheet"); */
+                $sheet->getSheetView()->setZoomScale(80);
+            
             },
             BeforeSheet::class => function(BeforeSheet $event)
             {
@@ -496,6 +512,7 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
     {
         for($i = 1; $i <= static::$number_day; $i++){
             for($j = 1; $j <= static::$number_record; $j++){
+                
                 $column = Coordinate::stringFromColumnIndex($i + 3);
                 $row = static::$row_data_start + $j*2;
                 $index = $column .$row;
@@ -548,4 +565,5 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
         }
     }
 
+    
 }

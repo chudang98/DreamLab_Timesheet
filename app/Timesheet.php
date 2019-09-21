@@ -113,17 +113,23 @@ class Timesheet extends Model
                         }
                     }
 
-                    $attendances[$i]->timesheet_id = $this->id;
-                    $attendances[$i]->is_check = 'Y';
+                    
 
                     $attendances[$i]->save();
                 }
 
+                $this->check_in = $check_in->date_time;
+                $this->check_out = $check_out->date_time;
+                
                 $this->processCiCoAttendance($check_in, $check_out);
 
             }else{
                 // Chỉ có 1 attendance
+                $this->check_in = $check_in->date_time;
                 $this->processOneAttendance($check_in);
+                
+                $attendances[0]->timesheet_id = $this->id;
+                $attendances[0]->is_check = 'Y';
                 $check_in->save();
             }
         }
@@ -308,16 +314,21 @@ class Timesheet extends Model
             case 'X' : {
                 switch($this->afternoon_shift){
                     case 'S' : {
-                        if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
+                        if(strtotime($time) >= strtotime(static::$END_AFTERNOON)){
+                            $this->check_in = $attendance->date_time;
                             $this->afternoon_shift = 'X';
+                        }
                         break;
                     }
                     case 'V' : {
-                        if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
+                        if(strtotime($time) >= strtotime(static::$END_AFTERNOON)){
                             $this->afternoon_shift = 'X';
+                        }
                         else
-                            if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
+                            if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM)){
+                                $this->check_out = $attendance->date_time;                            
                                 $this->afternoon_shift = 'S';
+                            }
                         break;
                     }
                 }
@@ -326,23 +337,34 @@ class Timesheet extends Model
             }
 
             case 'M' : {
-                if(strtotime($time) <= strtotime(static::$LATE_TIME_MORNING)){
+                if(strtotime($time) <= strtotime(static::$LATE_TIME_MORNING))
+                {
+                    $this->check_in = $attendance->date_time;                    
                     $this->morning_shift = 'X';
                 }else{
                     switch($this->afternoon_shift)
                     {
                         case 'V' : {
                             if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
+                            {
                                 $this->afternoon_shift = 'X';
+                                $this->check_out = $attendance->date_time;                            
+                            }
                             else
                                 if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
+                                {
+                                    $this->check_out = $attendance->date_time;                            
                                     $this->afternoon_shift = 'S';
+                                }
 
                             break;
                         }
                         case 'S' : {
                             if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
+                            {
+                                $this->check_out = $attendance->date_time;                            
                                 $this->afternoon_shift = 'X';
+                            }
                             break;
                         }
                     }

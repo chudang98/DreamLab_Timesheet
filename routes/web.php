@@ -51,6 +51,8 @@ Route::get('/{id}/{date}', function($id, $date){
     $start_Date = Carbon::create($date .' 00:00:00');
     $end_Date = Carbon::create($date .' 23:59:59');
 
+    echo $id ." " .$start_Date;
+
     $attendances = Attendance::where([
         ['user_id', '=', $id],
         ['date_time', '>=', $start_Date],
@@ -62,6 +64,7 @@ Route::get('/{id}/{date}', function($id, $date){
     }
     
 
+    /*
             $check_in = $attendances[1];
             $check_out = $attendances[1];
             $count = sizeof($attendances);
@@ -88,7 +91,7 @@ Route::get('/{id}/{date}', function($id, $date){
             echo $check_in .'</br>' .$check_out .'</br>';
 
             $timesheet = $check_in->timesheet;
-            echo $timesheet;
+            echo $timesheet; */
 }); 
 
 //Profile
