@@ -12,10 +12,10 @@ use Carbon\Carbon;
 
 class ExcelExport extends Controller
 {
-    //
-    public function xuatUser(){
+    //s
+    public function xuatUser(Request $request){
             // TODO : muốn sửa tháng năm xuất excel : sửa 2 tham số của  UserExport::configDay(tháng, năm); 
-        UserExport::configDay(8, 2019);
+        UserExport::configDay($request->month, $request->yeah );
         return Excel::download(new UserExport, 'ban1.xlsx');
     }
 

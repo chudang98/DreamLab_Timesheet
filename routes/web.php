@@ -32,7 +32,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/test', 'ExcelExport@test');
 
-Route::get('/export', 'ExcelExport@xuatUser');
+Route::post('/export_excel', 'ExcelExport@xuatUser')->name('export_excel');
+
+Route::get('mytest', function(){
+    Attendance::processNewData();
+});
 
 Route::get('/day', function(){
 
