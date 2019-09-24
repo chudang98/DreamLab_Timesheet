@@ -83,6 +83,6 @@ class AttendanceController extends Controller
         DB::table('attendances')
             ->where('id', $id)
             ->delete();
-        return redirect('/listAttendances/');
+        return redirect('/listAttendances');
     }
 }

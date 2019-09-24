@@ -29,8 +29,8 @@ class CreateTimesheetsTable extends Migration
             $table->enum('afternoon_shift', ['S', 'V', 'X', 'M', 'B', 'P'])->default('V');
             $table->unsignedBigInteger('user_id');
             $table->unique(['date', 'user_id']);
-            $table->dateTime('check_in')->nullable()->default(null);
-            $table->dateTime('check_out')->nullable()->default(null);            
+            $table->time('check_in')->nullable()->default(null);
+            $table->time('check_out')->nullable()->default(null);
         });
     }
 

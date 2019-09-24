@@ -13,6 +13,7 @@ $factory->define(Timesheet::class, function (Faker $faker) {
         'morning_shift'=>$faker->randomElement(['V']),
         'afternoon_shift'=>$faker->randomElement(['V']),
         'user_id'=>$faker->unique()->randomElement($users),
-
+        'check_in'=>$faker->time('h:i:s','10:00:00'),
+        'check_out'=>$faker->time('h:i:s','20:00:00'),
     ];
 });
