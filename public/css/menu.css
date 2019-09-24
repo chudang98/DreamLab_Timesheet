@@ -14,14 +14,24 @@ body{
     margin: 0px;
     display: block;
 }
-a{
+.menu a{
     text-decoration: none;
     color: #1d2124;
 }
-a:hover{
+.menu a:hover{
     text-decoration: none;
 }
-a:focus{
+.menu a:focus{
+    text-decoration: none;
+}
+header a{
+    text-decoration: none;
+    color: #1d2124;
+}
+header a:hover{
+    text-decoration: none;
+}
+header a:focus{
     text-decoration: none;
 }
 ul{
@@ -78,6 +88,7 @@ header .logout i {
 }
 .body .content{
     padding-left: 3%;
+    padding-right: 3%;
     height: 500px;
     width: 86%;
     float: right;

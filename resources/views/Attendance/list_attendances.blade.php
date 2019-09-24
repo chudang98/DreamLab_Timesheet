@@ -1,6 +1,7 @@
 @extends('menu')
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{URL::asset('css/Attendance/list_attendances.css')}}">
+    <script src="{{asset('js/local-vi.js')}}"></script>
 @endsection
 @section('content')
     <form action="#">
@@ -32,6 +33,14 @@
                     </button>
                 </a>
             </p>
+            <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt_right" style="margin-right: 17px">
+                <a href="#">
+                    <button class="btn btn-primary" data-title="Edit" data-toggle="" >
+                        Thêm mới
+                    </button>
+                </a>
+            </p>
+
             <div class="row">
                 <div class="col-md-11">
                     <div class="table-responsive">
@@ -73,9 +82,9 @@
                                     </td>
                                     <td>
                                         <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt-left">
-                                            <a href="#" class="btn btn-primary btn-xs" >
-                                                    Sửa
-                                            </a>
+{{--                                            <a href="#" class="btn btn-primary btn-xs" >--}}
+{{--                                                    Cập nhật--}}
+{{--                                            </a>--}}
                                         </p>
                                         <p data-placement="top" data-toggle="tooltip" title="Delete" class="bt-right">
                                             <a href="#" class="btn btn-danger btn-xs" data-title="Delete"
@@ -86,13 +95,18 @@
                                         <div class="modal fade" id="delete{{$attendance->id}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
+                                                    <div class="modal-header alert-danger">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                                                        <h4 class="modal-title custom_align" id="Heading">Delete this entry</h4>
+                                                        <h3 class="modal-title custom_align alert-danger" id="Heading" style="text-align: center">Cảnh báo</h3>
                                                     </div>
                                                     <div class="modal-body">
 
-                                                        <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete attendance of datetime "{{$attendance->date_time}}"?</div>
+                                                        <div>
+                                                            <p>Hành động xóa lượt điểm danh có thể ảnh hưởng đến quá trình chấm công của nhân viên</p>
+                                                            <p class="text-danger"> Đây là hành động không được khuyến khích!</p>
+                                                            <p>Bạn có chắc muốn xóa lượt điểm danh của nhân viên?</p>
+
+                                                        </div>
 
                                                     </div>
                                                     <div class="modal-footer ">
@@ -152,8 +166,6 @@
             document.querySelector('.applyBtn ').innerText
                 = "Áp dụng"
             cb(start, end);
-
-
         });
     </script>
 @endsection

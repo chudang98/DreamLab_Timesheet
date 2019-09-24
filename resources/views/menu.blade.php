@@ -18,6 +18,10 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel='stylesheet' href='https://unpkg.com/@fullcalendar/core@4.3.1/main.min.css'>
+    <link rel='stylesheet' href='https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.css'>
+{{--    <script type="text/javascript" src="js/moment/moment.js"></script>--}}
+{{--    <script type="text/javascript" src="js/moment/vi.js"></script>--}}
     @yield('css')
     <title>Index</title>
 </head>
@@ -32,7 +36,7 @@
     <div class="menu">
         <ul>
             <li><a href="/editProfile/{{auth()->user()->name}}"><i class='fas fa-user-circle username'></i>{{auth()->user()->name}}</a></li>
-            <li><a href="#">Lịch làm việc</a></li>
+            <li><a href="/calendar">Lịch làm việc</a></li>
             <li><a href="/listAttendances">Điểm danh</a></li>
             <li><a href="/listTimesheets">Chấm công</a></li>
         </ul>

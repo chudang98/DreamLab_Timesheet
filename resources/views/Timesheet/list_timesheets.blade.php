@@ -1,6 +1,7 @@
 @extends('menu')
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{URL::asset('css/Attendance/list_attendances.css')}}">
+    <script src="{{asset('js/local-vi.js')}}"></script>
 @endsection
 @section('content')
     <form action="#">
@@ -48,8 +49,7 @@
                             <th>Tên nhân viên</th>
                             <th>Giờ vào</th>
                             <th>Giờ ra</th>
-                            <th>Phép</th>
-                            <th>Ngày công</th>
+                            <th>Thao tác</th>
                             </thead>
                             <tbody>
                             <?php $dem=1; ?>
@@ -74,10 +74,55 @@
                                             @endif
                                         @endforeach
                                     </td>
-                                    <td>{{$timesheet->date}}</td>
-                                    <td>{{$timesheet->date}}</td>
-                                    <td>{{$timesheet->date}}</td>
-                                    <td>{{$timesheet->date}}</td>
+                                    <td>
+                                        @if($timesheet->check_in!=null)
+                                            {{$timesheet->check_in}}
+                                        @else
+                                            X
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($timesheet->check_out!=null)
+                                            {{$timesheet->check_out}}
+                                        @else
+                                            X
+                                        @endif
+                                    <td>
+{{--                                        <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt-left">--}}
+{{--                                            <a href="#" class="btn btn-primary btn-xs" >--}}
+{{--                                                Cập nhật--}}
+{{--                                            </a>--}}
+{{--                                        </p>--}}
+                                        <p data-placement="top" data-toggle="tooltip" title="Delete" class="bt-right">
+                                            <a href="#" class="btn btn-danger btn-xs" data-title="Delete"
+                                               data-toggle="modal" data-target="#delete{{$timesheet->id}}" >
+                                                Xóa
+                                            </a>
+                                        </p>
+                                        <div class="modal fade" id="delete{{$timesheet->id}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                                        <h4 class="modal-title custom_align" id="Heading">Delete this entry</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete timesheet?</div>
+
+                                                    </div>
+                                                    <div class="modal-footer ">
+                                                        <a href="/deleteTimesheet/{{$timesheet->id}}" class="btn btn-danger" >
+                                                            <span class="glyphicon glyphicon-ok-sign"></span> Yes
+                                                        </a>
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
 

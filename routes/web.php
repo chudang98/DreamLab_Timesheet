@@ -46,22 +46,22 @@ Route::get('/day', function(){
     echo $arr[0] ." " .$arr[1] ." " .$arr[2];
 });
 
-Route::get('/{id}/{date}', function($id, $date){
-    
-    $start_Date = Carbon::create($date .' 00:00:00');
-    $end_Date = Carbon::create($date .' 23:59:59');
-
-    echo $id ." " .$start_Date;
-
-    $attendances = Attendance::where([
-        ['user_id', '=', $id],
-        ['date_time', '>=', $start_Date],
-        ['date_time', '<=', $end_Date],
-    ])->get();
-
-    foreach($attendances as $t){
-        echo $t .'</br>';
-    }
+//Route::get('/{id}/{date}', function($id, $date){
+//
+//    $start_Date = Carbon::create($date .' 00:00:00');
+//    $end_Date = Carbon::create($date .' 23:59:59');
+//
+//    echo $id ." " .$start_Date;
+//
+//    $attendances = Attendance::where([
+//        ['user_id', '=', $id],
+//        ['date_time', '>=', $start_Date],
+//        ['date_time', '<=', $end_Date],
+//    ])->get();
+//
+//    foreach($attendances as $t){
+//        echo $t .'</br>';
+//    }
     
 
     /*
@@ -92,7 +92,7 @@ Route::get('/{id}/{date}', function($id, $date){
 
             $timesheet = $check_in->timesheet;
             echo $timesheet; */
-}); 
+//});
 
 //Profile
 Route::get('/editProfile/{alert}','ProfileController@editProfile');
@@ -104,8 +104,12 @@ Route::post('/updatePassword','ProfileController@updatePassword');
 Route::get('/listAttendances', 'AttendanceController@listAttendances');
 Route::get('/deleteAttendance/{id}','AttendanceController@deleteAttendance');
 
+Route::get('/test/{id}', function ($id){
+   return $id;
+});
+
 //Timesheet
 Route::get('/listTimesheets', 'TimesheetController@listTimesheets');
-
+Route::get('/deleteTimesheet/{id}','TimesheetController@deleteTimesheet');
 //Calendar
 Route::get('/calendar', 'CalendarController@index');
