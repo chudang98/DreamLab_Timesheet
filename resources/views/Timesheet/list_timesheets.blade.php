@@ -2,6 +2,7 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{URL::asset('css/Attendance/list_attendances.css')}}">
 @endsection
+
 @section('content')
     <form action="#">
         <div class="container">
@@ -23,7 +24,8 @@
                         @endif
                     >
                 </div>
-                <button type="submit" class="bt-search btn btn-primary">Tìm kiếm</button>
+                <button id="test" type="button" class="bt-search btn btn-primary"
+                    onclick="test()">Tìm kiếm</button>
             </form>
             <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt_right" style="margin-right: 17px">
                 <a href="#">
@@ -91,6 +93,13 @@
             </div>
         </div>
     </form>
+
+    {{-- <form action="" method="post" >
+
+    </form> --}}
+@endsection
+
+@section('script')
     <script type="text/javascript">
         $(function() {
             var start = '<?php echo $time[0]; ?>';
@@ -123,8 +132,13 @@
             document.querySelector('.applyBtn ').innerText
                 = "Áp dụng"
             cb(start, end);
+            
+            var t = document.querySelector('#reportrange');
+            console.log(t.value);
 
-
+            function test(){
+                console.log('t');
+            }
         });
-    </script>
+    </script>    
 @endsection

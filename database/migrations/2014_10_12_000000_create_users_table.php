@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->integer('attendance_number')->unique();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('department');
+            $table->string('department')->nullable()->default(null);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedInteger('attendance_machine_id');
