@@ -3,6 +3,7 @@
     <link rel="stylesheet" type="text/css" href="{{URL::asset('css/Attendance/list_attendances.css')}}">
     <script src="{{asset('js/local-vi.js')}}"></script>
 @endsection
+
 @section('content')
     <form action="#">
         <div class="container">
@@ -24,11 +25,11 @@
                         @endif
                     >
                 </div>
-                <button type="submit" class="bt-search btn btn-primary">Tìm kiếm</button>
+                <button id="test" type="button" class="bt-search btn btn-primary">Tìm kiếm</button>
             </form>
             <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt_right" style="margin-right: 17px">
                 <a href="#">
-                    <button class="btn btn-primary" data-title="Edit" data-toggle="" >
+                    <button id="export_excel" type="button" class="btn btn-primary" data-title="Edit" data-toggle="" >
                         Xuất chấm công
                     </button>
                 </a>
@@ -136,14 +137,39 @@
             </div>
         </div>
     </form>
+
+    <form id="export_excel" action="{{ url('export_excel') }}" method="post" style="display: hidden">
+        @csrf
+        <input name="month" type="hidden" value="" id="export_excel_month">
+        <input name="yeah" type="hidden" value="" id="export_excel_yeah">
+    </form>
+@endsection
+
+@section('script')
     <script type="text/javascript">
         $(function() {
             var start = '<?php echo $time[0]; ?>';
             var end = '<?php echo $time[2]; ?>';
 
+
+            
+            console.log(start + " " + end);
+            
             function cb(start, end) {
                 $('#reportrange').html(start.format('DD/MM/YYYY') + '-' + end.format('DD/MM/YYYY'));
             }
+
+            $('#export_excel').click(function(){
+                var date = $('#reportrange').val();
+                console.log(date);
+                var month = parseInt(date[3] + date[4]);
+                var yeah = parseInt(date[6] + date[7] + date[8] + date[9]);
+                $('#export_excel_month').val(month);
+                $('#export_excel_yeah').val(yeah);                
+                // console.log(month + yeah);
+                $('form[id="export_excel"]').submit();
+            });
+
 
             $('#reportrange').daterangepicker({
                 startDate: start,
@@ -160,16 +186,22 @@
                     format: 'DD/MM/YYYY'
                 }
             }, cb);
+
             // console.log(document.querySelector('li[data-range-key="Custom Range"]'));
+
             document.querySelector('li[data-range-key="Custom Range"]').innerText
                 = "Tự đặt ngày";
             document.querySelector('.cancelBtn').innerText
                 = "Hủy";
             document.querySelector('.applyBtn ').innerText
                 = "Áp dụng"
+                
             cb(start, end);
 
+            
+           
+            
 
         });
-    </script>
+    </script>    
 @endsection

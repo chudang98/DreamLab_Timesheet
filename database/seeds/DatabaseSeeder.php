@@ -15,12 +15,12 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(AttendanceMachinesTableSeeder::class);
         $this->call(RolesTableSeeder::class);
-        $this->call(PermissionsTableSeeder::class);
-         $this->call(UsersTableSeeder::class);
-         $this->call(RoleUserTableSeeder::class);
-         $this->call(PermissionRoleTableSeeder::class);
-         $this->call(PermissionUserTableSeeder::class);
-         $this->call(AttendancesTableSeeder::class);
-         $this->call(TimesheetsTableSeeder::class);
+        $this->call(PermissionsTableSeeder::class); 
+        $this->call(UsersTableSeeder::class);
+        // $this->call(RoleUserTableSeeder::class);
+        // $this->call(PermissionRoleTableSeeder::class);
+        // $this->call(PermissionUserTableSeeder::class);
+        // $this->call(AttendancesTableSeeder::class);
+        // $this->call(TimesheetsTableSeeder::class);
     }
 }

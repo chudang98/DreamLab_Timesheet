@@ -32,7 +32,7 @@ class Timesheet extends Model
     public $count_off;
 
     protected $fillable = [
-        'id', 'date', 'morning_shift', 'afternoon_shift', 'user_id'
+        'id', 'date', 'morning_shift', 'afternoon_shift', 'user_id', 'check_in', 'check_out'
     ];
 
 
@@ -48,7 +48,8 @@ class Timesheet extends Model
     }
 
 
-    public function getCOAttendance(){
+    public function getCOAttendance()
+    {
         $time = $this->date;
 
         $start_date = Carbon::create($time .' 00:00:00');
@@ -77,8 +78,12 @@ class Timesheet extends Model
         return null;
     }
     // $date as string
-    public function processAttendanceBelongTo(){
+    public function processAttendanceBelongTo()
+    {
         $time = $this->date;
+
+
+
 
         $start_date = Carbon::create($time .' 00:00:00');
         $end_date = Carbon::create($time .' 23:59:59');
@@ -88,32 +93,54 @@ class Timesheet extends Model
                 ['user_id', '=', $this->user_id],
                 ['date_time', '>=', $start_date],
                 ['date_time', '<=', $end_date],
-                // ['is_check', '=', 'N'],
+                ['is_check', '=', 'N'],
 
         ])->get();
-        
+
+
+
             // Timesheets này không có attendance nào mới        
         if($attendances->isEmpty() != true)
         {
+            $count = sizeof($attendances);
             $check_in = $attendances[0];
             $check_out = $attendances[0];
-            $count = sizeof($attendances);
+
 
             if($count > 1)
             {
+
+                if($this->check_in != null)
+                {
+                    $check_in = Attendance::where([
+                        ['date_time', '=', $this->date ." " .$this->check_in],
+                        ['user_id', '=', $this->user_id]
+                    ])->first();
+    
+                }
+                
+                if($this->check_out != null)
+                {
+                    $check_in = Attendance::where([
+                        ['date_time', '=', $this->date ." " .$this->check_out],
+                        ['user_id', '=', $this->user_id]
+                    ])->first();
+                    
+                }
+       
+
                 for($i = 0; $i < $count; $i++)
                 {
                     $attendances[$i]->timesheet_id = $this->id;
                     if($attendances[$i]->earlyThan($check_in) == true){
                         $check_in = $attendances[$i];
-                    }else
-                    {
-                        if($attendances[$i]->laterThan($check_out) == true){
-                            $check_out = $attendances[$i];
-                        }
+                    }
+                    if($attendances[$i]->laterThan($check_out) == true){
+                        $check_out = $attendances[$i];
                     }
 
-                    
+                    $attendances[$i]->timesheet_id = $this->id;
+                    $attendances[$i]->is_check = 'Y';
 
                     $attendances[$i]->save();
                 }
@@ -123,20 +150,22 @@ class Timesheet extends Model
                 
                 $this->processCiCoAttendance($check_in, $check_out);
 
-            }else{
+            }else
+            {
                 // Chỉ có 1 attendance
-                $this->check_in = $check_in->date_time;
+                $check_in = $attendances[0];
+
+                // $this->check_in = $check_in->date_time;
                 $this->processOneAttendance($check_in);
                 
                 $attendances[0]->timesheet_id = $this->id;
                 $attendances[0]->is_check = 'Y';
-                $check_in->save();
+                $attendances[0]->save();
             }
         }
 
         $this->save();                
     }
-
 
     private function processCiCoAttendance($check_in, $check_out)
     {
@@ -268,48 +297,10 @@ class Timesheet extends Model
         }        
     }
 
-    public function processInfor(){
-      /*   $this->count_worked = 0;
-        if($this->morning_shift != 'X')
-            $this->count_worked++;
-        if($this->afternoon_shift != 'X')
-            $this->count_worked++; */
-    }
-
- /*    public function processInfor()
-    {
-        $this->count_early = 0;
-        $this->count_late = 0;
-        $this->count_off = 0;
-        $this->count_worked = 0;
-        
-        if($this->morning_shift == 'M')
-        {
-            $this->count_late += 1;
-        }
-        if($this->afternoon_shift == 'M')
-        {
-            $this->count_late += 1;
-        }
-        if($this->afternoon_shift == 'S')
-        {
-            $this->count_early += 1;
-        }
-        if($this->morning_shift == 'X')
-            $this->count_worked += 1;
-        if($this->afternoon_shift == 'X')
-            $this->count_worked += 1;
-
-        if($this->morning_shift == 'V')
-            $this->count_off += 1;
-        if($this->afternoon_shift == 'V')
-            $this->count_off += 1;
-    } */
-
-
     private function processOneAttendance($attendance)
     {
         $time = Carbon::create($attendance->date_time)->toTimeString();
+     
         switch($this->morning_shift){
             case 'X' : {
                 switch($this->afternoon_shift){
@@ -381,6 +372,7 @@ class Timesheet extends Model
                     if($check_out->laterThan($attendance) == true)
                         $this->processCiCoAttendance($check_out, $attendance);
                     else{
+                        $this->check_in = $attendance->date_time;
                         // Cả timesheet đó chỉ có duy nhất 1 attendance
                         if(strtotime($time) <= strtotime(static::$LATE_TIME_MORNING))
                         {
@@ -397,5 +389,46 @@ class Timesheet extends Model
             }   
         }        
     }
+
+    public function processInfor(){
+      /*   $this->count_worked = 0;
+        if($this->morning_shift != 'X')
+            $this->count_worked++;
+        if($this->afternoon_shift != 'X')
+            $this->count_worked++; */
+    }
+
+ /*    public function processInfor()
+    {
+        $this->count_early = 0;
+        $this->count_late = 0;
+        $this->count_off = 0;
+        $this->count_worked = 0;
+        
+        if($this->morning_shift == 'M')
+        {
+            $this->count_late += 1;
+        }
+        if($this->afternoon_shift == 'M')
+        {
+            $this->count_late += 1;
+        }
+        if($this->afternoon_shift == 'S')
+        {
+            $this->count_early += 1;
+        }
+        if($this->morning_shift == 'X')
+            $this->count_worked += 1;
+        if($this->afternoon_shift == 'X')
+            $this->count_worked += 1;
+
+        if($this->morning_shift == 'V')
+            $this->count_off += 1;
+        if($this->afternoon_shift == 'V')
+            $this->count_off += 1;
+    } */
+
+
+
 
 }

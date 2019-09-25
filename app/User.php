@@ -109,22 +109,43 @@ class User extends Authenticatable
                 $timesheet->morning_shift = 'V';
                 $timesheet->afternoon_shift = 'V';
                 $timesheet->save();
-
-                $timesheet->processAttendanceBelongTo();              
-            }else
-            {
-                $timesheet->processAttendanceBelongTo();
-
             }
 
-            $timesheet->save();
+            // $timesheet->save();
 
-            $timesheet->processInfor();
+            // $timesheet->processInfor();
 
             $result[] = $timesheet;
         }
 
         return $result;
+    }
+
+    public function processNewData(){
+        $timesheet = Timesheet::where([
+            ['date', '=', $first_day],
+            ['user_id', '=' , $this->id],
+        ])->first();
+
+        if($timesheet == null)
+        {
+            $timesheet = new Timesheet();
+            $timesheet->user_id = $this->id;
+            $timesheet->date = $first_day->format('Y-m-d');
+            $timesheet->morning_shift = 'V';
+            $timesheet->afternoon_shift = 'V';
+            $timesheet->save();
+
+            $timesheet->processAttendanceBelongTo();              
+        }else
+        {
+            $timesheet->processAttendanceBelongTo();
+
+        }
+
+        $timesheet->save();
+
+        $timesheet->processInfor();
     }
 
     public function inforWorkingTime($timesheets){
@@ -158,9 +179,6 @@ class User extends Authenticatable
         // $result['total_working_day'] = $result['working_day'] - ($result['late'] + $result['early'] )/2;
         return $result;
     }
-
-
-
 
 
 }

@@ -198,7 +198,7 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                 */
 
                 $sheet->setCellValue('A1', 'CÔNG TY CỔ PHẦN GLOBAL DREAM LAB');
-                $sheet->mergeCells('A1:C2');
+                $sheet->mergeCells('A1:D2');
                 $sheet->getStyle('A1:D2')->applyFromArray($style_all);
                 $sheet->getStyle('A1:D2')->applyFromArray($style_border);
                 $sheet->getStyle('A1:D2')->applyFromArray($style_bold);
