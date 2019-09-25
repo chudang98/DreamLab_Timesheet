@@ -150,7 +150,8 @@ class Timesheet extends Model
                 
                 $this->processCiCoAttendance($check_in, $check_out);
 
-            }else{
+            }else
+            {
                 // Chỉ có 1 attendance
                 $check_in = $attendances[0];
 
