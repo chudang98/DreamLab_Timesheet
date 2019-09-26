@@ -89,6 +89,6 @@ class AttendanceController extends Controller
 
     public function processNewData(){
         Attendance::processNewData();
-        return back();
+        return redirect('/listAttendances');
     }
 }

@@ -36,7 +36,7 @@
             </p>
             <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt_right" style="margin-right: 17px">
                 <a href="{{ url('process_new_data') }}">
-                    <button id="process_data" class="btn btn-primary" data-title="Edit" data-toggle="" >
+                    <button type="button" id="process_data" class="btn btn-primary" data-title="Edit" data-toggle="" >
                         Xử lí dữ liệu
                     </button>
                 </a>
@@ -142,10 +142,10 @@
             var start = '<?php echo $time[0]; ?>';
             var end = '<?php echo $time[2]; ?>';
 
-           /*  $('#process_data').click(function(){
+        /*    $('#process_data').click(function(){
                 window.location.href = {{ url('process_new_data') }};
-            });
- */
+            }); */
+ 
 
             function cb(start, end) {
                 $('#reportrange').html(start.format('DD/MM/YYYY') + '-' + end.format('DD/MM/YYYY'));
