@@ -80,10 +80,8 @@ class Timesheet extends Model
     // $date as string
     public function processAttendanceBelongTo()
     {
+
         $time = $this->date;
-
-
-
 
         $start_date = Carbon::create($time .' 00:00:00');
         $end_date = Carbon::create($time .' 23:59:59');
@@ -396,6 +394,36 @@ class Timesheet extends Model
             $this->count_worked++;
         if($this->afternoon_shift != 'X')
             $this->count_worked++; */
+    }
+
+    public function checkDayOff(){
+        $day = Carbon::create($this->date)->shortEnglishDayOfWeek;
+        
+        if($day == 'Sat' || $day == 'Sun'){
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public function checkWorkingDay(){
+
+    }
+
+    public function convertObjExcel(){
+        
+        if($this->checkDayOff() == true){
+            return $obj = [
+                'S' => 'N',
+                'C' => 'N',
+            ];
+        }
+
+        return $obj = [
+            'S' => $this->morning_shift,
+            'C' => $this->afternoon_shift
+        ];
     }
 
  /*    public function processInfor()

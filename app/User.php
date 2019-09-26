@@ -70,12 +70,7 @@ class User extends Authenticatable
             $timesheets = $this->getTimesheet($month, $yeah);
 
         foreach($timesheets as $timesheet){
-            $obj = [
-                'S' => $timesheet->morning_shift,
-                'C' => $timesheet->afternoon_shift
-            ];
-    
-
+            $obj = $timesheet->convertObjExcel();
             $result[] = $obj;
         }
 

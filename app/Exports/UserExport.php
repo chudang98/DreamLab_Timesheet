@@ -223,30 +223,49 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                 $sheet->mergeCells('AM1:AP1');
                 $sheet->getStyle('AM1:AP1')->applyFromArray($style_all);
                 $sheet->getStyle('AM1:AP1')->applyFromArray($style_border);
+
                 $sheet->setCellValue('AM2', 'Vắng (0)');
-                $sheet->mergeCells('AM2:AP2');
-                $sheet->getStyle('AM2:AP2')->applyFromArray($style_all);
-                $sheet->getStyle('AM2:AP2')->applyFromArray($style_border);
-                $sheet->getStyle('AM2:AP2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                $sheet->mergeCells('AM2:AN2');
+                $sheet->getStyle('AM2:AN2')->applyFromArray($style_all);
+                $sheet->getStyle('AM2:AN2')->applyFromArray($style_border);
+                $sheet->getStyle('AM2:AN2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()->setARGB('ffb3b3');
+
                 $sheet->setCellValue('AM3', 'Đến muộn (M)');
-                $sheet->mergeCells('AM3:AP3');
-                $sheet->getStyle('AM3:AP3')->applyFromArray($style_all);
-                $sheet->getStyle('AM3:AP3')->applyFromArray($style_border);
-                $sheet->getStyle('AM3:AP3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                $sheet->mergeCells('AM3:AN3');
+                $sheet->getStyle('AM3:AN3')->applyFromArray($style_all);
+                $sheet->getStyle('AM3:AN3')->applyFromArray($style_border);
+                $sheet->getStyle('AM3:AN3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()->setARGB('ffffb3');
+
                 $sheet->setCellValue('AM4', 'Về sớm (S)');
-                $sheet->mergeCells('AM4:AP4');
-                $sheet->getStyle('AM4:AP4')->applyFromArray($style_all);
-                $sheet->getStyle('AM4:AP4')->applyFromArray($style_border);
-                $sheet->getStyle('AM4:AP4')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                $sheet->mergeCells('AM4:AN4');
+                $sheet->getStyle('AM4:AN4')->applyFromArray($style_all);
+                $sheet->getStyle('AM4:AN4')->applyFromArray($style_border);
+                $sheet->getStyle('AM4:AN4')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()->setARGB('99e6ff');
+
                 $sheet->setCellValue('AM5', 'Nghỉ phép (P)');
-                $sheet->mergeCells('AM5:AP5');
-                $sheet->getStyle('AM5:AP5')->applyFromArray($style_all);
-                $sheet->getStyle('AM5:AP5')->applyFromArray($style_border);
-                $sheet->getStyle('AM5:AP5')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                $sheet->mergeCells('AM5:AN5');
+                $sheet->getStyle('AM5:AN5')->applyFromArray($style_all);
+                $sheet->getStyle('AM5:AN5')->applyFromArray($style_border);
+                $sheet->getStyle('AM5:AN5')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()->setARGB('b3ffb3');
+
+                $sheet->setCellValue('AO2', 'Ngày nghỉ');
+                $sheet->mergeCells('AO2:AP2');
+                $sheet->getStyle('AO2:AP2')->applyFromArray($style_all);
+                $sheet->getStyle('AO2:AP2')->applyFromArray($style_border);
+                $sheet->getStyle('AO2:AP2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()->setARGB('d9d9d9');
+
+                $sheet->setCellValue('AO3', 'Làm bù (B)');
+                $sheet->mergeCells('AO3:AP3');
+                $sheet->getStyle('AO3:AP3')->applyFromArray($style_all);
+                $sheet->getStyle('AO3:AP3')->applyFromArray($style_border);
+                $sheet->getStyle('AO3:AP3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()->setARGB('ffb366');
+                
 
                 /*
                     TODO : Viết các hàm tính toán cho trương tính toán cuối bảng
@@ -348,7 +367,7 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
             $obj = [
                 'id' => $user->id,
                 'name' => $user->name,
-                'No.' => $user->attendance_number,
+                'No.' => $user->employee_id,
                 'timesheets' => $timesheets,
 
                 'duty_day' => static::$number_day,
@@ -489,14 +508,14 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
 
                 // * Phạt đến muộn
             $cell_result =  Coordinate::stringFromColumnIndex($col_phat_muon) .'' .$row_data;;
-            $cell_value = '=INT(' .$result_M .'/3)';
+            $cell_value = '=INT(' .$result_M .'/3)/2';
             $sheet->setCellValue($cell_result, $cell_value);
             $total_value .= (' - ' .$cell_result);
 
 
                 // * Phạt về sớm
             $cell_result =  Coordinate::stringFromColumnIndex($col_phat_som) .'' .$row_data;;
-            $cell_value = '=INT(' .$result_S .'/3)';
+            $cell_value = '=INT(' .$result_S .'/3)/2';
             $sheet->setCellValue($cell_result, $cell_value);
             $total_value .= (' - ' .$cell_result .')');
 
@@ -536,12 +555,19 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                             if($data == 'S')
                                 $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                                 ->getStartColor()->setARGB('99e6ff');
+                            else
+                                if($data == 'N'){
+                                    $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                        ->getStartColor()->setARGB('d9d9d9');
+                                    $sheet->setCellValue($index, '0');
+                                }
                 }
 
                 $row++;
                 $index = $column .$row;
                 $cell = $sheet->getCell($index);
                 $data = $cell->getValue();
+
                 if($data == '0')
                 {
                     $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
@@ -559,6 +585,12 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
                             if($data == 'S')
                                 $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                                 ->getStartColor()->setARGB('99e6ff');
+                            else
+                                if($data == 'N'){
+                                    $sheet->getStyle($index)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                        ->getStartColor()->setARGB('d9d9d9');
+                                    $sheet->setCellValue($index, '0');
+                                }
                 }
 
             }
