@@ -25,7 +25,7 @@
                         @endif
                     >
                 </div>
-                <button id="test" type="button" class="bt-search btn btn-primary">Tìm kiếm</button>
+                <button id="test" type="submit" class="bt-search btn btn-primary">Tìm kiếm</button>
             </form>
             <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt_right" style="margin-right: 17px">
                 <a href="#">
