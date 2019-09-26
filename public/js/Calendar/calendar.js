@@ -4,27 +4,21 @@ document.addEventListener('DOMContentLoaded', function() {
         locale: 'vi',
         plugins: [ 'interaction', 'dayGrid','timeGrid' ],
         defaultView: 'dayGridMonth',
-        // defaultDate: '2019-09-12',
+        defaultDate: '2019-09-12',
         selectable: true,
         firstDay: 1,
         dateClick: function(info) {
             // alert('clicked ' + info.dateStr);
-            content ="";
-            content += "<h3>Thiết lập lịch</h3>" +
-                "<div style='text-align: center'> infor.dateStr</div>"+
-                "<form><input type=\"radio\" id=\"myRadio\">Nam <input type=\"radio\" id=\"myRadio\">Nữ" +
-                "<button>Submit</button></form>";
-            alert(content);
+            var person = prompt("Please enter your name");
         },
         eventRender: function(info) {
-            var tooltip = new Tooltip(info.el, {
+            $(info.el).tooltip({
                 title: info.event.extendedProps.description,
-                placement: 'top',
-                trigger: 'hover',
-                container: 'body'
+                placement: "top",
+                trigger: "hover",
+                container: "body"
             });
         },
-
         events: [
             {
                 title: 'All Day Event',

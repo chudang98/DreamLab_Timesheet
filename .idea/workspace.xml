@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5bd7d3a7-c953-4c39-b397-e385d01d10f0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/js/Calendar/vi.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/Calendar/calendar.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/Calendar/calendar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/TimesheetsTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/TimesheetsTableSeeder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/Calendar/calendar.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/Calendar/calendar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/Calendar/calendar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Calendar/calendar.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/menu.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/menu.blade.php" afterDir="false" />
@@ -35,8 +35,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/menu.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="57" selection-start-line="6" selection-start-column="57" selection-end-line="6" selection-end-column="57" />
+            <state relative-caret-position="153">
+              <caret line="9" column="104" lean-forward="true" selection-start-line="9" selection-start-column="104" selection-end-line="9" selection-end-column="104" />
             </state>
           </provider>
         </entry>
@@ -44,8 +44,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/Calendar/calendar.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="408">
+              <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/database/seeds/UsersTableSeeder.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -53,29 +62,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/css/Calendar/calendar.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="21" selection-start-line="3" selection-start-column="21" selection-end-line="3" selection-end-column="21" />
+            <state relative-caret-position="85">
+              <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/Calendar/vi.js">
+        <entry file="file://$PROJECT_DIR$/public/js/Calendar/calendar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="26" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
+            <state relative-caret-position="238">
+              <caret line="20" column="10" lean-forward="true" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/public/js/Calendar/calendar.js">
+        <entry file="file://$PROJECT_DIR$/resources/views/Timesheet/list_timesheets.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="16" column="26" lean-forward="true" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="391">
+              <caret line="27" column="99" lean-forward="true" selection-start-line="27" selection-start-column="99" selection-end-line="27" selection-end-column="99" />
             </state>
           </provider>
         </entry>
@@ -157,8 +163,6 @@
         <option value="$PROJECT_DIR$/public/js/daterangepicker.coffe" />
         <option value="$PROJECT_DIR$/database/migrations/2019_09_03_065418_create_timesheets_table.php" />
         <option value="$PROJECT_DIR$/database/factories/TimesheetFactory.php" />
-        <option value="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" />
-        <option value="$PROJECT_DIR$/database/seeds/TimesheetsTableSeeder.php" />
         <option value="$PROJECT_DIR$/public/css/Attendance/list_attendances.css" />
         <option value="$PROJECT_DIR$/database/seeds/AttendancesTableSeeder.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/AttendanceController.php" />
@@ -168,11 +172,13 @@
         <option value="$PROJECT_DIR$/resources/views/Attendance/list_attendances.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/Timesheet/list_timesheets.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/TimesheetController.php" />
-        <option value="$PROJECT_DIR$/resources/views/menu.blade.php" />
         <option value="$PROJECT_DIR$/public/js/Calendar/vi.js" />
         <option value="$PROJECT_DIR$/public/css/Calendar/calendar.css" />
-        <option value="$PROJECT_DIR$/resources/views/Calendar/calendar.blade.php" />
+        <option value="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" />
+        <option value="$PROJECT_DIR$/database/seeds/TimesheetsTableSeeder.php" />
         <option value="$PROJECT_DIR$/public/js/Calendar/calendar.js" />
+        <option value="$PROJECT_DIR$/resources/views/menu.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/Calendar/calendar.blade.php" />
       </list>
     </option>
   </component>
@@ -521,7 +527,11 @@
       <workItem from="1569220845804" duration="6753000" />
       <workItem from="1569297463353" duration="2495000" />
       <workItem from="1569298059986" duration="16000" />
-      <workItem from="1569375164074" duration="250000" />
+      <workItem from="1569375164074" duration="1573000" />
+      <workItem from="1569377328103" duration="3387000" />
+      <workItem from="1569377475283" duration="65000" />
+      <workItem from="1569476515857" duration="2535000" />
+      <workItem from="1569479659426" duration="848000" />
     </task>
     <task id="LOCAL-00001" summary="giao dien">
       <created>1567487267917</created>
@@ -621,17 +631,24 @@
       <option name="project" value="LOCAL" />
       <updated>1569289436886</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="calendar">
+      <created>1569375694941</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1569375694941</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="160125000" />
+    <option name="totallyTimeSpent" value="168283000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.30181542" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31996974" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -644,7 +661,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.7152209" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.049099836" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -682,16 +699,10 @@
     <MESSAGE value="new" />
     <MESSAGE value="timesheet" />
     <MESSAGE value="xử lí tgian chọn" />
-    <option name="LAST_COMMIT_MESSAGE" value="xử lí tgian chọn" />
+    <MESSAGE value="calendar" />
+    <option name="LAST_COMMIT_MESSAGE" value="calendar" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/database/seeds/RoleUserTableSeeder.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/Profile/change_password.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -834,23 +845,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/seeds/DatabaseSeeder.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="46" lean-forward="true" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
-          <folding>
-            <element signature="e#7#26#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/database/seeds/TimesheetsTableSeeder.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="35" column="48" selection-start-line="35" selection-start-column="48" selection-end-line="35" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/factories/TimesheetFactory.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -920,13 +914,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Timesheet/list_timesheets.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="55" selection-start-line="3" selection-start-column="55" selection-end-line="3" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/local-vi.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="529">
@@ -951,27 +938,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AttendanceController.php">
+    <entry file="file://$PROJECT_DIR$/database/seeds/TimesheetsTableSeeder.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1343">
-          <caret line="85" column="44" selection-start-line="85" selection-start-column="44" selection-end-line="85" selection-end-column="44" />
+        <state relative-caret-position="380">
+          <caret line="45" column="13" lean-forward="true" selection-start-line="14" selection-start-column="35" selection-end-line="45" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/seeds/DatabaseSeeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="52" lean-forward="true" selection-start-line="22" selection-start-column="52" selection-end-line="23" selection-end-column="51" />
           <folding>
-            <element signature="e#40#53#0#PHP" expanded="true" />
+            <element signature="e#7#26#0#PHP" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/menu.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="57" selection-start-line="6" selection-start-column="57" selection-end-line="6" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/Calendar/calendar.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="21" selection-start-line="3" selection-start-column="21" selection-end-line="3" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -982,20 +962,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AttendanceController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1343">
+          <caret line="85" column="44" selection-start-line="85" selection-start-column="44" selection-end-line="85" selection-end-column="44" />
+          <folding>
+            <element signature="e#40#53#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/seeds/UsersTableSeeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/Calendar/calendar.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/menu.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="104" lean-forward="true" selection-start-line="9" selection-start-column="104" selection-end-line="9" selection-end-column="104" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/Calendar/calendar.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="408">
+          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/Calendar/calendar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="16" column="26" lean-forward="true" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="238">
+          <caret line="20" column="10" lean-forward="true" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/Timesheet/list_timesheets.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="27" column="99" lean-forward="true" selection-start-line="27" selection-start-column="99" selection-end-line="27" selection-end-column="99" />
         </state>
       </provider>
     </entry>
