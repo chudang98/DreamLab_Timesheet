@@ -34,7 +34,13 @@
                     </button>
                 </a>
             </p>
-
+            <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt_right" style="margin-right: 17px">
+                <a href="{{ url('process_new_data') }}">
+                    <button id="process_data" class="btn btn-primary" data-title="Edit" data-toggle="" >
+                        Xử lí dữ liệu
+                    </button>
+                </a>
+            </p>
             <div class="row">
                 <div class="col-md-11">
                     <div class="table-responsive">
@@ -129,13 +135,7 @@
         </div>
     </form>
 
-    <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt_right" style="margin-right: 17px">
-        <a href="{{ url('process_new_data') }}">
-            <button id="process_data" class="btn btn-primary" data-title="Edit" data-toggle="" >
-                Xử lí dữ liệu
-            </button>
-        </a>
-    </p>
+
 
     <script type="text/javascript">
         $(function() {
