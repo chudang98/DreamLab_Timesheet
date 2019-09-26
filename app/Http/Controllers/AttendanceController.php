@@ -79,10 +79,16 @@ class AttendanceController extends Controller
         }
         return View('Attendance.list_attendances', $data);
     }
+
     public function deleteAttendance($id){
         DB::table('attendances')
             ->where('id', $id)
             ->delete();
         return redirect('/listAttendances');
+    }
+
+    public function processNewData(){
+        Attendance::processNewData();
+        return back();
     }
 }

@@ -34,69 +34,23 @@ Route::get('/test', 'ExcelExport@test');
 
 Route::post('/export_excel', 'ExcelExport@xuatUser')->name('export_excel');
 
-Route::get('mytest', function(){
-    Attendance::processNewData();
-});
+Route::get('process_new_data', 'AttendanceController@processNewData')->name('process_new_data');
 
 Route::get('/day', function(){
-
-    $arr = [];
-    $t = 'ad';
-
-    $arr[] = $t .'a';
-    $arr[] = $t .'h';
-    $arr[] = $t .'b';
+ 
+    $t = Timesheet::where('id', 1164)->first();
     
-    echo $arr[0] ." " .$arr[1] ." " .$arr[2];
+    echo $t ."</br>";
+    $day = Carbon::create($t->date);
+    echo $day ."</br>" .$day->shortEnglishDayOfWeek;
+    dd($t->convertObjExcel());
+ 
 });
 
-//Route::get('/{id}/{date}', function($id, $date){
-//
-//    $start_Date = Carbon::create($date .' 00:00:00');
-//    $end_Date = Carbon::create($date .' 23:59:59');
-//
-//    echo $id ." " .$start_Date;
-//
-//    $attendances = Attendance::where([
-//        ['user_id', '=', $id],
-//        ['date_time', '>=', $start_Date],
-//        ['date_time', '<=', $end_Date],
-//    ])->get();
-//
-//    foreach($attendances as $t){
-//        echo $t .'</br>';
-//    }
-    
+// Route::get('t', function(){
+//    $user = User::where('id')
+// });
 
-    /*
-            $check_in = $attendances[1];
-            $check_out = $attendances[1];
-            $count = sizeof($attendances);
-            echo '</br>';
-            if($count > 1)
-            {
-                for($i = 0; $i < $count; $i++)
-                {
-                    if($attendances[$i]->earlyThan($check_in) == true){
-                        $check_in = $attendances[$i];
-                    }
-                    else
-                    {
-                        if($attendances[$i]->laterThan($check_out) == true){
-                            $check_out = $attendances[$i];
-                        }
-                    }
-                }
-
-            }else{
-                // Chỉ có 1 attendance
-            }
-
-            echo $check_in .'</br>' .$check_out .'</br>';
-
-            $timesheet = $check_in->timesheet;
-            echo $timesheet; */
-//});
 
 //Profile
 Route::get('/editProfile/{alert}','ProfileController@editProfile');
