@@ -17,8 +17,8 @@ class CreateDaysTable extends Migration
             $table->bigIncrements('id');
             $table->date('date');
             $table->enum('state', ['working', 'off', 'break']);
-            $table->time('startt_break');
-            $table->time('endt_break');
+            $table->time('startt_break')->nullable();
+            $table->time('endt_break')->nullable();
             $table->string('reason');
         });
     }

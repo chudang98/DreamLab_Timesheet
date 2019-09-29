@@ -78,7 +78,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         ]
     });
-
+    calendar.addEvent({
+        title: 'create new',
+        description:'decription create new ',
+        start:'2019-09-01'
+    });
     calendar.render();
     document.querySelector('.fc-today-button').innerText
         = "Hôm nay";
