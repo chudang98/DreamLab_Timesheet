@@ -60,20 +60,10 @@
                                     <td>{{$dem++}}</td>
                                     <td>{{$timesheet->date}}</td>
                                     <td>
-                                        @foreach($users as $user)
-                                            @if($user->id == $timesheet->user_id)
-                                                {{$user->employee_id}}
-                                                @break
-                                            @endif
-                                        @endforeach
+                                        {{$timesheet->user->employee_id}}
                                     </td>
                                     <td>
-                                        @foreach($users as $user)
-                                            @if($user->id == $timesheet->user_id)
-                                                {{$user->name}}
-                                                @break
-                                            @endif
-                                        @endforeach
+                                        {{$timesheet->user->name}}
                                     </td>
                                     <td>
                                         @if($timesheet->check_in!=null)
@@ -137,6 +127,9 @@
             </div>
         </div>
     </form>
+    <div class="links">
+        {{$timesheets->links()}}
+    </div>
 
     <form id="export_excel" action="{{ url('export_excel') }}" method="post" style="display: hidden">
         @csrf
@@ -148,8 +141,8 @@
 @section('script')
     <script type="text/javascript">
         $(function() {
-            var start = '<?php echo $time[0]; ?>';
-            var end = '<?php echo $time[2]; ?>';
+            var start = '{{$time[0]}}';
+            var end = '{{$time[1]}}';
 
 
             

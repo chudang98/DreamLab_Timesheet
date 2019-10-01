@@ -65,20 +65,10 @@
                                     <td>{{$dem++}}</td>
                                     <td>{{$attendance->date_time}}</td>
                                     <td>
-                                        @foreach($users as $user)
-                                            @if($user->id == $attendance->user_id)
-                                                {{$user->employee_id}}
-                                                @break
-                                            @endif
-                                        @endforeach
+                                        {{$attendance->user->employee_id}}
                                     </td>
                                     <td>
-                                        @foreach($users as $user)
-                                            @if($user->id == $attendance->user_id)
-                                                {{$user->name}}
-                                                @break
-                                            @endif
-                                        @endforeach
+                                        {{$attendance->user->name}}
                                     </td>
                                     <td>
                                         <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt-left">
@@ -135,12 +125,14 @@
         </div>
     </form>
 
-
+    <div class="links">
+        {{$attendances->links()}}
+    </div>
 
     <script type="text/javascript">
         $(function() {
-            var start = '<?php echo $time[0]; ?>';
-            var end = '<?php echo $time[2]; ?>';
+            var start = '{{$time[0]}}';
+            var end = '{{$time[1]}}';
 
         /*    $('#process_data').click(function(){
                 window.location.href = {{ url('process_new_data') }};

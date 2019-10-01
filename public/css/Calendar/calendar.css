@@ -1,28 +1,24 @@
-#calendar {
-    max-width: 1080px;
-    margin: 0px auto;
-    margin-bottom: 100px;
-}
-.popper,
-.tooltip {
-    position: absolute;
-    z-index: 9999;
-    background: #FFC107;
-    color: black;
-    width: 150px;
-    border-radius: 3px;
-    box-shadow: 0 0 2px rgba(0,0,0,0.5);
-    padding: 10px;
-    text-align: center;
-}
-.style5 .tooltip {
-    background: #1E252B;
-    color: #FFFFFF;
-    max-width: 200px;
-    width: auto;
-    font-size: .8rem;
-    padding: .5em 1em;
-}
+
+/*.popper,*/
+/*.tooltip {*/
+/*    position: absolute;*/
+/*    z-index: 9999;*/
+/*    background: #FFC107;*/
+/*    color: black;*/
+/*    width: 150px;*/
+/*    border-radius: 3px;*/
+/*    box-shadow: 0 0 2px rgba(0,0,0,0.5);*/
+/*    padding: 10px;*/
+/*    text-align: center;*/
+/*}*/
+/*.style5 .tooltip {*/
+/*    background: #1E252B;*/
+/*    color: #FFFFFF;*/
+/*    max-width: 200px;*/
+/*    width: auto;*/
+/*    font-size: .8rem;*/
+/*    padding: .5em 1em;*/
+/*}*/
 .popper .popper__arrow,
 .tooltip .tooltip-arrow {
     width: 0;
@@ -103,4 +99,45 @@
 .fc-unthemed .fc-list-view, .fc-unthemed .fc-popover, .fc-unthemed .fc-row, .fc-unthemed tbody,
 .fc-unthemed td, .fc-unthemed th, .fc-unthemed thead {
     border-color: #6c757d;
+}
+
+.content, .fc-day-header{
+    font-size: 16px;
+}
+.fc-content, .fc-day-number{
+    font-size: 16px;
+}
+
+.tooltip{
+    font-size: 16px;
+}
+
+/*popup*/
+#exampleModal h3 {
+    font-size: 30px;
+    font-weight: bolder;
+    margin-left: 32%;
+    margin-top: 15px;
+}
+#exampleModal h4 {
+    font-size: 20px;
+    font-weight: bolder;
+    /*margin-left: 31%;*/
+    /*margin-top: 15px;*/
+}
+.close span {
+    font-size: 30px;
+    position: relative;
+    top: -10px;
+    right: -5px;
+}
+.select-type{
+    padding: 15px 30px;
+}
+
+/*.modal-body input{*/
+/*    margin-bottom: 15px;*/
+/*}*/
+.modal-body #reason-working, #reason-off, #hour-minute, #reason-break{
+    display: none;
 }
