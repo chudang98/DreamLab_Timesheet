@@ -15,6 +15,7 @@ use App\Attendance;
 use App\Timesheet;
 use App\User;
 use Carbon\Carbon;
+use App\Day;
 
 
 Route::get('/', function () {
@@ -47,9 +48,14 @@ Route::get('/day', function(){
  
 });
 
-// Route::get('t', function(){
-//    $user = User::where('id')
-// });
+Route::get('t', function(){
+   $timesheet1 = Timesheet::where('date', '2019-08-28')->first();
+   $timesheet2 = Timesheet::where('date', '2019-08-20')->first();
+
+   echo $timesheet1 ."</br>" .$timesheet2 ."</br>";
+   $day1 = Day::where('date', $timesheet1->date)->first();
+   echo $day1;
+});
 
 
 //Profile

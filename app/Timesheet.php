@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
+
 class Timesheet extends Model
 {
     /*
@@ -164,6 +165,8 @@ class Timesheet extends Model
 
         $this->save();                
     }
+
+    
 
     private function processCiCoAttendance($check_in, $check_out)
     {
@@ -397,27 +400,39 @@ class Timesheet extends Model
     }
 
     public function checkDayOff(){
+        // Là ngày thứ 7, CN hoặc các ngày nghỉ đã được chú thích 
         $day = Carbon::create($this->date)->shortEnglishDayOfWeek;
         
-        if($day == 'Sat' || $day == 'Sun'){
-            return true;
-        }
+        $check_day = Day::where('date', $this->date)->first();
+            //Check xem có phải ngày đặc biệt có chú thích không
+        if($check_day != null)
+        {
+            if($check_day->state == 'off')
+                return true;
+            else
+                return false;
 
-        return false;
-
+        }else
+            if($day == 'Sat' || $day == 'Sun')
+            {
+                return true;
+            }else
+                return false;
     }
 
-    public function checkWorkingDay(){
-
+    public function checkTimeBreak(){
+        $check_day = Day::where('date', $this->date)->first();
+        
     }
 
     public function convertObjExcel(){
-        
         if($this->checkDayOff() == true){
             return $obj = [
                 'S' => 'N',
                 'C' => 'N',
             ];
+        }else{
+
         }
 
         return $obj = [

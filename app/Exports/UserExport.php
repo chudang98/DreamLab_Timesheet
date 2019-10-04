@@ -478,20 +478,21 @@ class UserExport implements FromArray, WithEvents, ShouldAutoSize, WithCustomSta
         
             // * Làm bù
             $cell_result =  Coordinate::stringFromColumnIndex($col_lam_bu) .'' .$row_data;
+            $cell_value = '=COUNTIF(' .$cells_data .', "B")/2';
+            $sheet->setCellValue($cell_result, $cell_value);
             $total_value .= ('(' .$cell_result);
         
             // * Làm việc
             $cell_result =  Coordinate::stringFromColumnIndex($col_lam_vc) .'' .$row_data;
             $cell_value = '=( COUNTIF(' .$cells_data .', "0.5")'
                     .'+ COUNTIF(' .$cells_data .', "M")'
-                    .'+ COUNTIF(' .$cells_data .', "S")'
-                    .'+COUNTIF(' .$cells_data .', "P") )/2';
+                    .'+ COUNTIF(' .$cells_data .', "S"))/2';
             $sheet->setCellValue($cell_result, $cell_value);
             $total_value .= (' + ' .$cell_result);
             
                 // * Phép
             $cell_result =  Coordinate::stringFromColumnIndex($col_phep) .'' .$row_data;
-            $cell_value = '=COUNTIF(' .$cells_data .', "P")';
+            $cell_value = '=COUNTIF(' .$cells_data .', "P")/2';
             $sheet->setCellValue($cell_result, $cell_value);
             $total_value .= (' + ' .$cell_result);
 
