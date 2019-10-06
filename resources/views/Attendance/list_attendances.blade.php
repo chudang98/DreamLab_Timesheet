@@ -49,8 +49,6 @@
                         <table id="mytable" class="table table-bordred table-striped">
 
                             <thead>
-
-{{--                            <th><input type="checkbox" id="checkall" /></th>--}}
                             <th>STT</th>
                             <th>Thời gian</th>
                             <th>Mã nhân viên</th>
@@ -58,10 +56,8 @@
                             <th>Thao tác</th>
                             </thead>
                             <tbody>
-                            <?php $dem=1; ?>
                             @foreach($attendances as $attendance)
                                 <tr>
-{{--                                    <td><input type="checkbox" class="checkthis" /></td>--}}
                                     <td>{{$dem++}}</td>
                                     <td>{{$attendance->date_time}}</td>
                                     <td>
@@ -72,9 +68,6 @@
                                     </td>
                                     <td>
                                         <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt-left">
-{{--                                            <a href="#" class="btn btn-primary btn-xs" >--}}
-{{--                                                    Cập nhật--}}
-{{--                                            </a>--}}
                                         </p>
                                         <p data-placement="top" data-toggle="tooltip" title="Delete" class="bt-right">
                                             <a href="#" class="btn btn-danger btn-xs" data-title="Delete"
@@ -126,18 +119,13 @@
     </form>
 
     <div class="links">
-        {{$attendances->links()}}
+        {{$attendances->appends(['time' => $ti, 'employee' => $employee])->links()}}
     </div>
 
     <script type="text/javascript">
         $(function() {
             var start = '{{$time[0]}}';
             var end = '{{$time[1]}}';
-
-        /*    $('#process_data').click(function(){
-                window.location.href = {{ url('process_new_data') }};
-            }); */
- 
 
             function cb(start, end) {
                 $('#reportrange').html(start.format('DD/MM/YYYY') + '-' + end.format('DD/MM/YYYY'));

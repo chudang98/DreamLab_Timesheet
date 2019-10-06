@@ -43,7 +43,6 @@
 
                             <thead>
 
-                            {{--                            <th><input type="checkbox" id="checkall" /></th>--}}
                             <th>STT</th>
                             <th>Ngày</th>
                             <th>Mã nhân viên</th>
@@ -53,10 +52,8 @@
                             <th>Thao tác</th>
                             </thead>
                             <tbody>
-                            <?php $dem=1; ?>
                             @foreach($timesheets as $timesheet)
                                 <tr>
-                                    {{--                                    <td><input type="checkbox" class="checkthis" /></td>--}}
                                     <td>{{$dem++}}</td>
                                     <td>{{$timesheet->date}}</td>
                                     <td>
@@ -69,14 +66,14 @@
                                         @if($timesheet->check_in!=null)
                                             {{$timesheet->check_in}}
                                         @else
-                                            X
+                                            N/A
                                         @endif
                                     </td>
                                     <td>
                                         @if($timesheet->check_out!=null)
                                             {{$timesheet->check_out}}
                                         @else
-                                            X
+                                            N/A
                                         @endif
                                     <td>
 {{--                                        <p data-placement="top" data-toggle="tooltip" title="Edit" class="bt-left">--}}
@@ -128,7 +125,7 @@
         </div>
     </form>
     <div class="links">
-        {{$timesheets->links()}}
+        {{$timesheets->appends(['time' => $ti, 'employee' => $employee])->links()}}
     </div>
 
     <form id="export_excel" action="{{ url('export_excel') }}" method="post" style="display: hidden">

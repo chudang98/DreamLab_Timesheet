@@ -29,7 +29,14 @@
         <ul>
             <li><a href="/editProfile/{{auth()->user()->name}}"><i class='fas fa-user-circle username'></i>{{auth()->user()->name}}</a></li>
             <li><a href="/calendar">Lịch làm việc</a></li>
-            <li><a href="/listAttendances">Điểm danh</a></li>
+            <li>
+                <a href="/listAttendances">Điểm danh</a>
+{{--                <form action="/listAttendances">--}}
+{{--                    <input type="hidden" name="time" id="time">--}}
+{{--                    <input type="hidden" name="employee" value="">--}}
+{{--                    <input type="submit" value="Điểm danh">--}}
+{{--                </form>--}}
+            </li>
             <li><a href="/listTimesheets">Chấm công</a></li>
         </ul>
     </div>
@@ -38,7 +45,18 @@
     </div>
 
 </div>
-
-    @yield('script')
 </body>
+{{--    <script>--}}
+{{--        var sd = moment().startOf('month').format('DD/MM/YYYY');--}}
+{{--        console.log(sd);--}}
+{{--        var ed = moment().format('DD/MM/YYYY');--}}
+{{--        console.log(ed);--}}
+{{--        var time = sd + ' - ' +ed;--}}
+{{--        console.log(time);--}}
+{{--        $(document).ready(--}}
+{{--            document.getElementById('time').value = time--}}
+{{--            // console.log(document.getElementById('time').value);--}}
+{{--        );--}}
+{{--    </script>--}}
+    @yield('script')
 </html>

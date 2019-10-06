@@ -72,3 +72,9 @@ Route::get('/deleteTimesheet/{id}','TimesheetController@deleteTimesheet');
 //Calendar
 Route::get('/calendar', 'CalendarController@index');
 Route::get('/addEvent', 'CalendarController@addEvent');
+
+Route::get('/test2', 'TimesheetController@test');
+
+Route::get('/form', function (){
+    return view('testForm');
+});
