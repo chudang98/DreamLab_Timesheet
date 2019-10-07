@@ -67,9 +67,7 @@ class TimesheetController extends Controller
 
     public function deleteTimesheet($id)
     {
-        DB::table('timesheets')
-            ->where('id', $id)
-            ->delete();
+        Timesheet::deleteTimesheet($id);
         return redirect('/listTimesheets');
     }
 
@@ -77,17 +75,5 @@ class TimesheetController extends Controller
     {
         Timesheet::processNewData();
         return redirect('/listTimesheets');
-    }
-    public function test(Request $request){
-        if (isset($request->name)){
-            $user = User::where('name','LIKE', "%{$request->name}%")->paginate(15);
-            $data['user']= $user;
-            return view('test', $data);
-        }
-        else{
-            $user = User::paginate(15);
-            $data['user']= $user;
-            return view('test', $data);
-        }
     }
 }

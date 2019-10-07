@@ -39,7 +39,10 @@ class Timesheet extends Model
 
     public $timestamps = false;
 
-
+    public static function deleteTimesheet($id){
+        Timesheet::where('id', $id)
+            ->delete();
+    }
     public function attendances(){
         return $this->hasMany(Attendance::class);
     }

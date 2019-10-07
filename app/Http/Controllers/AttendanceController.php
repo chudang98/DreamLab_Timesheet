@@ -12,6 +12,7 @@ use App\Http\Controllers\Response;
 
 class AttendanceController extends Controller
 {
+
     // xử lí khi có dữ liệu tìm kiếm
     public function xuLi1($time, $employee ,$dem){
         $data['dem']= $dem;
@@ -54,12 +55,12 @@ class AttendanceController extends Controller
 
     public function listAttendances(Request $request)
     {
+        // thiết lập stt
         if(isset($_GET['page'])){
             $dem = ($_GET['page']-1)*20 +1;
         }
         else $dem = 1;
         if (isset($request->time)) {
-
             $data = $this->xuLi1($request->time, $request->employee, $dem);
         } else {
             $data = $this->xuLi2($dem);
@@ -69,9 +70,7 @@ class AttendanceController extends Controller
 
     public function deleteAttendance($id)
     {
-        DB::table('attendances')
-            ->where('id', $id)
-            ->delete();
+        Attendance::deleteAttendance($id);
         return redirect('/listAttendances');
     }
 

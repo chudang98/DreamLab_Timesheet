@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use App\User;
+use App\Biz\UserService;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class ProfileController extends Controller
 {
@@ -13,31 +15,17 @@ class ProfileController extends Controller
     {
         $this->middleware('auth');
     }
-    public function checkPW($str){
-        if(strlen($str)>=8)
-            for($i=0; $i<strlen($str); $i++){
-                if($str[$i] >= '0' && $str[$i] <='9'){
-                    for($j=$i+1; $j<strlen($str); $j++)
-                        if($str[$j] >= 'A' && $str[$j]<='z') return 0;
-                }
-                else if($str[$i] >= 'A' && $str[$i] <='z'){
-                    for($j=$i+1; $j<strlen($str); $j++)
-                        if($str[$j] >= '0' && $str[$j] <='9') return 0;
-                }
-            }
-        return 1;
-    }
     public function editProfile($alert){
         $data['alert']= $alert;
         return View('Profile.edit_profile', $data);
     }
-    public function updateProfile(){
-        if($_POST['name'] == auth()->user()->name){
+    public function updateProfile(Request $request){
+        if($request->name == auth()->user()->name){
             return redirect('/editProfile/'.auth()->user()->name);
         }
         else{
             $user = User::where('id', auth()->user()->id)->first();
-            $user->name = $_POST['name'];
+            $user->name = $request->name;
             $user->save();
             return redirect('/editProfile/successI');
         }
@@ -47,22 +35,21 @@ class ProfileController extends Controller
         $data['alert']= $alert;
         return View('Profile.change_password',$data);
     }
-    public function updatePassword(){
+    public function updatePassword(Request $request){
         $user = User::where('id', auth()->user()->id)->first();
-        if(Hash::check($_POST['old-password'],$user->password)){
-            if($_POST['new-password'] == $_POST['old-password']){
+        if(Hash::check($request['old-password'],$user->password)){
+            if($request['new-password'] == $request['old-password']){
                 return redirect('/changePassword/new1');
             }
-            else if($this->checkPW($_POST['new-password'])==1){
+            else if(UserService::checkPW($request['new-password'])==1){
                 return redirect('/changePassword/new2');
             }
-            else if($_POST['new-password']!= $_POST['re-password']){
+            else if($request['new-password']!= $request['re-password']){
                 return redirect('/changePassword/new3');
             }
             else{
-
-                $user->password= bcrypt($_POST['new-password']);
-                $user->save;
+                $user->password= bcrypt($request['new-password']);
+                $user->save();
                 return redirect('/editProfile/successPW');
             }
         }

@@ -90,13 +90,18 @@
                                         <div class="modal fade" id="delete{{$timesheet->id}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
+                                                    <div class="modal-header alert-danger">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                                                        <h4 class="modal-title custom_align" id="Heading">Delete this entry</h4>
+                                                        <h3 class="modal-title custom_align alert-danger" id="Heading" style="text-align: center">Cảnh báo</h3>
                                                     </div>
                                                     <div class="modal-body">
 
-                                                        <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete timesheet?</div>
+                                                        <div>
+                                                            <p>Hành động xóa lượt chấm công có thể ảnh hưởng đến quá trình tính công của nhân viên</p>
+                                                            <p class="text-danger"> Đây là hành động không được khuyến khích!</p>
+                                                            <p>Bạn có chắc muốn xóa lượt chấm công của nhân viên?</p>
+
+                                                        </div>
 
                                                     </div>
                                                     <div class="modal-footer ">
