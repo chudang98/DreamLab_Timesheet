@@ -101,11 +101,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             let date;
+            let today = new Date();
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 locale: 'vi',
                 plugins: [ 'interaction', 'dayGrid','timeGrid' ],
                 defaultView: 'dayGridMonth',
-                defaultDate: '2019-09-12',
+                defaultDate: today,
                 selectable: true,
                 firstDay: 1,
                 dateClick: function(info) {

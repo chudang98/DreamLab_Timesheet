@@ -41,6 +41,16 @@ class User extends Authenticatable
         $user = User::where('id', $id)->first();
         return $user;
     }
+
+    public static function updateName(User $user , $name){
+        $user->name = $name;
+        $user->save();
+    }
+
+    public static function updatePW(User $user , $pw){
+        $user->password = $pw;
+        $user->save();
+    }
     public function roles(){
         return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
     }

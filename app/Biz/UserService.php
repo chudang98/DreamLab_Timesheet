@@ -1,8 +1,29 @@
 <?php
 namespace App\Biz;
 
+use App\User;
+use Illuminate\Support\Facades\Hash;
+
 class UserService{
 
+    //cẬp nhật tên
+    public function updateName($name){
+        $user = User::getUser(auth()->user()->id);
+        User::updateName($user, $name);
+    }
+
+    //gọi hàm cập nhât tên và trả về đuôi của url
+    public function updateProfile($request){
+        if($request->name == auth()->user()->name){
+            return auth()->user()->name;
+        }
+        else{
+            $this::updateName($request->name);
+            return 'successI';
+        }
+    }
+
+    //kiếm tra PW đã đúng định dạng chưa
     public static function checkPW($str){
         $s = strlen($str);
         if($s>=8)
@@ -19,4 +40,26 @@ class UserService{
         return 1;
     }
 
+    //cập nhật PW, trả về đuôi URL
+    public function updatePW($request){
+        $user = User::getUser(auth()->user()->id);
+        if(Hash::check($request['old-password'],$user->password)){
+            if($request['new-password'] == $request['old-password']){
+                return 'new1';
+            }
+            else if(UserService::checkPW($request['new-password'])==1){
+                return 'new2';
+            }
+            else if($request['new-password']!= $request['re-password']){
+                return 'new3';
+            }
+            else{
+                User::updatePW($user, bcrypt($request['new-password']));
+                return 'successPW';
+            }
+        }
+        else{
+            return 'old';
+        }
+    }
 }
