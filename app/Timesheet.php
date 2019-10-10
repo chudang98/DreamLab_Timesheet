@@ -111,322 +111,322 @@ class Timesheet extends Model
     }
     
     // $date as string
-    public function processAttendanceBelongTo()
-    {
+    // public function processAttendanceBelongTo()
+    // {
 
-        $time = $this->date;
+    //     $time = $this->date;
 
-        $start_date = Carbon::create($time .' 00:00:00');
-        $end_date = Carbon::create($time .' 23:59:59');
+    //     $start_date = Carbon::create($time .' 00:00:00');
+    //     $end_date = Carbon::create($time .' 23:59:59');
 
-            // Lấy tất cả các attendances trong ngày này
-        $attendances = Attendance::where([
-                ['user_id', '=', $this->user_id],
-                ['date_time', '>=', $start_date],
-                ['date_time', '<=', $end_date],
-                ['is_check', '=', 'N'],
+    //         // Lấy tất cả các attendances trong ngày này
+    //     $attendances = Attendance::where([
+    //             ['user_id', '=', $this->user_id],
+    //             ['date_time', '>=', $start_date],
+    //             ['date_time', '<=', $end_date],
+    //             ['is_check', '=', 'N'],
 
-        ])->get();
+    //     ])->get();
 
-            // Timesheets này không có attendance nào mới        
-        if($attendances->isEmpty() != true)
-        {
-            $count = sizeof($attendances);
-            $check_in = $attendances[0];
-            $check_out = $attendances[0];
+    //         // Timesheets này không có attendance nào mới        
+    //     if($attendances->isEmpty() != true)
+    //     {
+    //         $count = sizeof($attendances);
+    //         $check_in = $attendances[0];
+    //         $check_out = $attendances[0];
 
 
-            if($count > 1)
-            {
+    //         if($count > 1)
+    //         {
 
-                if($this->check_in != null)
-                {
-                    $check_in = Attendance::where([
-                        ['date_time', '=', $this->date ." " .$this->check_in],
-                        ['user_id', '=', $this->user_id]
-                    ])->first();
+    //             if($this->check_in != null)
+    //             {
+    //                 $check_in = Attendance::where([
+    //                     ['date_time', '=', $this->date ." " .$this->check_in],
+    //                     ['user_id', '=', $this->user_id]
+    //                 ])->first();
     
-                }
+    //             }
                 
-                if($this->check_out != null)
-                {
-                    $check_in = Attendance::where([
-                        ['date_time', '=', $this->date ." " .$this->check_out],
-                        ['user_id', '=', $this->user_id]
-                    ])->first();
+    //             if($this->check_out != null)
+    //             {
+    //                 $check_in = Attendance::where([
+    //                     ['date_time', '=', $this->date ." " .$this->check_out],
+    //                     ['user_id', '=', $this->user_id]
+    //                 ])->first();
                     
-                }
+    //             }
        
 
-                for($i = 0; $i < $count; $i++)
-                {
-                    $attendances[$i]->timesheet_id = $this->id;
-                    if($attendances[$i]->earlyThan($check_in) == true){
-                        $check_in = $attendances[$i];
-                    }
-                    if($attendances[$i]->laterThan($check_out) == true){
-                        $check_out = $attendances[$i];
-                    }
+    //             for($i = 0; $i < $count; $i++)
+    //             {
+    //                 $attendances[$i]->timesheet_id = $this->id;
+    //                 if($attendances[$i]->earlyThan($check_in) == true){
+    //                     $check_in = $attendances[$i];
+    //                 }
+    //                 if($attendances[$i]->laterThan($check_out) == true){
+    //                     $check_out = $attendances[$i];
+    //                 }
 
-                    $attendances[$i]->timesheet_id = $this->id;
-                    $attendances[$i]->is_check = 'Y';
+    //                 $attendances[$i]->timesheet_id = $this->id;
+    //                 $attendances[$i]->is_check = 'Y';
 
-                    $attendances[$i]->save();
-                }
+    //                 $attendances[$i]->save();
+    //             }
 
-                $this->check_in = $check_in->date_time;
-                $this->check_out = $check_out->date_time;
+    //             $this->check_in = $check_in->date_time;
+    //             $this->check_out = $check_out->date_time;
                 
-                $this->processCiCoAttendance($check_in, $check_out);
+    //             $this->processCiCoAttendance($check_in, $check_out);
 
-            }else
-            {
-                // Chỉ có 1 attendance
-                $check_in = $attendances[0];
+    //         }else
+    //         {
+    //             // Chỉ có 1 attendance
+    //             $check_in = $attendances[0];
 
-                // $this->check_in = $check_in->date_time;
-                $this->processOneAttendance($check_in);
+    //             // $this->check_in = $check_in->date_time;
+    //             $this->processOneAttendance($check_in);
                 
-                $attendances[0]->timesheet_id = $this->id;
-                $attendances[0]->is_check = 'Y';
-                $attendances[0]->save();
-            }
-        }
+    //             $attendances[0]->timesheet_id = $this->id;
+    //             $attendances[0]->is_check = 'Y';
+    //             $attendances[0]->save();
+    //         }
+    //     }
 
-        $this->save();                
-    }   
+    //     $this->save();                
+    // }   
 
-    private function processCiCoAttendance($check_in, $check_out)
-    {
-        $CI_time = Carbon::create($check_in->date_time)->toTimeString();
-        $CO_time = Carbon::create($check_out->date_time)->toTimeString();
+    // private function processCiCoAttendance($check_in, $check_out)
+    // {
+    //     $CI_time = Carbon::create($check_in->date_time)->toTimeString();
+    //     $CO_time = Carbon::create($check_out->date_time)->toTimeString();
 
-        switch($this->morning_shift){
-            case 'X' : 
-            {
-                switch($this->afternoon_shift){
-                    case 'S' : {
-                        if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
-                        {
-                            $this->afternoon_shift = 'X';
-                        }
-                        break;
-                    }
-                    case 'V' : {
-                       if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
-                       {
-                    		$this->afternoon_shift = 'X';
-                       }else
-                       {
-                            if(strtotime($CO_time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
-                            {
-                                $this->morning_shift = 'S';
-                            }
-                       }
+    //     switch($this->morning_shift){
+    //         case 'X' : 
+    //         {
+    //             switch($this->afternoon_shift){
+    //                 case 'S' : {
+    //                     if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
+    //                     {
+    //                         $this->afternoon_shift = 'X';
+    //                     }
+    //                     break;
+    //                 }
+    //                 case 'V' : {
+    //                    if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
+    //                    {
+    //                 		$this->afternoon_shift = 'X';
+    //                    }else
+    //                    {
+    //                         if(strtotime($CO_time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
+    //                         {
+    //                             $this->morning_shift = 'S';
+    //                         }
+    //                    }
 
-                        break;
-                    }
-                }
-                break;
-            }
+    //                     break;
+    //                 }
+    //             }
+    //             break;
+    //         }
 
-            case 'M' : 
-            {
-                    // Check lại buổi sáng
-                if(strtotime($CI_time) <= strtotime(static::$LATE_TIME_MORNING))
-                {
+    //         case 'M' : 
+    //         {
+    //                 // Check lại buổi sáng
+    //             if(strtotime($CI_time) <= strtotime(static::$LATE_TIME_MORNING))
+    //             {
                     
-                     $this->morning_shift = 'X';
-                }
-                    // check chiều
-                switch($this->afternoon_shift)
-                {
-                    case 'V' : {
-                       if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON)){
-                           $this->afternoon_shift = 'X';
-                       }else
-                       {
-                            if(strtotime($CO_time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
-                            {
-                                $this->afternoon_shift = 'S';
-                            }
-                       }
-                        break;
-                    }
-                    case 'S' : {
-                        if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON)){
-                            $this->afternoon_shift = 'X';
-                        }
-                        break;
-                    }
-                }
-                break;
-            }
+    //                  $this->morning_shift = 'X';
+    //             }
+    //                 // check chiều
+    //             switch($this->afternoon_shift)
+    //             {
+    //                 case 'V' : {
+    //                    if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON)){
+    //                        $this->afternoon_shift = 'X';
+    //                    }else
+    //                    {
+    //                         if(strtotime($CO_time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
+    //                         {
+    //                             $this->afternoon_shift = 'S';
+    //                         }
+    //                    }
+    //                     break;
+    //                 }
+    //                 case 'S' : {
+    //                     if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON)){
+    //                         $this->afternoon_shift = 'X';
+    //                     }
+    //                     break;
+    //                 }
+    //             }
+    //             break;
+    //         }
 
-            case 'V' : 
-            {
-                    // Check buổi sáng có đi làm hay không
-                if(strtotime($CI_time) <= strtotime(static::$LATE_TIME_MORNING))
-                {
-                     $this->morning_shift = 'X';
-                }else
-                {
-                    if(strtotime($CI_time) <= strtotime(static::$ABSENT_MORNING))
-                    {
-                         $this->morning_shift = 'M';
-                    }
-                }
-                    // check chiều - check lại sáng
-                switch($this->afternoon_shift){
-                    case 'V' : {
-                        // check lại được buổi sáng đi làm hoặc đi làm trước giờ ca chiều
-                        if(strtotime($CI_time) <= strtotime(static::$LATE_TIME_AFTERNOON)
-                                || $this->morning_shift != 'V')
-                        {
-                            if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
-                                $this->afternoon_shift = 'X';
-                            else
-                            {
-                                if(strtotime($CO_time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
-                                    $this->afternoon_shift = 'S';
-                            }
-                        }else
-                            // Chắc chắn là đi làm chiều bị muộn
-                        {
-                            if(strtotime($CI_time) <= strtotime(static::$ABSENT_AFTERNOON))
-                                if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON ))
-                                    $this->afternoon_shift = 'M';
-                                else
-                                {
-                                    if(strtotime($CO_time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
-                                        $this->afternoon_shift = 'S';
-                                }
-                        }
-                        break;
-                    }
-                    case 'S' : {
-                        if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
-                        {
-                            $this->afternoon_shift = 'X';
-                        }
-                        break;
-                    }
+    //         case 'V' : 
+    //         {
+    //                 // Check buổi sáng có đi làm hay không
+    //             if(strtotime($CI_time) <= strtotime(static::$LATE_TIME_MORNING))
+    //             {
+    //                  $this->morning_shift = 'X';
+    //             }else
+    //             {
+    //                 if(strtotime($CI_time) <= strtotime(static::$ABSENT_MORNING))
+    //                 {
+    //                      $this->morning_shift = 'M';
+    //                 }
+    //             }
+    //                 // check chiều - check lại sáng
+    //             switch($this->afternoon_shift){
+    //                 case 'V' : {
+    //                     // check lại được buổi sáng đi làm hoặc đi làm trước giờ ca chiều
+    //                     if(strtotime($CI_time) <= strtotime(static::$LATE_TIME_AFTERNOON)
+    //                             || $this->morning_shift != 'V')
+    //                     {
+    //                         if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
+    //                             $this->afternoon_shift = 'X';
+    //                         else
+    //                         {
+    //                             if(strtotime($CO_time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
+    //                                 $this->afternoon_shift = 'S';
+    //                         }
+    //                     }else
+    //                         // Chắc chắn là đi làm chiều bị muộn
+    //                     {
+    //                         if(strtotime($CI_time) <= strtotime(static::$ABSENT_AFTERNOON))
+    //                             if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON ))
+    //                                 $this->afternoon_shift = 'M';
+    //                             else
+    //                             {
+    //                                 if(strtotime($CO_time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
+    //                                     $this->afternoon_shift = 'S';
+    //                             }
+    //                     }
+    //                     break;
+    //                 }
+    //                 case 'S' : {
+    //                     if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
+    //                     {
+    //                         $this->afternoon_shift = 'X';
+    //                     }
+    //                     break;
+    //                 }
 
-                    case 'M' : {
-                        if(strtotime($CI_time) <= strtotime(static::$LATE_TIME_AFTERNOON)
-                            || $this->morning_shift != 'V')
-                        {
-                            $this->afternoon_shift = 'X';
-                        }
-                        break;
-                    }
-                }
+    //                 case 'M' : {
+    //                     if(strtotime($CI_time) <= strtotime(static::$LATE_TIME_AFTERNOON)
+    //                         || $this->morning_shift != 'V')
+    //                     {
+    //                         $this->afternoon_shift = 'X';
+    //                     }
+    //                     break;
+    //                 }
+    //             }
 
-                break;
-            }
-        }        
-    }
+    //             break;
+    //         }
+    //     }        
+    // }
 
-    public function processOneAttendance($attendance)
-    {
-        $time = Carbon::create($attendance->date_time)->toTimeString();
+    // public function processOneAttendance($attendance)
+    // {
+    //     $time = Carbon::create($attendance->date_time)->toTimeString();
     
-        switch($this->morning_shift){
-            case 'X' : {
-                switch($this->afternoon_shift){
-                    case 'S' : {
-                        if(strtotime($time) >= strtotime(static::$END_AFTERNOON)){
-                            $this->check_in = $attendance->date_time;
-                            $this->afternoon_shift = 'X';
-                        }
-                        break;
-                    }
-                    case 'V' : {
-                        if(strtotime($time) >= strtotime(static::$END_AFTERNOON)){
-                            $this->afternoon_shift = 'X';
-                        }
-                        else
-                            if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM)){
-                                $this->check_out = $attendance->date_time;                            
-                                $this->afternoon_shift = 'S';
-                            }
-                        break;
-                    }
-                }
+    //     switch($this->morning_shift){
+    //         case 'X' : {
+    //             switch($this->afternoon_shift){
+    //                 case 'S' : {
+    //                     if(strtotime($time) >= strtotime(static::$END_AFTERNOON)){
+    //                         $this->check_in = $attendance->date_time;
+    //                         $this->afternoon_shift = 'X';
+    //                     }
+    //                     break;
+    //                 }
+    //                 case 'V' : {
+    //                     if(strtotime($time) >= strtotime(static::$END_AFTERNOON)){
+    //                         $this->afternoon_shift = 'X';
+    //                     }
+    //                     else
+    //                         if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM)){
+    //                             $this->check_out = $attendance->date_time;                            
+    //                             $this->afternoon_shift = 'S';
+    //                         }
+    //                     break;
+    //                 }
+    //             }
 
-                break;
-            }
+    //             break;
+    //         }
 
-            case 'M' : 
-            {
-                if(strtotime($time) <= strtotime(static::$LATE_TIME_MORNING))
-                {
-                    $this->check_in = $attendance->date_time;                    
-                    $this->morning_shift = 'X';
-                }
-                switch($this->afternoon_shift)
-                {
-                    case 'V' : {
-                        if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
-                        {
-                            $this->afternoon_shift = 'X';
-                            $this->check_out = $attendance->date_time;                            
-                        }
-                        else
-                            if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
-                            {
-                                $this->check_out = $attendance->date_time;                            
-                                $this->afternoon_shift = 'S';
-                            }
+    //         case 'M' : 
+    //         {
+    //             if(strtotime($time) <= strtotime(static::$LATE_TIME_MORNING))
+    //             {
+    //                 $this->check_in = $attendance->date_time;                    
+    //                 $this->morning_shift = 'X';
+    //             }
+    //             switch($this->afternoon_shift)
+    //             {
+    //                 case 'V' : {
+    //                     if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
+    //                     {
+    //                         $this->afternoon_shift = 'X';
+    //                         $this->check_out = $attendance->date_time;                            
+    //                     }
+    //                     else
+    //                         if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
+    //                         {
+    //                             $this->check_out = $attendance->date_time;                            
+    //                             $this->afternoon_shift = 'S';
+    //                         }
 
-                        break;
-                    }
-                    case 'S' : {
-                        if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
-                        {
-                            $this->check_out = $attendance->date_time;                            
-                            $this->afternoon_shift = 'X';
-                        }
-                        break;
-                    }
-                }
-                break;
-            }
+    //                     break;
+    //                 }
+    //                 case 'S' : {
+    //                     if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
+    //                     {
+    //                         $this->check_out = $attendance->date_time;                            
+    //                         $this->afternoon_shift = 'X';
+    //                     }
+    //                     break;
+    //                 }
+    //             }
+    //             break;
+    //         }
 
-            case 'V' : {
-                $check_out = $this->getCOAttendance();
+    //         case 'V' : {
+    //             $check_out = $this->getCOAttendance();
 
-                if($attendance->earlyThan($check_out) == true){
-                    $this->processCiCoAttendance($attendance, $check_out);
-                }else
-                    if($check_out->laterThan($attendance) == true)
-                        $this->processCiCoAttendance($check_out, $attendance);
-                    else{
-                        $this->check_in = $attendance->date_time;
-                        // Cả timesheet đó chỉ có duy nhất 1 attendance
-                        if(strtotime($time) <= strtotime(static::$LATE_TIME_MORNING))
-                        {
-                            $this->morning_shift = 'X';
-                        }else
-                        {
-                            if(strtotime($time) <= strtotime(static::$ABSENT_AFTERNOON)){
-                                $this->morning_shift = 'M';
-                            }
-                        }
-                    }
+    //             if($attendance->earlyThan($check_out) == true){
+    //                 $this->processCiCoAttendance($attendance, $check_out);
+    //             }else
+    //                 if($check_out->laterThan($attendance) == true)
+    //                     $this->processCiCoAttendance($check_out, $attendance);
+    //                 else{
+    //                     $this->check_in = $attendance->date_time;
+    //                     // Cả timesheet đó chỉ có duy nhất 1 attendance
+    //                     if(strtotime($time) <= strtotime(static::$LATE_TIME_MORNING))
+    //                     {
+    //                         $this->morning_shift = 'X';
+    //                     }else
+    //                     {
+    //                         if(strtotime($time) <= strtotime(static::$ABSENT_AFTERNOON)){
+    //                             $this->morning_shift = 'M';
+    //                         }
+    //                     }
+    //                 }
 
-                break;
-            }   
-        }        
-    }
+    //             break;
+    //         }   
+    //     }        
+    // }
 
-    public function processInfor(){
-      /*   $this->count_worked = 0;
-        if($this->morning_shift != 'X')
-            $this->count_worked++;
-        if($this->afternoon_shift != 'X')
-            $this->count_worked++; */
-    }
+    // public function processInfor(){
+    //   /*   $this->count_worked = 0;
+    //     if($this->morning_shift != 'X')
+    //         $this->count_worked++;
+    //     if($this->afternoon_shift != 'X')
+    //         $this->count_worked++; */
+    // }
 
     public function checkDayOff(){
         // Là ngày thứ 7, CN hoặc các ngày nghỉ đã được chú thích 
