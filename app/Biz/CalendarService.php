@@ -6,6 +6,9 @@ use App\Day;
 
 class CalendarService{
 
+    
+
+
     //định dạng cho biến thời gian h:m:s
     public function formatTime($hour, $minute){
         $s = $hour.':'.$minute.':00';

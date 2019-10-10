@@ -147,4 +147,37 @@ class Attendance extends Model
             ->paginate(20);
         return $attendances;
     }
+
+    public static function getFirstAttendanceNew(){
+        $result = Attendance::where('is_check', '=', 'N')->first();
+        return $result;
+    }
+
+    public static function getAttendanceBelong($timesheet){
+        // $time = $timesheet->date;
+
+        $start_date = Carbon::create($timesheet->date);
+        $start_date->hour = 0;
+        $start_date->minute = 0;
+        $start_date->second = 0;
+        $end_date = Carbon::create($timesheet->date);
+        $end_date->hour = 23;
+        $end_date->minute = 59;
+        $end_date->second = 59;
+            // Lấy tất cả các attendances trong ngày này
+        $attendances = Attendance::where([
+                ['user_id', '=', $timesheet->user_id],
+                ['date_time', '>=', $start_date],
+                ['date_time', '<=', $end_date],
+        ])->get();
+        return $attendances;
+    }
+
+    public function updateByTimesheet($timesheet){
+        $this->timesheet_id = $timesheet->id;
+        $this->is_check = 'Y';
+        $this->save();
+    }
+
+
 }

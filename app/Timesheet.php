@@ -78,10 +78,14 @@ class Timesheet extends Model
 
     public function getCOAttendance()
     {
-        $time = $this->date;
-
-        $start_date = Carbon::create($time .' 00:00:00');
-        $end_date = Carbon::create($time .' 23:59:59');
+        $start_date = Carbon::create($this->date);
+        $start_date->hour = 0;
+        $start_date->minute = 0;
+        $start_date->second = 0;
+        $end_date = Carbon::create($this->date);
+        $end_date->hour = 23;
+        $end_date->minute = 59;
+        $end_date->second = 59;
 
         $attendances = Attendance::where([
             ['user_id', '=', $this->user_id],
@@ -105,6 +109,7 @@ class Timesheet extends Model
         }
         return null;
     }
+    
     // $date as string
     public function processAttendanceBelongTo()
     {
@@ -122,8 +127,6 @@ class Timesheet extends Model
                 ['is_check', '=', 'N'],
 
         ])->get();
-
-
 
             // Timesheets này không có attendance nào mới        
         if($attendances->isEmpty() != true)
@@ -191,18 +194,24 @@ class Timesheet extends Model
         }
 
         $this->save();                
-    }
-
-    
+    }   
 
     private function processCiCoAttendance($check_in, $check_out)
     {
         $CI_time = Carbon::create($check_in->date_time)->toTimeString();
         $CO_time = Carbon::create($check_out->date_time)->toTimeString();
+
         switch($this->morning_shift){
             case 'X' : 
             {
                 switch($this->afternoon_shift){
+                    case 'S' : {
+                        if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
+                        {
+                            $this->afternoon_shift = 'X';
+                        }
+                        break;
+                    }
                     case 'V' : {
                        if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
                        {
@@ -217,13 +226,6 @@ class Timesheet extends Model
 
                         break;
                     }
-                    case 'S' : {
-                        if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
-                        {
-                            $this->afternoon_shift = 'X';
-                        }
-                        break;
-                    }
                 }
                 break;
             }
@@ -233,9 +235,9 @@ class Timesheet extends Model
                     // Check lại buổi sáng
                 if(strtotime($CI_time) <= strtotime(static::$LATE_TIME_MORNING))
                 {
+                    
                      $this->morning_shift = 'X';
                 }
-
                     // check chiều
                 switch($this->afternoon_shift)
                 {
@@ -325,10 +327,10 @@ class Timesheet extends Model
         }        
     }
 
-    private function processOneAttendance($attendance)
+    public function processOneAttendance($attendance)
     {
         $time = Carbon::create($attendance->date_time)->toTimeString();
-     
+    
         switch($this->morning_shift){
             case 'X' : {
                 switch($this->afternoon_shift){
@@ -355,40 +357,40 @@ class Timesheet extends Model
                 break;
             }
 
-            case 'M' : {
+            case 'M' : 
+            {
                 if(strtotime($time) <= strtotime(static::$LATE_TIME_MORNING))
                 {
                     $this->check_in = $attendance->date_time;                    
                     $this->morning_shift = 'X';
-                }else{
-                    switch($this->afternoon_shift)
-                    {
-                        case 'V' : {
-                            if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
-                            {
-                                $this->afternoon_shift = 'X';
-                                $this->check_out = $attendance->date_time;                            
-                            }
-                            else
-                                if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
-                                {
-                                    $this->check_out = $attendance->date_time;                            
-                                    $this->afternoon_shift = 'S';
-                                }
-
-                            break;
-                        }
-                        case 'S' : {
-                            if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
-                            {
-                                $this->check_out = $attendance->date_time;                            
-                                $this->afternoon_shift = 'X';
-                            }
-                            break;
-                        }
-                    }
-                    break;
                 }
+                switch($this->afternoon_shift)
+                {
+                    case 'V' : {
+                        if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
+                        {
+                            $this->afternoon_shift = 'X';
+                            $this->check_out = $attendance->date_time;                            
+                        }
+                        else
+                            if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
+                            {
+                                $this->check_out = $attendance->date_time;                            
+                                $this->afternoon_shift = 'S';
+                            }
+
+                        break;
+                    }
+                    case 'S' : {
+                        if(strtotime($time) >= strtotime(static::$END_AFTERNOON))
+                        {
+                            $this->check_out = $attendance->date_time;                            
+                            $this->afternoon_shift = 'X';
+                        }
+                        break;
+                    }
+                }
+                break;
             }
 
             case 'V' : {
@@ -467,8 +469,9 @@ class Timesheet extends Model
             'C' => $this->afternoon_shift
         ];
     }
-
- /*    public function processInfor()
+ 
+ /*   
+    public function processInfor()
     {
         $this->count_early = 0;
         $this->count_late = 0;
@@ -497,6 +500,31 @@ class Timesheet extends Model
         if($this->afternoon_shift == 'V')
             $this->count_off += 1;
     } */
+
+    public static function getTimesheetByAttendance($attendance){
+        $user = $attendance->user_id;
+        $date_time = $attendance->date_time;
+
+        $date = Carbon::create($date_time)->format('Y-m-d');
+
+        $timesheet = Timesheet::where([
+            ['date', '=', $date],
+            ['user_id', '=', $user]
+        ])->first();
+
+        return $timesheet;
+    }
+
+    public static function saveNewByAttendance($attendance){
+        $timesheet = new Timesheet();
+        $timesheet->user_id = $attendance->user_id;
+        $timesheet->date = $attendance->date_time;
+        $timesheet->morning_shift = 'V';
+        $timesheet->afternoon_shift = 'V';
+        $timesheet->save();
+        return $timesheet;
+    }
+
 
 
 

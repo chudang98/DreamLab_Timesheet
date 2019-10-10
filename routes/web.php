@@ -35,27 +35,7 @@ Route::get('/test', 'ExcelExport@test');
 
 Route::post('/export_excel', 'ExcelExport@xuatUser')->name('export_excel');
 
-Route::get('process_new_data', 'AttendanceController@processNewData')->name('process_new_data');
-
-Route::get('/day', function(){
- 
-    $t = Timesheet::where('id', 1164)->first();
-    
-    echo $t ."</br>";
-    $day = Carbon::create($t->date);
-    echo $day ."</br>" .$day->shortEnglishDayOfWeek;
-    dd($t->convertObjExcel());
- 
-});
-
-Route::get('t', function(){
-   $timesheet1 = Timesheet::where('date', '2019-08-28')->first();
-   $timesheet2 = Timesheet::where('date', '2019-08-20')->first();
-
-   echo $timesheet1 ."</br>" .$timesheet2 ."</br>";
-   $day1 = Day::where('date', $timesheet1->date)->first();
-   echo $day1;
-});
+Route::get('process_new_data', 'TimesheetController@processNewAttendances')->name('process_new_data');
 
 
 //Profile
@@ -68,8 +48,10 @@ Route::post('/updatePassword','ProfileController@updatePassword');
 Route::get('/listAttendances', 'AttendanceController@listAttendances');
 Route::get('/deleteAttendance/{id}','AttendanceController@deleteAttendance');
 
-Route::get('/test/{id}', function ($id){
-   return $id;
+Route::get('/test', function (){
+   $timesheet = Timesheet::where('id', 10624)->first();  
+   $t = Attendance::getAttendanceBelong($timesheet);
+   dd($t);
 });
 
 //Timesheet
@@ -84,3 +66,4 @@ Route::get('/test2', 'TimesheetController@test');
 Route::get('/form', function (){
     return view('testForm');
 });
+

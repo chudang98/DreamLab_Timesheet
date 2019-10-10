@@ -1,7 +1,9 @@
 <?php
 namespace App\Biz;
 use App\Attendance;
+use App\Timesheet;
 use Carbon\Carbon;
+
 
 class AttendanceService{
 
@@ -59,5 +61,9 @@ class AttendanceService{
             $data = $this::xuLi2($dem);
         }
         return $data;
+    }
+    
+    public function processNewData(){
+        
     }
 }

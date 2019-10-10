@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Biz\TimesheetService;
 use App\Timesheet;
+use App\Attendance;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,9 +32,15 @@ class TimesheetController extends Controller
         return redirect('/listTimesheets');
     }
 
-    public function processNewData()
-    {
-        Timesheet::processNewData();
-        return redirect('/listTimesheets');
+    public function processNewAttendances(){
+        $attendance = Attendance::getFirstAttendanceNew();
+        while($attendance != null){
+            $timesheet = Timesheet::getTimesheetByAttendance($attendance);
+            if($timesheet == null)
+                $timesheet = Timesheet::saveNewByAttendance($attendance);
+            $this->timesheetService->processDataBelong($timesheet);
+            
+            $attendance = Attendance::getFirstAttendanceNew();        
+        }
     }
 }
