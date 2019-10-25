@@ -31,7 +31,7 @@ Auth::routes(['verify' => true]); // xác thực email
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::get('/test', 'ExcelExport@test');
+// Route::get('/test', 'ExcelExport@test');
 
 Route::post('/export_excel', 'ExcelExport@xuatUser')->name('export_excel');
 
@@ -49,9 +49,8 @@ Route::get('/listAttendances', 'AttendanceController@listAttendances');
 Route::get('/deleteAttendance/{id}','AttendanceController@deleteAttendance');
 
 Route::get('/test', function (){
-   $timesheet = Timesheet::where('id', 10624)->first();  
-   $t = Attendance::getAttendanceBelong($timesheet);
-   dd($t);
+   $user = App\User::class;
+   dd($user);
 });
 
 //Timesheet
