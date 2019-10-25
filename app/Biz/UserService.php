@@ -1,15 +1,22 @@
 <?php
 namespace App\Biz;
 
+use App\Repositories\UserEloquentRepository;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 
 class UserService{
 
+    protected $userEloquentRepository;
+
+    public function __construct(UserEloquentRepository $userEloquentRepository)
+    {
+        $this->userEloquentRepository= $userEloquentRepository;
+    }
+
     //cẬp nhật tên
     public function updateName($name){
-        $user = User::getUser(auth()->user()->id);
-        User::updateName($user, $name);
+        $this->userEloquentRepository->updateName(auth()->user()->id, $name);
     }
 
     //gọi hàm cập nhât tên và trả về đuôi của url
@@ -42,7 +49,7 @@ class UserService{
 
     //cập nhật PW, trả về đuôi URL
     public function updatePW($request){
-        $user = User::getUser(auth()->user()->id);
+        $user = $this->userEloquentRepository->find(auth()->user()->id);
         if(Hash::check($request['old-password'],$user->password)){
             if($request['new-password'] == $request['old-password']){
                 return 'new1';
@@ -54,7 +61,7 @@ class UserService{
                 return 'new3';
             }
             else{
-                User::updatePW($user, bcrypt($request['new-password']));
+                $this->userEloquentRepository->updatePW(auth()->user()->id,bcrypt($request['new-password']));
                 return 'successPW';
             }
         }

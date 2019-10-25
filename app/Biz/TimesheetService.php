@@ -4,9 +4,16 @@ namespace App\Biz;
 use App\Timesheet;
 use App\Attendance;
 use Carbon\Carbon;
+use App\Repositories\TimesheetEloquentRepository;
 
 
 class TimesheetService{
+    protected $TimesheetEloquentRepository;
+    public function __construct(TimesheetEloquentRepository $TimesheetEloquentRepository)
+    {
+        $this->TimesheetEloquentRepository = $TimesheetEloquentRepository;
+    }
+
 
     private static $LATE_TIME_MORNING = '8:30:00';
     private static $ABSENT_MORNING = '9:00:00';
@@ -28,7 +35,7 @@ class TimesheetService{
     //xóa att có id bằng $id
     public function deleteTimesheet($id)
     {
-        Timesheet::deleteTimesheet($id);
+        $this->TimesheetEloquentRepository->delete($id);
     }
 
     //thiết lập số thứ tự của trang
@@ -46,7 +53,7 @@ class TimesheetService{
         $data['ti'] = $time;
         $data['employee'] = $employee;
         $times = explode(" - ", $time);
-        $timesheets = Timesheet::getByTimeAndEmployee($times,$employee );
+        $timesheets = $this->TimesheetEloquentRepository->getByTimeAndEmployee($times,$employee );
         $data['timesheets'] = $timesheets;
         $data['time'] = $times;
         return $data;
@@ -64,7 +71,7 @@ class TimesheetService{
         $times[1] = $this::formatDay(Carbon::now());
         $data['ti'] = $times[0].' - '.$times[1];
         $data['employee'] = "";
-        $timesheets = Timesheet::getByTime($times);
+        $timesheets = $this->TimesheetEloquentRepository->getByTime($times);
         $data['timesheets'] = $timesheets;
         $data['time'] = $times;
         return $data;

@@ -3,11 +3,16 @@
 namespace App\Biz;
 
 use App\Day;
+use App\Repositories\CalendarEloquentRepository;
 
 class CalendarService{
 
-    
+    protected $calendarEloquentRepository;
 
+    public function __construct(CalendarEloquentRepository $calendarEloquentRepository)
+    {
+        $this->calendarEloquentRepository = $calendarEloquentRepository;
+    }
 
     //định dạng cho biến thời gian h:m:s
     public function formatTime($hour, $minute){
@@ -41,15 +46,20 @@ class CalendarService{
 
     //Thêm hoặc cập nhật sự kiện
     public function addORUpdateDay($date, $state, $data){
-        $day = Day::where('date', $date)->first();
+        $day = $this->calendarEloquentRepository->findByDate($date);
+        $d["date"] = $date;
+        $d["state"] = $state;
+        $d["startt_break"] = $data['startt_break'];
+        $d["endt_break"] = $data['endt_break'];
+        $d["reason"] = $data['reason'];
         if ($day == null)
-            Day::insertDay($date, $state, $data['startt_break'], $data['endt_break'], $data['reason']);
+            $this->calendarEloquentRepository->insertDay($d);
         else
-            Day::updateDay($date, $state, $data['startt_break'], $data['endt_break'], $data['reason']);
+            $this->calendarEloquentRepository->updateDay($d);
     }
 
     public function dataOfIndex(){
-        $data['days'] = Day::all();
+        $data['days'] = $this->calendarEloquentRepository->getAll();
         return $data;
     }
 
