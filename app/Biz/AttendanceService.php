@@ -1,23 +1,21 @@
 <?php
 namespace App\Biz;
-use App\Attendance;
-use App\Repositories\AttendanceEloquentRepository;
-use App\Timesheet;
+use App\Repositories\Attendance\AttendanceRepositoryInterface as Att;
 use Carbon\Carbon;
 
 
 class AttendanceService{
 
-    protected $AttendanceEloquentRepository;
-    public function __construct(AttendanceEloquentRepository $AttendanceEloquentRepository)
+    protected $Att;
+    public function __construct(Att $Att)
     {
-        $this->AttendanceEloquentRepository = $AttendanceEloquentRepository;
+        $this->Att = $Att;
     }
 
     //xóa att có id bằng $id
     public function deleteAttendance($id)
     {
-        $this->AttendanceEloquentRepository->delete($id);
+        $this->Att->delete($id);
     }
 
     //thiết lập số thứ tự của trang
@@ -35,7 +33,7 @@ class AttendanceService{
         $data['ti'] = $time;
         $data['employee'] = $employee;
         $times = explode(" - ", $time);
-        $attendances = $this->AttendanceEloquentRepository->getByTimeAndEmployee($times,$employee);
+        $attendances = $this->Att->getByTimeAndEmployee($times,$employee);
         $data['attendances'] = $attendances;
         $data['time'] = $times;
         return $data;
@@ -53,7 +51,7 @@ class AttendanceService{
         $times[1] = $this::formatDay(Carbon::now());
         $data['ti'] = $times[0].' - '.$times[1];
         $data['employee'] = "";
-        $attendances = $this->AttendanceEloquentRepository->getByTime($times);
+        $attendances = $this->Att->getByTime($times);
         $data['attendances'] = $attendances;
         $data['time'] = $times;
         return $data;

@@ -1,9 +1,11 @@
 <?php
-namespace App\Repositories;
+namespace App\Repositories\Attendance;
+
 use App\Attendance;
 use Carbon\Carbon;
+use App\Repositories\EloquentRepository;
 
-class AttendanceEloquentRepository extends EloquentRepository{
+class AttendanceEloquentRepository extends EloquentRepository implements AttendanceRepositoryInterface {
     public function getModel()
     {
         return Attendance::class;
