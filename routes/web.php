@@ -50,7 +50,8 @@ Route::get('/deleteAttendance/{id}','AttendanceController@deleteAttendance');
 
 Route::get('/test', function (){
    $user = App\User::class;
-   dd($user);
+   $ele = $user::all();
+   dd($ele);
 });
 
 //Timesheet

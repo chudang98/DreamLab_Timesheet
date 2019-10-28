@@ -20,7 +20,6 @@ abstract class EloquentRepository{
 
     public function getAll()
     {
-
         return $this->_model::all();
     }
 
