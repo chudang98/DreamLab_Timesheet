@@ -3,15 +3,15 @@
 namespace App\Biz;
 
 use App\Day;
-use App\Repositories\CalendarEloquentRepository;
+use App\Repositories\Calendar\CalendarRepositoryInterface as Calendar;
 
 class CalendarService{
 
-    protected $calendarEloquentRepository;
+    protected $Calendar;
 
-    public function __construct(CalendarEloquentRepository $calendarEloquentRepository)
+    public function __construct(Calendar $Calendar)
     {
-        $this->calendarEloquentRepository = $calendarEloquentRepository;
+        $this->Calendar = $Calendar;
     }
 
     //định dạng cho biến thời gian h:m:s
@@ -46,20 +46,20 @@ class CalendarService{
 
     //Thêm hoặc cập nhật sự kiện
     public function addORUpdateDay($date, $state, $data){
-        $day = $this->calendarEloquentRepository->findByDate($date);
+        $day = $this->Calendar->findByDate($date);
         $d["date"] = $date;
         $d["state"] = $state;
         $d["startt_break"] = $data['startt_break'];
         $d["endt_break"] = $data['endt_break'];
         $d["reason"] = $data['reason'];
         if ($day == null)
-            $this->calendarEloquentRepository->insertDay($d);
+            $this->Calendar->insertDay($d);
         else
-            $this->calendarEloquentRepository->updateDay($d);
+            $this->Calendar->updateDay($d);
     }
 
     public function dataOfIndex(){
-        $data['days'] = $this->calendarEloquentRepository->getAll();
+        $data['days'] = $this->Calendar->getAll();
         return $data;
     }
 

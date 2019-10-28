@@ -1,9 +1,9 @@
 <?php
 namespace App\Repositories;
 
-use Carbon\Carbon;
+use App\Repositories\RepositoryInterface;
 
-abstract class EloquentRepository{
+abstract class EloquentRepository implements RepositoryInterface{
     protected $_model;
 
     public function __construct()
@@ -45,7 +45,6 @@ abstract class EloquentRepository{
             $result->update($attributes);
             return $result;
         }
-
         return false;
     }
 

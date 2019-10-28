@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Calendar;
 
 use App\Day;
+use App\Repositories\EloquentRepository;
 use DB;
 
-class CalendarEloquentRepository extends EloquentRepository{
+class CalendarEloquentRepository extends EloquentRepository implements CalendarRepositoryInterface {
 
     public function getModel()
     {
