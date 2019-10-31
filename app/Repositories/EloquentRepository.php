@@ -3,6 +3,7 @@ namespace App\Repositories;
 
 use App\Repositories\RepositoryInterface;
 
+
 abstract class EloquentRepository implements RepositoryInterface{
     protected $_model;
 

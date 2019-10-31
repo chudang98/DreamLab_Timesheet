@@ -117,7 +117,7 @@ class Attendance extends Model
         if(strtotime($time1) > strtotime($time2))
             return true;
         else
-            return false; 
+            return false;
     }
 
 
@@ -128,7 +128,6 @@ class Attendance extends Model
 
     public static function getAttendanceBelong($timesheet){
         // $time = $timesheet->date;
-
         $start_date = Carbon::create($timesheet->date);
         $start_date->hour = 0;
         $start_date->minute = 0;
