@@ -62,7 +62,8 @@ class AttendanceService{
         $dem = $this::stt($request);
         if (isset($request->time)) {
             $data = $this::xuLi1($request->time, $request->employee, $dem);
-        } else {
+        }else
+        {
             $data = $this::xuLi2($dem);
         }
         return $data;

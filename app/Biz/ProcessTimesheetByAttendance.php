@@ -2,6 +2,7 @@
 
 namespace App\Biz;
 
+use Carbon\Carbon;
 use App\Repositories\Timesheet\TimesheetEloquentRepository;
 use App\Repositories\Attendance\AttendanceEloquentRepository;
 use App\Biz\ProcessTimesheetByAttendanceInterface;
@@ -53,7 +54,7 @@ class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterf
     }
 
     // * Muốn update buổi sáng chỉ cần thời gian vào là được
-    private function processMorningShift($time)
+    public function processMorningShift($time)
     {
         if($this->isTimeEarlierThanMilestone($time, static::$LATE_TIME_MORNING))
         {
@@ -74,16 +75,16 @@ class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterf
     }
 
     // * Muốn update buổi chiều cần cả thời gian vào và thời gian ra
-    private function processAfternoonShift($time_in, $time_out)
+    public function processAfternoonShift($time_in, $time_out)
     {
-        if($this->isTimeEarlierThanMilestone($time_in, $LATE_TIME_AFTERNOON))
+        if($this->isTimeEarlierThanMilestone($time_in, static::$LATE_TIME_AFTERNOON))
         {
-            if($this->isTimeEarlierThanMilestone($time_out, $END_AFTERNOON))
+            if($this->isTimeEarlierThanMilestone($time_out, static::$END_AFTERNOON))
             {
                 $this->timesheet->afternoon_shift = static::$work_AFTERNOON;
             }else
             {
-                if($this->isTimeEarlierThanMilestone($time_out, $LEAVE_EARLY_AFTERNOOM))
+                if($this->isTimeEarlierThanMilestone($time_out, static::$LEAVE_EARLY_AFTERNOOM))
                 {
                     $this->timesheet->afternoon_shift = static::$leave_early_AFTERNOON;
                 }else
@@ -93,14 +94,14 @@ class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterf
             }
         }else
         {
-            if($this->isTimeEarlierThanMilestone($time_in, $ABSENT_AFTERNOON))
+            if($this->isTimeEarlierThanMilestone($time_in, static::$ABSENT_AFTERNOON))
             {
-                if($this->isTimeEarlierThanMilestone($time_out, $END_AFTERNOON))
+                if($this->isTimeEarlierThanMilestone($time_out, static::$END_AFTERNOON))
                 {
                     $this->timesheet->afternoon_shift = static::$late_AFTERNOON;
                 }else
                 {
-                    if($this->isTimeEarlierThanMilestone($time_out, $LEAVE_EARLY_AFTERNOOM))
+                    if($this->isTimeEarlierThanMilestone($time_out, static::$LEAVE_EARLY_AFTERNOOM))
                     {
                         $this->timesheet->afternoon_shift = static::$leave_early_AFTERNOON;
                     }else
@@ -125,7 +126,7 @@ class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterf
             if($count == 1)
             {
                 $this->processTimesheetByOneAttendance($attendances[0]);
-                $timesheet->check_in = $attendances[0]->date_time;
+                $this->timesheet->check_in = $attendances[0]->date_time;
             }else
             {
                 $check_in = $this->attendance_repo->getAttendanceCiInCollection($attendances);
@@ -133,24 +134,24 @@ class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterf
                 $this->processTimesheetByCiCoAttendance($check_in, $check_out);
             }
         }
-        $this->attendance_repo->updateNewAttendancesByTimesheet($this->timesheet);
+        $this->attendance_repo->updateNewAttendancesInCollection($attendances, $this->timesheet);
         $this->timesheet->save();
     }
 
     // * Có 1 attendance thì chỉ có thể update được buổi sáng cho timesheet mà thôi.
-    private function processTimesheetByOneAttendance($attendance)
+    public function processTimesheetByOneAttendance($attendance)
     {
         $time = Carbon::create($attendance->date_time)->toTimeString();
-        $this->processMorningShift();
+        $this->processMorningShift($time);
     }
 
-    private function processTimesheetByCiCoAttendance($check_in, $check_out)
+    public function processTimesheetByCiCoAttendance($check_in, $check_out)
     {
         $CI_time = Carbon::create($check_in->date_time)->toTimeString();
         $CO_time = Carbon::create($check_out->date_time)->toTimeString();
 
         $this->processMorningShift($CI_time);
-        $this->processAfternoonShift($CO_time);
+        $this->processAfternoonShift($CI_time, $CO_time);
 
         $this->timesheet->check_in = $CI_time;
         $this->timesheet->check_out = $CO_time;

@@ -33,6 +33,7 @@ class TimesheetController extends Controller
     }
 
     public function processNewAttendances(){
+        // ini_set('max_execution_time', 300);
         $attendance = $this->timesheetService->getOnetNewAttendance();
         while($attendance != null){
             $this->timesheetService->updateTimesheetByAttendance($attendance);

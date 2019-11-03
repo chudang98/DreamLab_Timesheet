@@ -72,8 +72,8 @@ class AttendanceEloquentRepository extends EloquentRepository implements Attenda
         $res = $this->_model::where([
             ['date_time', '>=' , $start],
             ['date_time', '<=' , $end],
-            ['user_id', '=', $id_user],
-            ['is_check', '=', static::NO_CHECK]
+            ['user_id', '=', $timesheet->user_id],
+            ['is_check', '=', static::$NO_CHECK]
         ])->get();
         return $res;
     }
@@ -119,14 +119,16 @@ class AttendanceEloquentRepository extends EloquentRepository implements Attenda
         return $attendances->first();
     }
 
-    public function updateNewAttendancesByTimesheet($timesheet)
+    public function updateNewAttendancesInCollection($attendances, $timesheet)
     {
-        $attendances = $this->getAllNewAttendanceBelongToTimesheet($timesheet);
-        foreach($attendance as $attendances)
+        foreach($attendances as $attendance)
         {
-            $attendance->timesheet_id = $timesheet->id;
-            $attendance->is_check = static::$CHECKED;
-            $attendance->save();
+            if($attendance->is_check == static::$NO_CHECK)
+            {
+                $attendance->timesheet_id = $timesheet->id;
+                $attendance->is_check = static::$CHECKED;
+                $attendance->save();    
+            }
         }
     }
 
