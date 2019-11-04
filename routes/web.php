@@ -17,6 +17,10 @@ use App\User;
 use Carbon\Carbon;
 use App\Day;
 
+use App\Repositories\Timesheet\TimesheetEloquentRepository as Times;
+use App\Repositories\Attendance\AttendanceEloquentRepository as Att;
+
+
 
 Route::get('/', function () {
    return view('welcome');
@@ -49,8 +53,10 @@ Route::get('/listAttendances', 'AttendanceController@listAttendances');
 Route::get('/deleteAttendance/{id}','AttendanceController@deleteAttendance');
 
 Route::get('/test', function (){
-   $user = App\User::class;
-   dd($user);
+      $t = new Att;
+      $timesheet = Timesheet::where('id', 2502)->first();
+      $res = $t->getAttendanceCoOfTimesheet($timesheet);
+      dd($res);
 });
 
 //Timesheet

@@ -3,6 +3,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Repositories\Contracts\RepositoryInterface;
 
+
 abstract class EloquentRepository implements RepositoryInterface{
     protected $_model;
 
@@ -20,7 +21,6 @@ abstract class EloquentRepository implements RepositoryInterface{
 
     public function getAll()
     {
-
         return $this->_model::all();
     }
 

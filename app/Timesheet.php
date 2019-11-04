@@ -118,7 +118,6 @@ class Timesheet extends Model
         }else{
 
         }
-
         return $obj = [
             'S' => $this->morning_shift,
             'C' => $this->afternoon_shift

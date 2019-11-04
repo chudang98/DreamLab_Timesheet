@@ -2,6 +2,7 @@
 namespace App\Repositories\Eloquent;
 
 use App\Timesheet;
+use App\Attendance;
 use Carbon\Carbon;
 use App\Repositories\Eloquent\EloquentRepository;
 
@@ -31,4 +32,23 @@ class TimesheetEloquentRepository extends EloquentRepository implements Timeshee
             ->paginate(20);
         return $timesheets;
     }
+
+    public function getTimesheetByAttendance($attendance){
+        $time = Carbon::create($attendance->date_time)->toDateString();
+        $timesheet = Timesheet::where([
+            ['date', '=', $time],
+            ['user_id', '=', $attendance->user_id]
+        ])->first();
+        return $timesheet;
+    }
+
+    public function createTimesheetByAttendance($attendance){
+        $timesheet = new Timesheet();
+        $timesheet->user_id = $attendance->user_id;
+        $date = Carbon::create($attendance->date_time)->toDateString();
+        $timesheet->date = $date;
+        return $timesheet;
+    }
+    
+    
 }

@@ -33,14 +33,11 @@ class TimesheetController extends Controller
     }
 
     public function processNewAttendances(){
-        $attendance = Attendance::getFirstAttendanceNew();
+        // ini_set('max_execution_time', 300);
+        $attendance = $this->timesheetService->getOnetNewAttendance();
         while($attendance != null){
-            $timesheet = Timesheet::getTimesheetByAttendance($attendance);
-            if($timesheet == null)
-                $timesheet = Timesheet::saveNewByAttendance($attendance);
-            $this->timesheetService->processDataBelong($timesheet);
-            
-            $attendance = Attendance::getFirstAttendanceNew();        
+            $this->timesheetService->updateTimesheetByAttendance($attendance);
+            $attendance = $this->timesheetService->getOnetNewAttendance();      
         }
     }
 }
