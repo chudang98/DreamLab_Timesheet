@@ -3,7 +3,7 @@
 namespace App\Biz;
 
 use App\Day;
-use App\Repositories\Calendar\CalendarRepositoryInterface as Calendar;
+use App\Repositories\Contracts\CalendarRepositoryInterface as Calendar;
 
 class CalendarService{
 

@@ -1,6 +1,6 @@
 <?php
 namespace App\Biz;
-use App\Repositories\Attendance\AttendanceRepositoryInterface as Att;
+use App\Repositories\Contracts\AttendanceRepositoryInterface as Att;
 use Carbon\Carbon;
 
 

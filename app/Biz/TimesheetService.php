@@ -4,7 +4,7 @@ namespace App\Biz;
 use App\Timesheet;
 use App\Attendance;
 use Carbon\Carbon;
-use App\Repositories\Timesheet\TimesheetRepositoryInterface as Times;
+use App\Repositories\Contracts\TimesheetRepositoryInterface as Times;
 
 
 class TimesheetService{

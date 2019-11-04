@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Attendance;
+namespace App\Repositories\Contracts;
 
-interface AttendanceRepositoryInterface{
+interface TimesheetRepositoryInterface{
 
     public function getByTimeAndEmployee($times, $employee);
 

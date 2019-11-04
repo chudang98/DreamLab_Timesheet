@@ -1,7 +1,7 @@
 <?php
 namespace App\Biz;
 
-use App\Repositories\User\UserRepositoryInterface as User;
+use App\Repositories\Contracts\UserRepositoryInterface as User;
 use Illuminate\Support\Facades\Hash;
 
 class UserService{

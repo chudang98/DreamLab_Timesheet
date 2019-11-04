@@ -1,9 +1,9 @@
 <?php
-namespace App\Repositories\Timesheet;
+namespace App\Repositories\Eloquent;
 
 use App\Timesheet;
 use Carbon\Carbon;
-use App\Repositories\EloquentRepository;
+use App\Repositories\Eloquent\EloquentRepository;
 
 class TimesheetEloquentRepository extends EloquentRepository implements TimesheetRepositoryInterface {
     public function getModel()
