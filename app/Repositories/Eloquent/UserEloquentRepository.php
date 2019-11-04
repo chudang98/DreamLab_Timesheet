@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\User;
 use DB;
 use App\Repositories\Eloquent\EloquentRepository;
+use App\Repositories\Contracts\UserRepositoryInterface;
 
 class UserEloquentRepository extends EloquentRepository implements UserRepositoryInterface {
 

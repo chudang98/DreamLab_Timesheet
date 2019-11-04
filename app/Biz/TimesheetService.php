@@ -4,7 +4,7 @@ namespace App\Biz;
 use App\Timesheet;
 use App\Attendance;
 use Carbon\Carbon;
-use App\Repositories\Timesheet\TimesheetRepositoryInterface as Times;
+use App\Repositories\Contracts\TimesheetRepositoryInterface as Times;
 
 
 class TimesheetService{
@@ -18,8 +18,8 @@ class TimesheetService{
     public function __construct(Times $Times)
     {
         $this->Times = $Times;
-        $this->timesheet_repo = new TimesheetEloquentRepository();
-        $this->attendance_repo = new AttendanceEloquentRepository();
+//        $this->timesheet_repo = new TimesheetEloquentRepository();
+//        $this->attendance_repo = new AttendanceEloquentRepository();
 
     }
 
@@ -354,7 +354,7 @@ class TimesheetService{
     public function getOnetNewAttendance(){
         return $this->attendance_repo->getOnetNewAttendance();
     }
-
-    }
+//
+//    }
 
 }

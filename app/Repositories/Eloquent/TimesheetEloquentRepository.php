@@ -5,6 +5,7 @@ use App\Timesheet;
 use App\Attendance;
 use Carbon\Carbon;
 use App\Repositories\Eloquent\EloquentRepository;
+use App\Repositories\Contracts\TimesheetRepositoryInterface;
 
 class TimesheetEloquentRepository extends EloquentRepository implements TimesheetRepositoryInterface {
     public function getModel()
