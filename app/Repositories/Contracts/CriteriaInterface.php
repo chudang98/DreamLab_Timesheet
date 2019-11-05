@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Contracts\CriteriaInterface;
+namespace App\Repositories\Contracts;
 
 use App\Repositories\Criteria\Criteria;
 

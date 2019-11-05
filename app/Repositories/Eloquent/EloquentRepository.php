@@ -12,10 +12,10 @@ abstract class EloquentRepository implements RepositoryInterface, CriteriaInterf
     protected $criteria;
     protected $skipCriteria = false;
 
-    public function __construct(Collection $collection)
+    public function __construct()
     {
         $this->setModel();
-        $this->criteria= $collection;
+//        $this->criteria= $collection;
     }
 
     abstract public function getModel();
