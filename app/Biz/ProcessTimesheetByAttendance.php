@@ -3,9 +3,8 @@
 namespace App\Biz;
 
 use Carbon\Carbon;
-use App\Repositories\Timesheet\TimesheetEloquentRepository;
-use App\Repositories\Attendance\AttendanceEloquentRepository;
-use App\Biz\ProcessTimesheetByAttendanceInterface;
+use App\Repositories\Eloquent\TimesheetEloquentRepository;
+use App\Repositories\Eloquent\AttendanceEloquentRepository;
 
 class ProcessTimesheetByAttendance
 {
