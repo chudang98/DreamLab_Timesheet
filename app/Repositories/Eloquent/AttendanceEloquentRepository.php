@@ -1,9 +1,10 @@
 <?php
-namespace App\Repositories\Attendance;
+namespace App\Repositories\Eloquent;
 
 use App\Attendance;
 use Carbon\Carbon;
-use App\Repositories\EloquentRepository;
+use App\Repositories\Eloquent\EloquentRepository;
+use App\Repositories\Contracts\AttendanceRepositoryInterface;
 
 class AttendanceEloquentRepository extends EloquentRepository implements AttendanceRepositoryInterface {
     

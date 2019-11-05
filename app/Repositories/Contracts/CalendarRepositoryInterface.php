@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Calendar;
+namespace App\Repositories\Contracts;
 
 interface CalendarRepositoryInterface{
 

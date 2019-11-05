@@ -4,21 +4,16 @@ namespace App\Biz;
 use App\Timesheet;
 use App\Attendance;
 use Carbon\Carbon;
+use App\Repositories\Eloquent\TimesheetEloquentRepository as Times;
 
-use App\Biz\ProcessTimesheetByAttendance;
 
-use App\Repositories\Timesheet\TimesheetRepositoryInterface as Times;
-use App\Repositories\Timesheet\TimesheetEloquentRepository;
-use App\Repositories\Attendance\AttendanceEloquentRepository;
-
-class TimesheetService
-{
+class TimesheetService{
     protected $Times;
     protected $timesheet_repo;
     protected $attendance_repo;
 
     private $processAttendance;
-    
+
 
     public function __construct(Times $Times,
         TimesheetEloquentRepository $timesheet_repo, AttendanceEloquentRepository $attendance_repo)
@@ -93,7 +88,7 @@ class TimesheetService
     //         // Lấy tất cả các attendances trong ngày này
     //     $attendances = Attendance::getAttendanceBelong($timesheet);
 
-    //         // Timesheets này không có attendance nào mới        
+    //         // Timesheets này không có attendance nào mới
     //     if($attendances->isEmpty() != true)
     //     {
     //         $count = sizeof($attendances);
@@ -142,7 +137,7 @@ class TimesheetService
     //             $attendances[0]->updateByTimesheet($timesheet);
     //         }
     //     }
-    //     $timesheet->save();   
+    //     $timesheet->save();
     // }
 
 
@@ -150,16 +145,16 @@ class TimesheetService
 
     // private function processCiCOAttendance($timesheet, $check_out, $check_in = null){    
     //     switch($timesheet->morning_shift){
-    //         case static::$work_MORNING : 
+    //         case static::$work_MORNING :
     //         {
-    //             $this->processWorkMorningShift($timesheet, $check_out, $check_in);   
+    //             $this->processWorkMorningShift($timesheet, $check_out, $check_in);
     //             break;
     //         }
     //         case static::$late_MORNING :
     //         {
     //             $this->processLateMorningShift($timesheet, $check_out, $check_in);
     //             break;
-    //         } 
+    //         }
     //         case static::$absent_MORNING :
     //         {
     //             $this->processAbsentMorningShift($timesheet, $check_out, $check_in);
@@ -177,7 +172,7 @@ class TimesheetService
     //     if($check_in == null)
     //         $isOneAttendance = true;
     //     else
-    //         $isOneAttendance = false;     
+    //         $isOneAttendance = false;
 
     //     switch($timesheet->afternoon_shift){
     //         case static::$leave_early_AFTERNOON : {
@@ -195,7 +190,7 @@ class TimesheetService
     //             else
     //                 if(strtotime($time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM)){
     //                     if($isOneAttendance == true)
-    //                         $timesheet->check_out = $attendance->date_time;                            
+    //                         $timesheet->check_out = $attendance->date_time;
     //                     $timesheet->afternoon_shift = static::$leave_early_AFTERNOON;
     //                 }
     //             break;
@@ -218,14 +213,14 @@ class TimesheetService
     //     if($isOneAttendance == false)
     //         if(strtotime($CI_time) <= strtotime(static::$LATE_TIME_MORNING))
     //         {
-    //             $timesheet->check_in = $check_in->date_time;                    
+    //             $timesheet->check_in = $check_in->date_time;
     //             $timesheet->morning_shift = static::$work_MORNING;
     //         }
     //     else
     //     {
     //         if(strtotime($CO_time) <= strtotime(static::$LATE_TIME_MORNING))
     //         {
-    //             $timesheet->check_in = $check_out->date_time;                    
+    //             $timesheet->check_in = $check_out->date_time;
     //             $timesheet->morning_shift = static::$work_MORNING;
             
     //         }
@@ -237,12 +232,12 @@ class TimesheetService
     //             if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
     //             {
     //                 $timesheet->afternoon_shift = static::$work_AFTERNOON;
-    //                 $timesheet->check_out = $check_out->date_time;                            
+    //                 $timesheet->check_out = $check_out->date_time;
     //             }
     //             else
     //                 if(strtotime($CO_time) >= strtotime(static::$LEAVE_EARLY_AFTERNOOM))
     //                 {
-    //                     $timesheet->check_out = $check_out->date_time;                            
+    //                     $timesheet->check_out = $check_out->date_time;
     //                     $timesheet->afternoon_shift = static::$leave_early_AFTERNOON;
     //                 }
 
@@ -251,13 +246,13 @@ class TimesheetService
     //         case static::$leave_early_AFTERNOON : {
     //             if(strtotime($CO_time) >= strtotime(static::$END_AFTERNOON))
     //             {
-    //                 $timesheet->check_out = $check_out->date_time;                            
+    //                 $timesheet->check_out = $check_out->date_time;
     //                 $timesheet->afternoon_shift = static::$work_AFTERNOON;
     //             }
     //             break;
     //         }
     //     }
-        
+
     // }
 
 
@@ -330,7 +325,7 @@ class TimesheetService
     //     {
     //         // $check_out = $timesheet->getCOAttendance();
     //         $last_attendance = $timesheet->getCOAttendance();
-            
+
     //         if($check_out->earlyThan($last_attendance) == true)
     //         {
     //             $this->processCiCOAttendance($timesheet, $last_attendance, $check_out);
@@ -358,7 +353,7 @@ class TimesheetService
 
     public function updateTimesheetByAttendance($attendance){
 
-        // Lấy timesheet tương ứng với attendance này 
+        // Lấy timesheet tương ứng với attendance này
         $timesheet = $this->timesheet_repo->getTimesheetByAttendance($attendance);
 
         if($timesheet == null)
@@ -372,6 +367,7 @@ class TimesheetService
     public function getOnetNewAttendance(){
         return $this->attendance_repo->getOnetNewAttendance();
     }
-
+//
+//    }
 
 }

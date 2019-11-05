@@ -1,15 +1,18 @@
 <?php
 namespace App\Biz;
-use App\Repositories\Attendance\AttendanceRepositoryInterface as Att;
+use App\Repositories\Eloquent\AttendanceEloquentRepository as Att;
+use App\Repositories\Criteria\Attendances\GetByTimeAndEmployee;
 use Carbon\Carbon;
 
 
 class AttendanceService{
 
     protected $Att;
-    public function __construct(Att $Att)
+    protected $getByTimeAndEmployee;
+    public function __construct(Att $Att, GetByTimeAndEmployee $getByTimeAndEmployee)
     {
         $this->Att = $Att;
+        $this->getByTimeAndEmployee = $getByTimeAndEmployee;
     }
 
     //xóa att có id bằng $id
@@ -33,7 +36,8 @@ class AttendanceService{
         $data['ti'] = $time;
         $data['employee'] = $employee;
         $times = explode(" - ", $time);
-        $attendances = $this->Att->getByTimeAndEmployee($times,$employee);
+//        $attendances = $this->Att->getByTimeAndEmployee($times,$employee);
+        $attendances = $this->getByTimeAndEmployee->apply($times,$employee);
         $data['attendances'] = $attendances;
         $data['time'] = $times;
         return $data;

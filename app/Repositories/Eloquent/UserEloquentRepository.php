@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Repositories\User;
+namespace App\Repositories\Eloquent;
 
 use App\User;
 use DB;
-use App\Repositories\EloquentRepository;
+use App\Repositories\Eloquent\EloquentRepository;
+use App\Repositories\Contracts\UserRepositoryInterface;
 
 class UserEloquentRepository extends EloquentRepository implements UserRepositoryInterface {
 
