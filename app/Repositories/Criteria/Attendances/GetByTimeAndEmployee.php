@@ -1,14 +1,15 @@
 <?php
 namespace App\Repositories\Criteria\Attendances;
 
+use App\Attendance;
 use App\Repositories\Contracts\RepositoryInterface;
 use App\Repositories\Contracts\CriteriaInterface;
 use Carbon\Carbon;
 
-class GetByTimeAndEmployee implements CriteriaInterface{
+class GetByTimeAndEmployee{
     
     public function apply($times, $employee){
-        $attendances = $this->_model::with('user')
+        $attendances = Attendance::with('user')
             ->whereHas('user', function ($query) use($employee) {
                 $query->where('employee_id', 'LIKE', "%{$employee}%")
                     ->orWhere('name', 'LIKE', "%{$employee}%");

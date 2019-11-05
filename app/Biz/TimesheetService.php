@@ -5,6 +5,8 @@ use App\Timesheet;
 use App\Attendance;
 use Carbon\Carbon;
 use App\Repositories\Eloquent\TimesheetEloquentRepository as Times;
+use App\Repositories\Eloquent\TimesheetEloquentRepository;
+use App\Repositories\Eloquent\AttendanceEloquentRepository;
 
 
 
