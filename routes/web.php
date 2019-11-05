@@ -41,7 +41,6 @@ Route::post('/export_excel', 'ExcelExport@xuatUser')->name('export_excel');
 
 Route::get('process_new_data', 'TimesheetController@processNewAttendances')->name('process_new_data');
 
-
 //Profile
 Route::get('/editProfile/{alert}','ProfileController@editProfile');
 Route::post('/updateProfile','ProfileController@updateProfile');
@@ -53,10 +52,11 @@ Route::get('/listAttendances', 'AttendanceController@listAttendances');
 Route::get('/deleteAttendance/{id}','AttendanceController@deleteAttendance');
 
 Route::get('/test', function (){
-      $t = new Att;
-      $timesheet = Timesheet::where('id', 2502)->first();
-      $res = $t->getAttendanceCoOfTimesheet($timesheet);
-      dd($res);
+    $time =  Carbon::create('21-10-2019 13:13:13')->toTimeString();
+    echo(strtotime($time));
+    echo "</br>";
+    echo $time;
+
 });
 
 //Timesheet

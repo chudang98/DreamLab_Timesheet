@@ -15,12 +15,17 @@ class TimesheetService{
     private $processAttendance;
 
 
-    public function __construct(Times $Times)
+    public function __construct(Times $Times,
+        TimesheetEloquentRepository $timesheet_repo, AttendanceEloquentRepository $attendance_repo)
     {
         $this->Times = $Times;
-//        $this->timesheet_repo = new TimesheetEloquentRepository();
-//        $this->attendance_repo = new AttendanceEloquentRepository();
+        $this->timesheet_repo = $timesheet_repo; 
+        $this->attendance_repo = $attendance_repo;
+        $this->processAttendance = new ProcessTimesheetByAttendance($this->timesheet_repo, $this->attendance_repo);
 
+        // $this->timesheet_repo = new TimesheetEloquentRepository();
+        // $this->attendance_repo = new AttendanceEloquentRepository();
+        // $this->processAttendance = new ProcessTimesheetByAttendance($this->timesheet_repo, $this->attendance_repo);
     }
 
     //xóa att có id bằng $id
@@ -135,8 +140,10 @@ class TimesheetService{
     //     $timesheet->save();
     // }
 
-    // private function processCiCOAttendance($timesheet, $check_out, $check_in = null){
-        
+
+
+
+    // private function processCiCOAttendance($timesheet, $check_out, $check_in = null){    
     //     switch($timesheet->morning_shift){
     //         case static::$work_MORNING :
     //         {
@@ -155,6 +162,9 @@ class TimesheetService{
     //         }
     //     }
     // }
+
+
+
 
     // private function processWorkMorningShift($timesheet, $check_out, $check_in = null){
     //     // Nếu chỉ có 1 attendance thì tham số thứ 3 bằng null
@@ -188,6 +198,8 @@ class TimesheetService{
     //     }
 
     // }
+
+
 
     // private function processLateMorningShift($timesheet, $check_out, $check_in = null){
     //     $isOneAttendance = true;
@@ -243,6 +255,9 @@ class TimesheetService{
 
     // }
 
+
+
+    
     // private function processAbsentMorningShift($timesheet, $check_out, $check_in = null){
     //     if($check_in != null)
     //         $CI_time = Carbon::create($check_in->date_time)->toTimeString();
@@ -345,10 +360,8 @@ class TimesheetService{
         {
             $timesheet = $this->timesheet_repo->createTimesheetByAttendance($attendance);
         }
-
-        $this->processAttendance = new ProcessTimesheetByAttendance($this->timesheet_repo, $this->attendance_repo, $timesheet);
-
-        $this->processAttendance->processTimesheetByAttendance($attendance);
+        $this->processAttendance->setTimesheetProcess($timesheet);
+        $this->processAttendance->processSelfTimesheetByAttendance();
     }
 
     public function getOnetNewAttendance(){

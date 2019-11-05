@@ -34,10 +34,12 @@ class TimesheetController extends Controller
 
     public function processNewAttendances(){
         // ini_set('max_execution_time', 300);
+        ini_set('max_execution_time', 0);
         $attendance = $this->timesheetService->getOnetNewAttendance();
         while($attendance != null){
             $this->timesheetService->updateTimesheetByAttendance($attendance);
             $attendance = $this->timesheetService->getOnetNewAttendance();      
         }
+        return redirect('/listAttendances')->with('status', 'Đã update dữ liệu mới !');
     }
 }

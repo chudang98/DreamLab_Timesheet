@@ -107,7 +107,6 @@ class User extends Authenticatable
                 $timesheet->date = $first_day->format('Y-m-d');
                 $timesheet->morning_shift = 'V';
                 $timesheet->afternoon_shift = 'V';
-                $timesheet->save();
             }
 
             // $timesheet->save();
@@ -120,32 +119,32 @@ class User extends Authenticatable
         return $result;
     }
 
-    public function processNewData(){
-        $timesheet = Timesheet::where([
-            ['date', '=', $first_day],
-            ['user_id', '=' , $this->id],
-        ])->first();
+    // public function processNewData(){
+    //     $timesheet = Timesheet::where([
+    //         ['date', '=', $first_day],
+    //         ['user_id', '=' , $this->id],
+    //     ])->first();
 
-        if($timesheet == null)
-        {
-            $timesheet = new Timesheet();
-            $timesheet->user_id = $this->id;
-            $timesheet->date = $first_day->format('Y-m-d');
-            $timesheet->morning_shift = 'V';
-            $timesheet->afternoon_shift = 'V';
-            $timesheet->save();
+    //     if($timesheet == null)
+    //     {
+    //         $timesheet = new Timesheet();
+    //         $timesheet->user_id = $this->id;
+    //         $timesheet->date = $first_day->format('Y-m-d');
+    //         $timesheet->morning_shift = 'V';
+    //         $timesheet->afternoon_shift = 'V';
+    //         $timesheet->save();
 
-            $timesheet->processAttendanceBelongTo();              
-        }else
-        {
-            $timesheet->processAttendanceBelongTo();
+    //         $timesheet->processAttendanceBelongTo();              
+    //     }else
+    //     {
+    //         $timesheet->processAttendanceBelongTo();
 
-        }
+    //     }
 
-        $timesheet->save();
+    //     $timesheet->save();
 
-        $timesheet->processInfor();
-    }
+    //     $timesheet->processInfor();
+    // }
 
     public function inforWorkingTime($timesheets){
         $result = [
