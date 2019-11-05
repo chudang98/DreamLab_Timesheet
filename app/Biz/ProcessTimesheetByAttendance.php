@@ -7,7 +7,7 @@ use App\Repositories\Timesheet\TimesheetEloquentRepository;
 use App\Repositories\Attendance\AttendanceEloquentRepository;
 use App\Biz\ProcessTimesheetByAttendanceInterface;
 
-class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterface
+class ProcessTimesheetByAttendance
 {
     private $timesheet_repo;
     private $attendance_repo; 
@@ -32,10 +32,13 @@ class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterf
     private static $work_AFTERNOON = 'X';
     private static $leave_early_AFTERNOON = 'S';
     
-    public function __construct($timesheet_repo, $attendance_repo, $timesheet)
+    public function __construct($timesheet_repo, $attendance_repo)
     {
         $this->timesheet_repo = $timesheet_repo;
         $this->attendance_repo = $attendance_repo;
+    }
+
+    public function setTimesheetProcess($timesheet){
         $this->timesheet = $timesheet;
     }
  
@@ -59,19 +62,17 @@ class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterf
         if($this->isTimeEarlierThanMilestone($time, static::$LATE_TIME_MORNING))
         {
             $this->timesheet->morning_shift = static::$work_MORNING;
-            return true;
         }else
         {
             if($this->isTimeEarlierThanMilestone($time, static::$ABSENT_MORNING))
             {
                 $this->timesheet->morning_shift = static::$late_MORNING;
-                return true;
             }else
             {
                 $this->timesheet->morning_shift = static::$absent_MORNING;           
             }
         }
-        return false;
+        $this->timesheet->afternoon_shift = static::$absent_AFTERNOON;
     }
 
     // * Muốn update buổi chiều cần cả thời gian vào và thời gian ra
@@ -79,12 +80,12 @@ class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterf
     {
         if($this->isTimeEarlierThanMilestone($time_in, static::$LATE_TIME_AFTERNOON))
         {
-            if($this->isTimeEarlierThanMilestone($time_out, static::$END_AFTERNOON))
+            if($this->isTimeEarlierThanMilestone(static::$END_AFTERNOON, $time_out))
             {
                 $this->timesheet->afternoon_shift = static::$work_AFTERNOON;
             }else
             {
-                if($this->isTimeEarlierThanMilestone($time_out, static::$LEAVE_EARLY_AFTERNOOM))
+                if($this->isTimeEarlierThanMilestone(static::$LEAVE_EARLY_AFTERNOOM, $time_out))
                 {
                     $this->timesheet->afternoon_shift = static::$leave_early_AFTERNOON;
                 }else
@@ -96,17 +97,17 @@ class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterf
         {
             if($this->isTimeEarlierThanMilestone($time_in, static::$ABSENT_AFTERNOON))
             {
-                if($this->isTimeEarlierThanMilestone($time_out, static::$END_AFTERNOON))
+                if($this->isTimeEarlierThanMilestone(static::$END_AFTERNOON, $time_out))
                 {
                     $this->timesheet->afternoon_shift = static::$late_AFTERNOON;
                 }else
                 {
-                    if($this->isTimeEarlierThanMilestone($time_out, static::$LEAVE_EARLY_AFTERNOOM))
+                    if($this->isTimeEarlierThanMilestone(static::$LEAVE_EARLY_AFTERNOOM, $time_out))
                     {
                         $this->timesheet->afternoon_shift = static::$leave_early_AFTERNOON;
                     }else
                     {
-                        $this->timesheet->afternoon_shift = static::$absent_AFTERNOON;                    
+                        $this->timesheet->afternoon_shift = static::$absent_AFTERNOON;               
                     }
                 }
             }else
@@ -117,7 +118,7 @@ class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterf
         }
     }
 
-    public function processTimesheetByAttendance($attendance)
+    public function processSelfTimesheetByAttendance()
     {
         $attendances = $this->attendance_repo->getAllAttendanceBelongToTimesheet($this->timesheet);
         $count = count($attendances);
@@ -134,8 +135,8 @@ class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterf
                 $this->processTimesheetByCiCoAttendance($check_in, $check_out);
             }
         }
-        $this->attendance_repo->updateNewAttendancesInCollection($attendances, $this->timesheet);
         $this->timesheet->save();
+        $this->attendance_repo->updateNewAttendancesInCollection($attendances, $this->timesheet);
     }
 
     // * Có 1 attendance thì chỉ có thể update được buổi sáng cho timesheet mà thôi.
@@ -156,7 +157,9 @@ class ProcessTimesheetByAttendance implements ProcessTimesheetByAttendanceInterf
         $this->timesheet->check_in = $CI_time;
         $this->timesheet->check_out = $CO_time;
     }
+
 }
+
 
 
 ?>

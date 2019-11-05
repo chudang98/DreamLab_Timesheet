@@ -137,4 +137,6 @@ class AttendanceEloquentRepository extends EloquentRepository implements Attenda
         return $attendance;
     }
 
+    // public function getAttendanceOfUserInDay()
+
 }

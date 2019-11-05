@@ -3,6 +3,11 @@
     <link rel="stylesheet" type="text/css" href="{{URL::asset('css/Attendance/list_attendances.css')}}">
     <script src="{{asset('js/local-vi.js')}}"></script>
 @endsection
+@if(session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
 @section('content')
     <form action="#">
         <div class="container">
