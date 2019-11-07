@@ -12,6 +12,10 @@ class AttendancesTableSeeder extends Seeder
     public function run()
     {
         //
-        factory('App\Attendance', 200)->create();
+        // factory('App\Attendance', 200)->create();
+        DB::table('attendances')->insert([
+            ['date_time' => '2019-08-01 07:46:00', 'user_id' => '33','attendance_machine_id' => '1'],
+            ['date_time' => '2019-08-01 17:46:00', 'user_id' => '33','attendance_machine_id' => '1'],
+        ]);
     }
 }

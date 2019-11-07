@@ -51,5 +51,14 @@ class TimesheetEloquentRepository extends EloquentRepository implements Timeshee
         return $timesheet;
     }
     
+    public function isExistTimesheetByAttendance($attendance)
+    {
+        $timesheet = $this->getTimesheetByAttendance($attendance);
+        if($timesheet == null)
+            return false;
+        else
+            return true;
+        
+    }
     
 }

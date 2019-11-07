@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
+use App\Observers\AttendanceObserver;
+use App\Attendance;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        Schema::defaultStringLength(191);
+        Attendance::observe(AttendanceObserver::class);
+        // Schema::defaultStringLength(191);
     }
 }

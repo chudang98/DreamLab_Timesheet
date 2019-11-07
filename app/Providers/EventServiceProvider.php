@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        'App\Events\AddNewAttendance'=>[
+            'App\Listeners\UpdateCiCoTable',
+        ],
     ];
 
     /**
@@ -29,6 +32,8 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+            // TODO : Đăng ký event 1 cách thủ công, không thông qua thao tác tạo listener riêng.
+        // Event::listen('event.AddNewAttendance', function ($foo, $bar) {
+        // });
     }
 }

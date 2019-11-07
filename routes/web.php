@@ -52,11 +52,12 @@ Route::get('/listAttendances', 'AttendanceController@listAttendances');
 Route::get('/deleteAttendance/{id}','AttendanceController@deleteAttendance');
 
 Route::get('/test', function (){
-    $time =  Carbon::create('21-10-2019 13:13:13')->toTimeString();
-    echo(strtotime($time));
-    echo "</br>";
-    echo $time;
-
+    // $attendance = new Attendance;
+    // $attendance->date_time = "2019-08-01 16:46:00";
+    // $attendance->user_id = 9;
+    // $attendance->attendance_machine_id = 1;
+    // $attendance->save();
+    
 });
 
 //Timesheet

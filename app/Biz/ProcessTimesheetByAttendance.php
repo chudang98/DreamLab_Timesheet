@@ -157,6 +157,14 @@ class ProcessTimesheetByAttendance
         $this->timesheet->check_out = $CO_time;
     }
 
+    public function processSelfTimesheet()
+    {
+        $CI_time = $this->timesheet->check_in;
+        $CO_time = $this->timesheet->check_out;
+
+        $this->processMorningShift($CI_time);
+        $this->processAfternoonShift($CI_time, $CO_time);
+    }
 }
 
 
