@@ -5,6 +5,8 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Events\AddNewAttendance;
+
 class Attendance extends Model
 {
     //
@@ -35,6 +37,8 @@ class Attendance extends Model
     {
         return $this->belongsTo(Timesheet::class, 'timesheet_id');
     }
+
+    
 
     public static function getFirstAttendanceNew(){
         $result = Attendance::where('is_check', '=', 'N')->first();
