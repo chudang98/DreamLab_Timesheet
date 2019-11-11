@@ -177,6 +177,8 @@ return [
 
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
+        Prettus\Repository\Providers\RepositoryServiceProvider::class,
+
     ],
 
     /*

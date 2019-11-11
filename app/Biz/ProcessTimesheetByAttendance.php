@@ -3,8 +3,8 @@
 namespace App\Biz;
 
 use Carbon\Carbon;
-use App\Repositories\Eloquent\TimesheetEloquentRepository;
-use App\Repositories\Eloquent\AttendanceEloquentRepository;
+use App\Repositories\Eloquent\TimesheetEloquentRepositoryTest;
+use App\Repositories\Eloquent\AttendanceEloquentRepositoryTestTest;
 
 class ProcessTimesheetByAttendance
 {

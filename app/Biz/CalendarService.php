@@ -3,7 +3,7 @@
 namespace App\Biz;
 
 use App\Day;
-use App\Repositories\Eloquent\CalendarEloquentRepository as Calendar;
+use App\Repositories\Eloquent\DayRepositoryEloquent as Calendar;
 
 class CalendarService{
 
@@ -59,7 +59,7 @@ class CalendarService{
     }
 
     public function dataOfIndex(){
-        $data['days'] = $this->Calendar->getAll();
+        $data['days'] = $this->Calendar->all();
         return $data;
     }
 

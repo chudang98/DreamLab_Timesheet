@@ -4,9 +4,9 @@ namespace App\Biz;
 use App\Timesheet;
 use App\Attendance;
 use Carbon\Carbon;
-use App\Repositories\Eloquent\TimesheetEloquentRepository as Times;
-use App\Repositories\Eloquent\TimesheetEloquentRepository;
-use App\Repositories\Eloquent\AttendanceEloquentRepository;
+use App\Repositories\Eloquent\TimesheetRepositoryEloquent as Times;
+use App\Repositories\Eloquent\TimesheetRepositoryEloquent;
+use App\Repositories\Eloquent\AttendanceRepositoryEloquent;
 
 
 
@@ -17,7 +17,7 @@ class TimesheetService{
     private $processAttendance;
 
 
-    public function __construct(Times $Times, AttendanceEloquentRepository $attendance_repo)
+    public function __construct(Times $Times, AttendanceRepositoryEloquent $attendance_repo)
     {
         $this->Times = $Times;
         $this->attendance_repo = $attendance_repo;

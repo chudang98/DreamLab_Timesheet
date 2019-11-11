@@ -16,20 +16,20 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(
-          \App\Repositories\Contracts\AttendanceRepositoryInterface::class,
-          \App\Repositories\Eloquent\AttendanceEloquentRepository::class
+          \App\Repositories\Contracts\AttendanceRepository::class,
+          \App\Repositories\Eloquent\AttendanceRepositoryEloquent::class
         );
         $this->app->singleton(
-        \App\Repositories\Contracts\TimesheetRepositoryInterface::class,
-        \App\Repositories\Eloquent\TimesheetEloquentRepository::class
+        \App\Repositories\Contracts\TimesheetRepository::class,
+        \App\Repositories\Eloquent\TimesheetRepositoryEloquent::class
         );
         $this->app->singleton(
-            \App\Repositories\Contracts\CalendarRepositoryInterface::class,
-            \App\Repositories\Eloquent\CalendarEloquentRepository::class
+            \App\Repositories\Contracts\DayRepository::class,
+            \App\Repositories\Eloquent\DayRepositoryEloquent::class
         );
         $this->app->singleton(
-            \App\Repositories\Contracts\UserRepositoryInterface::class,
-            \App\Repositories\Eloquent\UserEloquentRepository::class
+            \App\Repositories\Contracts\UserRepository::class,
+            \App\Repositories\Eloquent\UserRepositoryEloquent::class
         );
     }
 
