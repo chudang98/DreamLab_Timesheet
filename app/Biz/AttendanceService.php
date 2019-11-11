@@ -1,5 +1,6 @@
 <?php
 namespace App\Biz;
+use App\Repositories\Criteria\GetAttendancesByTimeCriteria;
 use App\Repositories\Eloquent\AttendanceRepositoryEloquent as Att;
 //use App\Repositories\Criteria\Attendances\GetByTimeAndEmployee;
 use Carbon\Carbon;
@@ -54,6 +55,7 @@ class AttendanceService{
         $data['ti'] = $times[0].' - '.$times[1];
         $data['employee'] = "";
         $attendances = $this->Att->getByTime($times);
+//        $attendances = ($this->Att->pushCriteria(new GetAttendancesByTimeCriteria($times)))->all();
         $data['attendances'] = $attendances;
         $data['time'] = $times;
         return $data;
