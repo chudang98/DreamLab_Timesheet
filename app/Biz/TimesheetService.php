@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use App\Repositories\Eloquent\TimesheetRepositoryEloquent as Times;
 use App\Repositories\Eloquent\TimesheetRepositoryEloquent;
 use App\Repositories\Eloquent\AttendanceRepositoryEloquent;
+use App\Repositories\Criteria\GetTimesheetsByTimeCriteria;
+use App\Repositories\Criteria\GetByEmployeeCriteria;
 
 
 
@@ -45,7 +47,10 @@ class TimesheetService{
         $data['ti'] = $time;
         $data['employee'] = $employee;
         $times = explode(" - ", $time);
-        $timesheets = $this->Times->getByTimeAndEmployee($times,$employee );
+//        $timesheets = $this->Times->getByTimeAndEmployee($times,$employee );
+        $this->Times->pushCriteria(new GetTimesheetsByTimeCriteria($times[0], $times[1]));
+        $this->Times->pushCriteria(new GetByEmployeeCriteria($employee));
+        $timesheets = $this->Times->paginate(15);
         $data['timesheets'] = $timesheets;
         $data['time'] = $times;
         return $data;
@@ -56,14 +61,14 @@ class TimesheetService{
         return $day->format('d/m/Y');
     }
 
-    //xử lí khi mặc định, không có trường tìm kiếm
     public function xuLi2($dem){
         $data['dem']= $dem;
         $times[0] = $this::formatDay(new Carbon('first day of this month'));
         $times[1] = $this::formatDay(Carbon::now());
         $data['ti'] = $times[0].' - '.$times[1];
         $data['employee'] = "";
-        $timesheets = $this->Times->getByTime($times);
+        $this->Times->pushCriteria(new GetTimesheetsByTimeCriteria($times[0], $times[1]));
+        $timesheets = $this->Times->paginate(15);
         $data['timesheets'] = $timesheets;
         $data['time'] = $times;
         return $data;

@@ -11,8 +11,4 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface AttendanceRepository extends RepositoryInterface
 {
-    //
-    public function getByTimeAndEmployee($times, $employee);
-
-    public function getByTime($times);
 }

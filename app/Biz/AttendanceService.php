@@ -2,7 +2,7 @@
 namespace App\Biz;
 use App\Repositories\Criteria\GetAttendancesByTimeCriteria;
 use App\Repositories\Eloquent\AttendanceRepositoryEloquent as Att;
-//use App\Repositories\Criteria\Attendances\GetByTimeAndEmployee;
+use App\Repositories\Criteria\GetByEmployeeCriteria;
 use Carbon\Carbon;
 
 
@@ -35,8 +35,10 @@ class AttendanceService{
         $data['ti'] = $time;
         $data['employee'] = $employee;
         $times = explode(" - ", $time);
-        $attendances = $this->Att->getByTimeAndEmployee($times,$employee);
-//        $attendances = $this->getByTimeAndEmployee->apply($times,$employee);
+//        $attendances = $this->Att->getByTimeAndEmployee($times,$employee);
+        $this->Att->pushCriteria(new GetAttendancesByTimeCriteria($times[0], $times[1]));
+        $this->Att->pushCriteria(new GetByEmployeeCriteria($employee));
+        $attendances = $this->Att->paginate(15);
         $data['attendances'] = $attendances;
         $data['time'] = $times;
         return $data;
@@ -54,8 +56,8 @@ class AttendanceService{
         $times[1] = $this::formatDay(Carbon::now());
         $data['ti'] = $times[0].' - '.$times[1];
         $data['employee'] = "";
-        $attendances = $this->Att->getByTime($times);
-//        $attendances = ($this->Att->pushCriteria(new GetAttendancesByTimeCriteria($times)))->all();
+        $this->Att->pushCriteria(new GetAttendancesByTimeCriteria($times[0], $times[1]));
+        $attendances = $this->Att->paginate(15);
         $data['attendances'] = $attendances;
         $data['time'] = $times;
         return $data;

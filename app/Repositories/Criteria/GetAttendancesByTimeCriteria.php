@@ -5,6 +5,7 @@ namespace App\Repositories\Criteria;
 use Carbon\Carbon;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
+use App\Attendance;
 
 /**
  * Class GetAttendancesByTimeCriteria.
@@ -21,19 +22,20 @@ class GetAttendancesByTimeCriteria implements CriteriaInterface
      *
      * @return mixed
      */
-    protected $times;
-    public function __construct($times)
+    protected $times1, $times2;
+    public function __construct($times1, $times2)
     {
-        $this->times= $times;
+        $this->times1= $times1;
+        $this->times2= $times2;
     }
 
     public function apply($model, RepositoryInterface $repository)
     {
-        $list = $model::whereBetween('date_time', [(Carbon::createFromFormat("d/m/Y", $this->times[0])
+        $model = $model->whereBetween('date_time', [(Carbon::createFromFormat("d/m/Y", $this->times1)
             ->format("Y-m-d 00:00:00")),
-            (Carbon::createFromFormat("d/m/Y", $this->times[1])->format("Y-m-d 23:59:59"))])
-            ->orderBy('date_time', 'desc')
-            ->paginate(20);
-        return $list;
+            (Carbon::createFromFormat("d/m/Y", $this->times2)->format("Y-m-d 23:59:59"))])
+            ->orderBy('date_time', 'desc');
+//            ->paginate(20);
+        return $model;
     }
 }

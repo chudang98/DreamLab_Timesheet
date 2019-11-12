@@ -11,8 +11,4 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface TimesheetRepository extends RepositoryInterface
 {
-    //
-    public function getByTimeAndEmployee($times, $employee);
-
-    public function getByTime($times);
 }

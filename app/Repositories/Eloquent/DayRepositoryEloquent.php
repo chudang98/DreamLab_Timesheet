@@ -36,11 +36,6 @@ class DayRepositoryEloquent extends BaseRepository implements DayRepository
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    public function findByDate($date){
-        $result = $this->model::where("date", $date)->first();
-        return $result;
-    }
-
     public function insertDay($d){
         DB::table('days')->insert(
             [   'date' => $d["date"],

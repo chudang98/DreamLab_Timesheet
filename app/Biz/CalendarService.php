@@ -4,6 +4,7 @@ namespace App\Biz;
 
 use App\Day;
 use App\Repositories\Eloquent\DayRepositoryEloquent as Calendar;
+use App\Repositories\Criteria\FindDayByDateCriteria;
 
 class CalendarService{
 
@@ -46,7 +47,10 @@ class CalendarService{
 
     //Thêm hoặc cập nhật sự kiện
     public function addORUpdateDay($date, $state, $data){
-        $day = $this->Calendar->findByDate($date);
+        $this->Calendar->pushCriteria(new FindDayByDateCriteria($date));
+        $day = $this->Calendar->first();
+//        $day = $this->Calendar->findByDate($date);
+//        dd($day);
         $d["date"] = $date;
         $d["state"] = $state;
         $d["startt_break"] = $data['startt_break'];

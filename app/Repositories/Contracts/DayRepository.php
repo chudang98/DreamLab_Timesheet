@@ -12,7 +12,7 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 interface DayRepository extends RepositoryInterface
 {
     //
-    public function findByDate($date);
+//    public function findByDate($date);
 
     public function insertDay($d);
 
