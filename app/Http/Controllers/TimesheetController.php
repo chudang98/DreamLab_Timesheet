@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use View;
 use DB;
 
+use App\Jobs\UpdateTimesheetByNewAttendance;
+
 class TimesheetController extends Controller
 {
     protected $timesheetService;
@@ -32,14 +34,9 @@ class TimesheetController extends Controller
         return redirect('/listTimesheets');
     }
 
-    public function processNewAttendances(){
-        // ini_set('max_execution_time', 300);
-        ini_set('max_execution_time', 0);
-        $attendance = $this->timesheetService->getOnetNewAttendance();
-        while($attendance != null){
-            $this->timesheetService->updateTimesheetByAttendance($attendance);
-            $attendance = $this->timesheetService->getOnetNewAttendance();      
-        }
-        return redirect('/listAttendances')->with('status', 'Đã update dữ liệu mới !');
+    public function processNewAttendances()
+    {
+        UpdateTimesheetByNewAttendance::dispatch($this->timesheetService);
+        return redirect('/listAttendances')->with('status', 'Dữ liệu mới đang được xử lý. Vui lòng chờ cho đến khi có thông báo !');
     }
 }

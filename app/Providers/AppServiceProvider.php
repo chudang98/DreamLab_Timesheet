@@ -6,6 +6,12 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
 use App\Observers\AttendanceObserver;
+
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Events\JobProcessing;
+
+// use App\Jobs\UpdateTimesheetByNewAttendance;
 use App\Attendance;
 
 class AppServiceProvider extends ServiceProvider
@@ -18,12 +24,12 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(
-          \App\Repositories\Contracts\AttendanceRepository::class,
-          \App\Repositories\Eloquent\AttendanceRepositoryEloquent::class
+            \App\Repositories\Contracts\AttendanceRepository::class,
+            \App\Repositories\Eloquent\AttendanceRepositoryEloquent::class
         );
         $this->app->singleton(
-        \App\Repositories\Contracts\TimesheetRepository::class,
-        \App\Repositories\Eloquent\TimesheetRepositoryEloquent::class
+            \App\Repositories\Contracts\TimesheetRepository::class,
+            \App\Repositories\Eloquent\TimesheetRepositoryEloquent::class
         );
         $this->app->singleton(
             \App\Repositories\Contracts\DayRepository::class,
@@ -44,6 +50,15 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Attendance::observe(AttendanceObserver::class);
+    
         // Schema::defaultStringLength(191);
+
+        Queue::after(function (JobProcessed $event) {
+            // $event->connectionName
+            // $event->job
+            // $event->job->payload()
+        });
+    
+
     }
 }

@@ -77,6 +77,9 @@ class ProcessTimesheetByAttendance
     // * Muốn update buổi chiều cần cả thời gian vào và thời gian ra
     public function processAfternoonShift($time_in, $time_out)
     {
+        if($time_out == null)
+            return;
+        
         if($this->isTimeEarlierThanMilestone($time_in, static::$LATE_TIME_AFTERNOON))
         {
             if($this->isTimeEarlierThanMilestone(static::$END_AFTERNOON, $time_out))

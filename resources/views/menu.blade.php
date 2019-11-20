@@ -45,6 +45,21 @@
     </div>
 
 </div>
+
+ <!-- TODO : Viết function hiển thị thông báo. -->
+<!-- <script type="text/javascript">
+        function getMessage() {
+            $.ajax({
+                type:'POST',
+                url:'/getmsg',
+                data:'_token = <?php echo csrf_token() ?>',
+                success:function(data) {
+                    
+                }
+            });
+         }
+</script> -->
+
 </body>
 {{--    <script>--}}
 {{--        var sd = moment().startOf('month').format('DD/MM/YYYY');--}}

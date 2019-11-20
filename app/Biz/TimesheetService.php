@@ -10,6 +10,7 @@ use App\Repositories\Eloquent\AttendanceRepositoryEloquent;
 use App\Repositories\Criteria\GetTimesheetsByTimeCriteria;
 use App\Repositories\Criteria\GetByEmployeeCriteria;
 
+use App\Biz\ProcessTimesheetByAttendance;
 
 
 class TimesheetService{
