@@ -57,7 +57,7 @@ Route::get('/test', function (){
     // $attendance->user_id = 9;
     // $attendance->attendance_machine_id = 1;
     // $attendance->save();
-    
+    $var = app()->bind('service',App\Biz\TimesheetService);
 });
 
 //Timesheet
